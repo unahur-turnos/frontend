@@ -14,8 +14,8 @@ import Zoom from '@material-ui/core/Zoom';
 // import Button from '@material-ui/core/Button';
 // import IconButton from '@material-ui/core/IconButton';
 // import MenuIcon from '@material-ui/icons/Menu';
-import Image from 'material-ui-image';
 import logoCovid from '../assets/logoCovid.png';
+import unahur from '../assets/unahur.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,8 +35,13 @@ const useStyles = makeStyles((theme) => ({
     height: '100px',
   },
   tamañoImagen: {
-    width: '1000px',
-    height: '1500px',
+    width: '85px',
+    height: '90px',
+  },
+  tamañoUnahur: {
+    width: '200px',
+    height: '45px',
+    marginTop: '35px',
   },
 }));
 
@@ -87,7 +92,8 @@ export default function Header(props) {
       <CssBaseline />
       <AppBar>
         <Toolbar className={classes.headercolor}>
-          <Image src={logoCovid} className={classes.tamañoImagen} />
+          <img src={logoCovid} className={classes.tamañoImagen} alt="" />
+          <img src={unahur} className={classes.tamañoUnahur} alt="" />
           {/* <IconButton
             edge="start"
             className={classes.menuButton}
