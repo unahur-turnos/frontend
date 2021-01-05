@@ -3,7 +3,7 @@ import Header from './Header';
 import Tabla from './Tabla';
 //import Image from 'material-ui-image';
 
-export default function PantallaLogin() {
+export default function PantallaEspacios() {
   return (
     <>
       <Header />

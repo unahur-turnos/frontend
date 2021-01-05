@@ -40,7 +40,7 @@ function createData(nombre, edificio, piso, estado, idEspacio) {
 
 const rows = {
   items: [
-    createData('Frozen yoghurt', 159, 6.0, 'activo', 0),
+    createData('Frozen yoghurt', 159, 6.0, 'activo', 12312312321),
     createData('Ice cream sandwich', 237, 9.0, 'inactivo', 1),
     createData('Eclair', 262, 16.0, 'activo', 2),
     createData('Cupcake', 305, 3.7, 'inactivo', 3),
@@ -50,14 +50,13 @@ const rows = {
 
 export default function DenseTable() {
   const [espacios, setEspacios] = useState(rows);
+  const [abrirModal, setAbrirModal] = useState(false);
   const classes = useStyles();
-  const eliminarEspacio = (id, idEspacio) => {
-    console.log(idEspacio);
-    const items = espacios.items;
-    items.splice(idEspacio, 1);
-    setEspacios({ items });
-    console.log(espacios.items);
-    console.log(items);
+  const [idEspacioAEliminar, setIdEspacioAEliminar] = useState('');
+
+  const eliminarEspacio = (idEspacio) => {
+    setIdEspacioAEliminar(idEspacio);
+    setAbrirModal(true);
   };
 
   return (
@@ -73,7 +72,7 @@ export default function DenseTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {espacios.items.map((row, id) => (
+          {espacios.items.map((row) => (
             <TableRow key={row.nombre}>
               <TableCell component="th" scope="row">
                 {row.nombre}
@@ -109,16 +108,20 @@ export default function DenseTable() {
                   color="inherit"
                   aria-label="menu"
                 >
-                  <DeleteIcon
-                    onClick={eliminarEspacio.bind(id, row.idEspacio)}
-                  />
+                  <DeleteIcon onClick={() => eliminarEspacio(row.idEspacio)} />
                 </IconButton>
-                <VentanaModal />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <VentanaModal
+        abrirModal={abrirModal}
+        setAbrirModal={setAbrirModal}
+        espacios={espacios}
+        setEspacios={setEspacios}
+        idEspacio={idEspacioAEliminar}
+      />
     </TableContainer>
   );
 }
