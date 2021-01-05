@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,6 +10,8 @@ import Paper from '@material-ui/core/Paper';
 import CreateIcon from '@material-ui/icons/Create';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import VentanaModal from './VentanaModal';
 
 const useStyles = makeStyles({
   table: {
@@ -32,20 +34,31 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(name, calories, fat, carbs, protein, aforo) {
-  return { name, calories, fat, carbs, protein, aforo };
+function createData(nombre, edificio, piso, estado, idEspacio) {
+  return { nombre, edificio, piso, estado, idEspacio };
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 10),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 5),
-  createData('Eclair', 262, 16.0, 24, 6.0, 8),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 20),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 23),
-];
+const rows = {
+  items: [
+    createData('Frozen yoghurt', 159, 6.0, 'activo', 0),
+    createData('Ice cream sandwich', 237, 9.0, 'inactivo', 1),
+    createData('Eclair', 262, 16.0, 'activo', 2),
+    createData('Cupcake', 305, 3.7, 'inactivo', 3),
+    createData('Gingerbread', 356, 16.0, 'inactivo', 4),
+  ],
+};
 
 export default function DenseTable() {
+  const [espacios, setEspacios] = useState(rows);
   const classes = useStyles();
+  const eliminarEspacio = (id, idEspacio) => {
+    console.log(idEspacio);
+    const items = espacios.items;
+    items.splice(idEspacio, 1);
+    setEspacios({ items });
+    console.log(espacios.items);
+    console.log(items);
+  };
 
   return (
     <TableContainer component={Paper} className={classes.container}>
@@ -53,25 +66,34 @@ export default function DenseTable() {
         <TableHead>
           <TableRow>
             <TableCell align="left">Nombre</TableCell>
-            <TableCell align="left">Espacio</TableCell>
-            <TableCell align="left">Responsable</TableCell>
-            <TableCell align="left">Fecha/hora inicio</TableCell>
-            <TableCell align="left">Fecha/hora final</TableCell>
-            <TableCell align="left">Aforo</TableCell>
+            <TableCell align="left">Edificio</TableCell>
+            <TableCell align="left">Piso</TableCell>
+            <TableCell align="left">Estado</TableCell>
             <TableCell align="left"> </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
+          {espacios.items.map((row, id) => (
+            <TableRow key={row.nombre}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.nombre}
               </TableCell>
-              <TableCell align="left">{row.calories}</TableCell>
-              <TableCell align="left">{row.fat}</TableCell>
-              <TableCell align="left">{row.carbs}</TableCell>
-              <TableCell align="left">{row.protein}</TableCell>
-              <TableCell align="left">{row.aforo}</TableCell>
+              <TableCell align="left">{row.edificio}</TableCell>
+              <TableCell align="left">{row.piso}</TableCell>
+              <TableCell align="left">
+                {row.estado === 'inactivo' && (
+                  <FiberManualRecordIcon
+                    style={{ color: 'red' }}
+                    className={classes.tamañoBoton}
+                  />
+                )}
+                {row.estado === 'activo' && (
+                  <FiberManualRecordIcon
+                    style={{ color: 'green' }}
+                    className={classes.tamañoBoton}
+                  />
+                )}
+              </TableCell>
               <TableCell align="left">
                 <IconButton
                   edge="end"
@@ -87,8 +109,11 @@ export default function DenseTable() {
                   color="inherit"
                   aria-label="menu"
                 >
-                  <DeleteIcon />
+                  <DeleteIcon
+                    onClick={eliminarEspacio.bind(id, row.idEspacio)}
+                  />
                 </IconButton>
+                <VentanaModal />
               </TableCell>
             </TableRow>
           ))}

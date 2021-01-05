@@ -35,13 +35,13 @@ const useStyles = makeStyles((theme) => ({
     height: '100px',
   },
   tamañoImagen: {
-    width: '85px',
-    height: '90px',
+    width: '60px',
+    height: '56px',
   },
   tamañoUnahur: {
-    width: '200px',
+    width: '180px',
     height: '45px',
-    marginTop: '35px',
+    marginTop: '1px',
   },
 }));
 
