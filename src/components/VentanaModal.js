@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import { blue } from '@material-ui/core/colors';
+import axios from 'axios';
 
 export default function VentanaModal(props) {
   const { abrirModal, setAbrirModal, espacios, setEspacios, idEspacio } = props;
@@ -15,8 +14,15 @@ export default function VentanaModal(props) {
   };
 
   const eliminarEspacio = () => {
-    const items = espacios.items.filter((item) => idEspacio !== item.idEspacio);
-    setEspacios({ items });
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/espacios/${idEspacio}`)
+      .then((res) => {
+        const items = espacios.filter((espacio) => idEspacio !== espacio.id);
+        setEspacios(items);
+      })
+      .catch((err) => {
+        console.log('No se pudo hacer el delete: ' + err);
+      });
     cerrarModal();
   };
 
@@ -46,7 +52,7 @@ export default function VentanaModal(props) {
 VentanaModal.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
-  espacios: PropTypes.object,
+  espacios: PropTypes.array,
   setEspacios: PropTypes.func,
   idEspacio: PropTypes.number,
 };
