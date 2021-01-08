@@ -1,20 +1,34 @@
 import { Box, Container } from '@material-ui/core';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+
+import AltaActividad from './components/actividades/AltaActividad';
 import Header from './components/Header';
+import Home from './components/Home';
+import ListadoActividades from './components/actividades/ListadoActividades';
+import ModificacionActividad from './components/actividades/ModificacionActividad';
 import PantallaEspacios from './components/PantallaEspacios';
 
 export default function App() {
   return (
-    <Container maxWidth="sm">
+    <Container>
       <Header />
       <Box my={4}>
         <Router>
           <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
             <Route path="/espacios">
               <PantallaEspacios />
             </Route>
-            <Route path="/">
-              <PantallaEspacios />
+            <Route exact path="/actividades">
+              <ListadoActividades />
+            </Route>
+            <Route path="/actividades/alta">
+              <AltaActividad />
+            </Route>
+            <Route path="/actividades/modificacion">
+              <ModificacionActividad />
             </Route>
           </Switch>
         </Router>
