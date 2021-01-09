@@ -1,10 +1,12 @@
 import { selector, selectorFamily } from 'recoil';
 
+import axios from 'axios';
+
 const apiUrl = process.env.REACT_APP_API_URL;
 
 async function getJsonFromApi(path) {
-  const response = await fetch(`${apiUrl}/${path}`);
-  return response.json();
+  const response = await axios.get(`${apiUrl}/${path}`);
+  return response.data;
 }
 
 export const todosLosEspacios = selector({

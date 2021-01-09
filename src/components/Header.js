@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Toolbar from '@material-ui/core/Toolbar';
 import Zoom from '@material-ui/core/Zoom';
 import logoCovid from '../assets/logoCovid.png';
+import { makeStyles } from '@material-ui/core/styles';
 import unahur from '../assets/unahur.png';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,18 +81,6 @@ export default function Header(props) {
         <Toolbar className={classes.headercolor}>
           <img src={logoCovid} className={classes.tamañoImagen} alt="" />
           <img src={unahur} className={classes.tamañoUnahur} alt="" />
-          {/* <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            News
-          </Typography>
-          <Button color="inherit">Login</Button> */}
         </Toolbar>
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
