@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+
+import { Container } from '@material-ui/core';
+import CreateIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import CreateIcon from '@material-ui/icons/Create';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import VentanaModal from './VentanaModal';
-import { Container } from '@material-ui/core';
-import { useRecoilValue } from 'recoil';
+import { makeStyles } from '@material-ui/core/styles';
 import { todosLosEspacios } from '../state/espacios';
+import { useRecoilValue } from 'recoil';
 
 export default function PantallaEspacios() {
   const useStyles = makeStyles({
@@ -38,7 +39,7 @@ export default function PantallaEspacios() {
 
   const [espacios, setEspacios] = useState(listaEspacios);
   const [abrirModal, setAbrirModal] = useState(false);
-  const [idEspacioAEliminar, setIdEspacioAEliminar] = useState('');
+  const [idEspacioAEliminar, setIdEspacioAEliminar] = useState();
 
   const eliminarEspacio = (idEspacio) => {
     setIdEspacioAEliminar(idEspacio);
