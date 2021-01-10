@@ -1,20 +1,12 @@
 import { selector, selectorFamily } from 'recoil';
-
-import axios from 'axios';
-
-const apiUrl = process.env.REACT_APP_API_URL;
-
-async function getJsonFromApi(path) {
-  const response = await axios.get(`${apiUrl}/${path}`);
-  return response.data;
-}
+import { getData } from '../helpers/fetchApi';
 
 export const todosLosEspacios = selector({
   key: 'todosLosEspacios',
-  get: async () => (await getJsonFromApi('espacios')).data,
+  get: async () => (await getData('espacios')).data,
 });
 
 export const espacioPorId = selectorFamily({
   key: 'espacioPorId',
-  get: (id) => async () => await getJsonFromApi(`espacios/${id}`),
+  get: (id) => async () => await getData(`espacios/${id}`),
 });

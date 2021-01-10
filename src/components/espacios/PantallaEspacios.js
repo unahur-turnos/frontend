@@ -12,9 +12,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import VentanaModal from './VentanaModal';
+import VentanaModal from '../ui/VentanaModal';
 import { makeStyles } from '@material-ui/core/styles';
-import { todosLosEspacios } from '../state/espacios';
+import { todosLosEspacios } from '../../state/espacios';
 import { useRecoilValue } from 'recoil';
 
 export default function PantallaEspacios() {
@@ -33,6 +33,7 @@ export default function PantallaEspacios() {
       marginLeft: '15px',
     },
   });
+
   const classes = useStyles();
 
   const listaEspacios = useRecoilValue(todosLosEspacios);

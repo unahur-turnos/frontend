@@ -14,9 +14,10 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
-import React from 'react';
-import { getActividades } from '../../state/actividades';
+import { useState } from 'react';
+import { todasLasActividades } from '../../state/actividades';
 import { makeStyles } from '@material-ui/core/styles';
+import { useRecoilValue } from 'recoil';
 
 export default function ListadoActividades() {
   const useStyles = makeStyles({
@@ -33,8 +34,8 @@ export default function ListadoActividades() {
 
   const classes = useStyles();
 
-  const actividades = getActividades();
-
+  const listaActividades = useRecoilValue(todasLasActividades);
+  const [actividades, setActividades] = useState(listaActividades);
   return (
     <>
       <Box mt={8}>
