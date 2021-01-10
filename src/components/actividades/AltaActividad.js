@@ -13,7 +13,60 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import { create } from '../../helpers/fetchApi';
+import { todosLosEspacios } from '../../state/espacios';
+import { useRecoilValue } from 'recoil';
+import { useState } from 'react';
+
 export default function AltaActividad() {
+  const [actividad, setActividad] = useState({
+    espacioId: null,
+    nombre: '',
+    fechaHoraInicio: null,
+    fechaHoraFin: null,
+    responsable: '',
+    dniResponsable: null,
+    tipoResponsable: '',
+    estado: false,
+    requiereControl: false,
+  });
+
+  const {
+    espacioId,
+    nombre,
+    fechaHoraInicio,
+    fechaHoraFin,
+    responsable,
+    dniResponsable,
+    tipoResponsable,
+    estado,
+    requiereControl,
+  } = actividad;
+
+  const handleChange = (e) => {
+    setActividad({
+      ...actividad,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const crearActividad = (e) => {
+    e.preventDefault();
+    create('actividades', {
+      espacioId: espacioId,
+      nombre: nombre,
+      fechaHoraInicio: fechaHoraInicio,
+      fechaHoraFin: fechaHoraFin,
+      responsable: responsable,
+      dniResponsable: dniResponsable,
+      tipoResponsable: 'Docente',
+      estado: true,
+      requiereControl: false,
+    });
+  };
+
+  const espacios = useRecoilValue(todosLosEspacios);
+
   return (
     <>
       <Box mt={8}>
@@ -36,6 +89,9 @@ export default function AltaActividad() {
             id="nombre"
             label="Ingrese nombre"
             style={{ minWidth: 250 }}
+            name="nombre"
+            value={nombre}
+            onChange={handleChange}
           />
         </Grid>
 
@@ -66,13 +122,18 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <FormControl style={{ minWidth: 250 }}>
-            <InputLabel id="demo-simple-select-label">
-              Elija un espacio
-            </InputLabel>
-            <Select labelId="demo-simple-select-label" id="demo-simple-select">
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+            <InputLabel id="labelEspacios">Elija un espacio</InputLabel>
+            <Select
+              labelId="labelEspacios"
+              name="espacioId"
+              value={espacioId}
+              onChange={handleChange}
+            >
+              {espacios.map((espacio) => {
+                <MenuItem key={espacio.id} value={espacio.id}>
+                  {espacio.nombre}
+                </MenuItem>;
+              })}
             </Select>
           </FormControl>
         </Grid>
@@ -84,7 +145,9 @@ export default function AltaActividad() {
           <TextField
             id="fecha-inicio"
             type="datetime-local"
-            defaultValue="2017-05-24T10:30"
+            name="fechaHoraInicio"
+            value={fechaHoraInicio}
+            onChange={handleChange}
           />
         </Grid>
 
@@ -95,7 +158,9 @@ export default function AltaActividad() {
           <TextField
             id="fecha-cierre"
             type="datetime-local"
-            defaultValue="2017-05-24T10:30"
+            name="fechaHoraFin"
+            value={fechaHoraFin}
+            onChange={handleChange}
           />
         </Grid>
 
@@ -106,9 +171,12 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <TextField
-            id="nombreResponsable"
+            id="responsable"
             label="Ingrese el nombre del responsable"
             style={{ minWidth: 250 }}
+            name="responsable"
+            value={responsable}
+            onChange={handleChange}
           />
         </Grid>
 
@@ -117,9 +185,12 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <TextField
-            id="nombre"
+            id="dniResponsable"
             label="Ingrese DNI del responsable"
             style={{ minWidth: 250 }}
+            name="dniResponsable"
+            value={dniResponsable}
+            onChange={handleChange}
           />
         </Grid>
 
@@ -198,7 +269,7 @@ export default function AltaActividad() {
         </Grid>
 
         <Grid item xs={12} align="center">
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={crearActividad}>
             Guardar
           </Button>
         </Grid>

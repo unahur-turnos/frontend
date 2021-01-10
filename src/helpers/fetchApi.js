@@ -15,7 +15,7 @@ export const getData = async (route) => {
 
 export const create = async (route, data) => {
   try {
-    const response = await instance.post(route, { data });
+    const response = await instance.post(route, data);
     return response.data;
   } catch (error) {
     console.log(`Error al dar de alta: ${error}`);
