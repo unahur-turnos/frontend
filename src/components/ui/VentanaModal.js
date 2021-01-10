@@ -43,7 +43,9 @@ export default function VentanaModal(props) {
         {'¿Está seguro que desea borrar?'}
       </DialogTitle>
       <DialogActions>
-        <Button onClick={() => cerrarModal()}>Cancelar</Button>
+        <Button variant="contained" onClick={() => cerrarModal()}>
+          Cancelar
+        </Button>
         <Button
           variant="contained"
           color="secondary"
