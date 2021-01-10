@@ -16,6 +16,8 @@ import VentanaModal from './VentanaModal';
 import { makeStyles } from '@material-ui/core/styles';
 import { todosLosEspacios } from '../state/espacios';
 import { useRecoilValue } from 'recoil';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { Link } from 'react-router-dom';
 
 export default function PantallaEspacios() {
   const useStyles = makeStyles({
@@ -35,7 +37,27 @@ export default function PantallaEspacios() {
   });
   const classes = useStyles();
 
-  const listaEspacios = useRecoilValue(todosLosEspacios);
+  //const listaEspacios = useRecoilValue(todosLosEspacios);
+  const listaEspacios = [
+    {
+      id: '123',
+      nombre: 'Patio',
+      Edificio: {
+        nombre: 'Malvinas',
+      },
+      piso: 1,
+      habilitado: true,
+    },
+    {
+      id: '123',
+      nombre: 'Patio',
+      Edificio: {
+        nombre: 'Malvinas',
+      },
+      piso: 1,
+      habilitado: true,
+    },
+  ];
 
   const [espacios, setEspacios] = useState(listaEspacios);
   const [abrirModal, setAbrirModal] = useState(false);
@@ -92,6 +114,8 @@ export default function PantallaEspacios() {
                     className={classes.tamañoBoton}
                     color="inherit"
                     aria-label="menu"
+                    component={Link}
+                    to={`/espacios/:${espacio.id}`}
                   >
                     <CreateIcon />
                   </IconButton>
@@ -116,6 +140,16 @@ export default function PantallaEspacios() {
           idEspacio={idEspacioAEliminar}
         />
       </TableContainer>
+      <IconButton
+        float="right"
+        className={classes.tamañoBoton}
+        color="inherit"
+        aria-label="menu"
+        component={Link}
+        to={`/espacios/nuevo`}
+      >
+        <AddCircleOutlineIcon />
+      </IconButton>
     </Container>
   );
 }
