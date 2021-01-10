@@ -9,7 +9,7 @@ export const getData = async (route) => {
     const response = await instance.get(route);
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.log(`Error al obtener los datos: ${error}`);
   }
 };
 

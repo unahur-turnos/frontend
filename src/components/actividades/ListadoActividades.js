@@ -14,10 +14,11 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { todasLasActividades } from '../../state/actividades';
+import VentanaModal from '../ui/VentanaModal';
 import { makeStyles } from '@material-ui/core/styles';
+import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
+import { useState } from 'react';
 
 export default function ListadoActividades() {
   const useStyles = makeStyles({
@@ -36,6 +37,15 @@ export default function ListadoActividades() {
 
   const listaActividades = useRecoilValue(todasLasActividades);
   const [actividades, setActividades] = useState(listaActividades);
+
+  const [abrirModal, setAbrirModal] = useState(false);
+  const [idActividadAEliminar, setIdActividadAEliminar] = useState();
+
+  const eliminarActividad = (idActividad) => {
+    setIdActividadAEliminar(idActividad);
+    setAbrirModal(true);
+  };
+
   return (
     <>
       <Box mt={8}>
@@ -43,7 +53,6 @@ export default function ListadoActividades() {
           Actividades
         </Typography>
       </Box>
-
       <Box mt={2}>
         <TableContainer>
           <Table size="medium">
@@ -54,7 +63,6 @@ export default function ListadoActividades() {
                 <TableCell>Responsable</TableCell>
                 <TableCell>Fecha/Hora Inicio</TableCell>
                 <TableCell>Fecha/Hora Fin</TableCell>
-                <TableCell>Aforo</TableCell>
                 <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
@@ -62,13 +70,10 @@ export default function ListadoActividades() {
               {actividades.map((actividad) => (
                 <TableRow key={actividad.id}>
                   <TableCell>{actividad.nombre}</TableCell>
-                  <TableCell>{actividad.espacio}</TableCell>
+                  <TableCell>{actividad.Espacio.nombre}</TableCell>
                   <TableCell>{actividad.responsable}</TableCell>
-                  <TableCell>
-                    {actividad.fechaInicio.toLocaleString()}
-                  </TableCell>
-                  <TableCell>{actividad.fechaFin.toLocaleString()}</TableCell>
-                  <TableCell>{actividad.aforo}</TableCell>
+                  <TableCell>{actividad.fechaHoraInicio}</TableCell>
+                  <TableCell>{actividad.fechaHoraFin}</TableCell>
                   <TableCell>
                     <IconButton
                       className={classes.icon}
@@ -79,7 +84,9 @@ export default function ListadoActividades() {
                       <EditIcon />
                     </IconButton>
                     <IconButton className={classes.icon} aria-label="delete">
-                      <DeleteIcon />
+                      <DeleteIcon
+                        onClick={() => eliminarActividad(actividad.id)}
+                      />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -88,7 +95,6 @@ export default function ListadoActividades() {
           </Table>
         </TableContainer>
       </Box>
-
       <Box className={classes.add} mt={2}>
         <Typography
           color="primary"
@@ -101,6 +107,14 @@ export default function ListadoActividades() {
         </Typography>
         <AddCircleIcon color="primary" />
       </Box>
+      <VentanaModal
+        abrirModal={abrirModal}
+        setAbrirModal={setAbrirModal}
+        ruta={'actividades'}
+        entidades={actividades}
+        setEntidades={setActividades}
+        idEntidadAEliminar={idActividadAEliminar}
+      />
     </>
   );
 }

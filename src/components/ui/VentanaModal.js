@@ -7,17 +7,26 @@ import React from 'react';
 import { deleteById } from '../../helpers/fetchApi';
 
 export default function VentanaModal(props) {
-  const { abrirModal, setAbrirModal, espacios, setEspacios, idEspacio } = props;
+  const {
+    abrirModal,
+    setAbrirModal,
+    ruta,
+    entidades,
+    setEntidades,
+    idEntidadAEliminar,
+  } = props;
 
   const cerrarModal = () => {
     setAbrirModal(false);
   };
 
-  const eliminarEspacio = () => {
-    deleteById('espacios', idEspacio)
+  const eliminar = () => {
+    deleteById(ruta, idEntidadAEliminar)
       .then(() => {
-        const items = espacios.filter((espacio) => idEspacio !== espacio.id);
-        setEspacios(items);
+        const items = entidades.filter(
+          (entidad) => idEntidadAEliminar !== entidad.id
+        );
+        setEntidades(items);
       })
       .catch((error) => console.log(error));
 
@@ -38,7 +47,7 @@ export default function VentanaModal(props) {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => eliminarEspacio()}
+          onClick={() => eliminar()}
         >
           Borrar
         </Button>
@@ -50,7 +59,8 @@ export default function VentanaModal(props) {
 VentanaModal.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
-  espacios: PropTypes.array,
-  setEspacios: PropTypes.func,
-  idEspacio: PropTypes.number,
+  ruta: PropTypes.string,
+  entidades: PropTypes.array,
+  setEntidades: PropTypes.func,
+  idEntidadAEliminar: PropTypes.number,
 };
