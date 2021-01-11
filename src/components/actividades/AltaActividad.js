@@ -100,16 +100,25 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <FormControl>
-            <RadioGroup row>
+            <RadioGroup
+              row
+              aria-label="paraQuienVaDirigido"
+              name="paraQuienVaDirigido"
+              value={true}
+              onChange={handleChange}
+            >
               <FormControlLabel
+                value={'Estudiantes'}
                 control={<Radio color="primary" />}
                 label="Estudiantes"
               />
               <FormControlLabel
+                value={'Invitados'}
                 control={<Radio color="primary" />}
                 label="Invitados"
               />
               <FormControlLabel
+                value={'Ambos'}
                 control={<Radio color="primary" />}
                 label="Ambos"
               />
@@ -129,11 +138,11 @@ export default function AltaActividad() {
               value={espacioId}
               onChange={handleChange}
             >
-              {espacios.map((espacio) => {
-                <MenuItem key={espacio.id} value={espacio.id}>
+              {espacios.map((espacio) => (
+                <MenuItem value={[espacio.id][0]} key={espacio.id}>
                   {espacio.nombre}
-                </MenuItem>;
-              })}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Grid>
@@ -199,16 +208,25 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <FormControl>
-            <RadioGroup row>
+            <RadioGroup
+              row
+              aria-label="tipoResponsable"
+              name="tipoResponsable"
+              value={tipoResponsable}
+              onChange={handleChange}
+            >
               <FormControlLabel
+                value={'Docente'}
                 control={<Radio color="primary" />}
                 label="Docente"
               />
               <FormControlLabel
+                value={'Invitado'}
                 control={<Radio color="primary" />}
                 label="Invitado"
               />
               <FormControlLabel
+                value={'No docente'}
                 control={<Radio color="primary" />}
                 label="No docente"
               />
@@ -225,9 +243,7 @@ export default function AltaActividad() {
               Elija el destino de la actividad
             </InputLabel>
             <Select labelId="demo-simple-select-label" id="demo-simple-select">
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {}
             </Select>
           </FormControl>
         </Grid>
@@ -237,12 +253,20 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <FormControl>
-            <RadioGroup row>
+            <RadioGroup
+              row
+              aria-label="estado"
+              name="estado"
+              value={estado}
+              onChange={handleChange}
+            >
               <FormControlLabel
+                value={'true'}
                 control={<Radio color="primary" />}
                 label="Activo"
               />
               <FormControlLabel
+                value={'false'}
                 control={<Radio color="primary" />}
                 label="Inactivo"
               />
@@ -254,18 +278,24 @@ export default function AltaActividad() {
           <Typography variant="h6">Tipo de turno:</Typography>
         </Grid>
         <Grid item xs={6}>
-          <FormControl>
-            <RadioGroup row>
-              <FormControlLabel
-                control={<Radio color="primary" />}
-                label="Automatico"
-              />
-              <FormControlLabel
-                control={<Radio color="primary" />}
-                label="A confirmar"
-              />
-            </RadioGroup>
-          </FormControl>
+          <RadioGroup
+            row
+            aria-label="requiereControl"
+            name="requiereControl"
+            value={requiereControl}
+            onChange={handleChange}
+          >
+            <FormControlLabel
+              value={'true'}
+              control={<Radio color="primary" />}
+              label="Automatico"
+            />
+            <FormControlLabel
+              value={'false'}
+              control={<Radio color="primary" />}
+              label="A confirmar"
+            />
+          </RadioGroup>
         </Grid>
 
         <Grid item xs={12} align="center">
