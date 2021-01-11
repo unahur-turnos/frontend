@@ -15,6 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
 import VentanaModal from '../ui/VentanaModal';
+import { formatearFecha } from '../../utils/dateUtils';
 import { makeStyles } from '@material-ui/core/styles';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
@@ -72,8 +73,12 @@ export default function ListadoActividades() {
                   <TableCell>{actividad.nombre}</TableCell>
                   <TableCell>{actividad.Espacio.nombre}</TableCell>
                   <TableCell>{actividad.responsable}</TableCell>
-                  <TableCell>{actividad.fechaHoraInicio}</TableCell>
-                  <TableCell>{actividad.fechaHoraFin}</TableCell>
+                  <TableCell>
+                    {formatearFecha(actividad.fechaHoraInicio)}
+                  </TableCell>
+                  <TableCell>
+                    {formatearFecha(actividad.fechaHoraFin)}
+                  </TableCell>
                   <TableCell>
                     <IconButton
                       className={classes.icon}

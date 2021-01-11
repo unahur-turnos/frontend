@@ -53,15 +53,7 @@ export default function AltaActividad() {
   const crearActividad = (e) => {
     e.preventDefault();
     create('actividades', {
-      espacioId: espacioId,
-      nombre: nombre,
-      fechaHoraInicio: fechaHoraInicio,
-      fechaHoraFin: fechaHoraFin,
-      responsable: responsable,
-      dniResponsable: dniResponsable,
-      tipoResponsable: 'Docente',
-      estado: true,
-      requiereControl: false,
+      ...actividad,
     });
   };
 
@@ -86,7 +78,6 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <TextField
-            id="nombre"
             label="Ingrese nombre"
             style={{ minWidth: 250 }}
             name="nombre"
@@ -95,7 +86,7 @@ export default function AltaActividad() {
           />
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={6} component={Box} align="right" alignSelf="center">
           <Typography variant="h6">Para quién va dirigido:</Typography>
         </Grid>
         <Grid item xs={6}>
@@ -152,7 +143,6 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <TextField
-            id="fecha-inicio"
             type="datetime-local"
             name="fechaHoraInicio"
             value={fechaHoraInicio}
@@ -165,7 +155,6 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <TextField
-            id="fecha-cierre"
             type="datetime-local"
             name="fechaHoraFin"
             value={fechaHoraFin}
@@ -180,7 +169,6 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <TextField
-            id="responsable"
             label="Ingrese el nombre del responsable"
             style={{ minWidth: 250 }}
             name="responsable"
@@ -194,7 +182,6 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <TextField
-            id="dniResponsable"
             label="Ingrese DNI del responsable"
             style={{ minWidth: 250 }}
             name="dniResponsable"
@@ -203,7 +190,7 @@ export default function AltaActividad() {
           />
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={6} component={Box} align="right" alignSelf="center">
           <Typography variant="h6">En calidad de:</Typography>
         </Grid>
         <Grid item xs={6}>
@@ -239,16 +226,14 @@ export default function AltaActividad() {
         </Grid>
         <Grid item xs={6}>
           <FormControl style={{ minWidth: 250 }}>
-            <InputLabel id="demo-simple-select-label">
+            <InputLabel id="labelDestino">
               Elija el destino de la actividad
             </InputLabel>
-            <Select labelId="demo-simple-select-label" id="demo-simple-select">
-              {}
-            </Select>
+            <Select labelId="labelDestino">{}</Select>
           </FormControl>
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={6} component={Box} align="right" alignSelf="center">
           <Typography variant="h6">Estado:</Typography>
         </Grid>
         <Grid item xs={6}>
@@ -274,7 +259,7 @@ export default function AltaActividad() {
           </FormControl>
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={6} component={Box} align="right" alignSelf="center">
           <Typography variant="h6">Tipo de turno:</Typography>
         </Grid>
         <Grid item xs={6}>
