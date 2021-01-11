@@ -20,44 +20,9 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Link } from 'react-router-dom';
 
 export default function PantallaEspacios() {
-  const useStyles = makeStyles({
-    container: {
-      marginTop: '15%',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    tableContainer: {
-      minWidth: 900,
-    },
-    tamañoBoton: {
-      width: '30px',
-      height: '30px',
-      marginLeft: '15px',
-    },
-  });
   const classes = useStyles();
 
-  //const listaEspacios = useRecoilValue(todosLosEspacios);
-  const listaEspacios = [
-    {
-      id: '123',
-      nombre: 'Patio',
-      Edificio: {
-        nombre: 'Malvinas',
-      },
-      piso: 1,
-      habilitado: true,
-    },
-    {
-      id: '123',
-      nombre: 'Patio',
-      Edificio: {
-        nombre: 'Malvinas',
-      },
-      piso: 1,
-      habilitado: true,
-    },
-  ];
+  const listaEspacios = useRecoilValue(todosLosEspacios);
 
   const [espacios, setEspacios] = useState(listaEspacios);
   const [abrirModal, setAbrirModal] = useState(false);
@@ -87,8 +52,8 @@ export default function PantallaEspacios() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {espacios.map((espacio) => (
-              <TableRow key={espacio.id}>
+            {espacios.map((espacio, id) => (
+              <TableRow key={id}>
                 <TableCell component="th" scope="row">
                   {espacio.nombre}
                 </TableCell>
@@ -115,7 +80,7 @@ export default function PantallaEspacios() {
                     color="inherit"
                     aria-label="menu"
                     component={Link}
-                    to={`/espacios/:${espacio.id}`}
+                    to={`/espacios/${espacio.id}`}
                   >
                     <CreateIcon />
                   </IconButton>
@@ -141,7 +106,6 @@ export default function PantallaEspacios() {
         />
       </TableContainer>
       <IconButton
-        float="right"
         className={classes.tamañoBoton}
         color="inherit"
         aria-label="menu"
@@ -153,3 +117,19 @@ export default function PantallaEspacios() {
     </Container>
   );
 }
+
+const useStyles = makeStyles({
+  container: {
+    marginTop: '15%',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  tableContainer: {
+    minWidth: 900,
+  },
+  tamañoBoton: {
+    width: '30px',
+    height: '30px',
+    marginLeft: '15px',
+  },
+});

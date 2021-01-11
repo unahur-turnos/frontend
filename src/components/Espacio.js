@@ -15,14 +15,25 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { espacioPorId } from '../state/espacios';
+import { useRecoilValue } from 'recoil';
 
 export default function Espacio(props) {
   const { id } = useParams();
   const { titulo } = props;
-  const [estadoEspacio, setEstadoEspacio] = useState('true');
+  const espacioDB = useRecoilValue(espacioPorId(id)).data;
 
-  const handleChange = (event) => {
-    setEstadoEspacio(event.target.value);
+  const [espacio, setEspacio] = useState(espacioDB);
+
+  const handleChange = (e) => {
+    setEspacio({
+      ...espacio,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const saveData = () => {
+    console.log(espacio);
   };
 
   return (
@@ -49,7 +60,10 @@ export default function Espacio(props) {
               <TextField
                 id="nombre"
                 label="Ingrese nombre"
+                name="nombre"
                 style={{ minWidth: 250 }}
+                onChange={handleChange}
+                defaultValue={espacio.nombre}
               />
             </Grid>
 
@@ -59,10 +73,16 @@ export default function Espacio(props) {
             <Grid item xs={6}>
               <FormControl style={{ minWidth: 250 }}>
                 <InputLabel id="idEdificio">Elija un edificio</InputLabel>
-                <Select labelId="labelIdEdificio" id="selectIDEdificio">
-                  <MenuItem value={10}>Malvinas</MenuItem>
-                  <MenuItem value={20}>Origone A</MenuItem>
-                  <MenuItem value={30}>Origone B</MenuItem>
+                <Select
+                  labelId="labelIdEdificio"
+                  id="selectIDEdificio"
+                  defaultValue={espacio.Edificio.edificioId}
+                  name="Edificio.nombre"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={'1'}>Malvinas Argentinas</MenuItem>
+                  <MenuItem value={'2'}>Origone A</MenuItem>
+                  <MenuItem value={'3'}>Origone B</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -73,12 +93,32 @@ export default function Espacio(props) {
             <Grid item xs={6}>
               <FormControl style={{ minWidth: 250 }}>
                 <InputLabel id="idPiso">Elija un piso</InputLabel>
-                <Select labelId="labelIdPiso" id="inputIDPiso">
-                  <MenuItem value={10}>0</MenuItem>
-                  <MenuItem value={20}>1</MenuItem>
-                  <MenuItem value={30}>2</MenuItem>
+                <Select
+                  labelId="labelIdPiso"
+                  id="inputIDPiso"
+                  defaultValue={espacio.piso}
+                  name="piso"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={'0'}>0</MenuItem>
+                  <MenuItem value={'1'}>1</MenuItem>
+                  <MenuItem value={'2'}>2</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Typography variant="h6">Aforo:</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="aforo"
+                label="Ingrese el aforo"
+                style={{ minWidth: 250 }}
+                defaultValue={espacio.aforo}
+                name="aforo"
+                onChange={handleChange}
+              />
             </Grid>
 
             <Grid item xs={6}>
@@ -89,10 +129,11 @@ export default function Espacio(props) {
                 <RadioGroup
                   row
                   aria-label="estado"
-                  name="estadoEspacio"
-                  value={estadoEspacio}
+                  name="habilitado"
+                  value={espacio.habilitado.toString()}
                   onChange={handleChange}
                 >
+                  {/*Si llega de la bd no*/}
                   <FormControlLabel
                     value={'true'}
                     control={<Radio color="primary" />}
@@ -110,7 +151,7 @@ export default function Espacio(props) {
         </Box>
 
         <Box mt={5}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={saveData}>
             Guardar
           </Button>
           <Button component={Link} to="/espacios">

@@ -4,7 +4,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { eliminarPorId } from '../api/metodosApi';
+import { deleteById } from '../helpers/fetchApi';
 
 export default function VentanaModal(props) {
   const { abrirModal, setAbrirModal, espacios, setEspacios, idEspacio } = props;
@@ -14,7 +14,7 @@ export default function VentanaModal(props) {
   };
 
   const eliminarEspacio = () => {
-    eliminarPorId('espacios', idEspacio)
+    deleteById('espacios', idEspacio)
       .then(() => {
         const items = espacios.filter((espacio) => idEspacio !== espacio.id);
         setEspacios(items);
