@@ -9,20 +9,5 @@ export const todosLosEspacios = selector({
 
 export const espacioPorId = selectorFamily({
   key: 'espacioPorId',
-  get: (id) => async () =>
-    id !== undefined
-      ? await getData(`espacios/${id}`)
-      : {
-          data: {
-            espacioId: null,
-            nombre: '',
-            fechaHoraInicio: null,
-            fechaHoraFin: null,
-            responsable: '',
-            dniResponsable: null,
-            tipoResponsable: '',
-            estado: false,
-            requiereControl: false,
-          },
-        },
+  get: (id) => async () => await getData(`espacios/${id}`),
 });

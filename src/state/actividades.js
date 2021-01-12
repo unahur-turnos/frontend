@@ -1,4 +1,5 @@
 import { selector, selectorFamily } from 'recoil';
+
 import { getData } from '../helpers/fetchApi';
 
 export const todasLasActividades = selector({
@@ -8,5 +9,20 @@ export const todasLasActividades = selector({
 
 export const actividadPorId = selectorFamily({
   key: 'actividadPorId',
-  get: (id) => async () => await getData(`actividades/${id}`),
+  get: (id) => async () =>
+    id !== undefined
+      ? await getData(`actividades/${id}`)
+      : {
+          data: {
+            espacioId: null,
+            nombre: '',
+            fechaHoraInicio: null,
+            fechaHoraFin: null,
+            responsable: '',
+            dniResponsable: null,
+            tipoResponsable: '',
+            estado: false,
+            requiereControl: false,
+          },
+        },
 });
