@@ -24,10 +24,10 @@ export default function App() {
               <ListadoActividades />
             </Route>
             <Route path="/actividades/nueva">
-              <AltaActividad />
+              <AltaActividad titulo={'Carga de actividades'} />
             </Route>
             <Route path="/actividades/:id">
-              <AltaActividad />
+              <AltaActividad titulo={'Editar actividad'} />
             </Route>
           </Switch>
         </Router>

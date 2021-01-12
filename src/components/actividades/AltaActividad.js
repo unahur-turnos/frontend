@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { create, update } from '../../helpers/fetchApi';
 
+import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
 import { toISO } from '../../utils/dateUtils';
 import { todosLosEspacios } from '../../state/espacios';
@@ -21,8 +22,9 @@ import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
-export default function AltaActividad() {
+export default function AltaActividad(props) {
   const { id } = useParams();
+  const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
 
   const [actividad, setActividad] = useState(actividadDB.data);
@@ -65,7 +67,7 @@ export default function AltaActividad() {
     <>
       <Box mt={8}>
         <Typography variant="h4" color="primary">
-          Carga de actividades
+          {titulo}
         </Typography>
       </Box>
 
@@ -244,16 +246,16 @@ export default function AltaActividad() {
               row
               aria-label="estado"
               name="estado"
-              value={estado}
+              value={estado.toString()}
               onChange={handleChange}
             >
               <FormControlLabel
-                value={true}
+                value={'true'}
                 control={<Radio color="primary" />}
                 label="Activo"
               />
               <FormControlLabel
-                value={false}
+                value={'false'}
                 control={<Radio color="primary" />}
                 label="Inactivo"
               />
@@ -269,16 +271,16 @@ export default function AltaActividad() {
             row
             aria-label="requiereControl"
             name="requiereControl"
-            value={requiereControl}
+            value={requiereControl.toString()}
             onChange={handleChange}
           >
             <FormControlLabel
-              value={true}
+              value={'true'}
               control={<Radio color="primary" />}
               label="Automatico"
             />
             <FormControlLabel
-              value={false}
+              value={'false'}
               control={<Radio color="primary" />}
               label="A confirmar"
             />
@@ -308,3 +310,7 @@ export default function AltaActividad() {
     </>
   );
 }
+
+AltaActividad.propTypes = {
+  titulo: PropTypes.string,
+};
