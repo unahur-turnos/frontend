@@ -12,14 +12,14 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
+import { create, update } from '../../helpers/fetchApi';
 
 import { actividadPorId } from '../../state/actividades';
-import { create, update } from '../../helpers/fetchApi';
+import { toISO } from '../../utils/dateUtils';
 import { todosLosEspacios } from '../../state/espacios';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { toDateString } from '../../utils/dateUtils';
 
 export default function AltaActividad() {
   const { id } = useParams();
@@ -147,7 +147,7 @@ export default function AltaActividad() {
           <TextField
             type="datetime-local"
             name="fechaHoraInicio"
-            value={toDateString(fechaHoraInicio)}
+            value={toISO(fechaHoraInicio)}
             onChange={handleChange}
           />
         </Grid>
@@ -159,7 +159,7 @@ export default function AltaActividad() {
           <TextField
             type="datetime-local"
             name="fechaHoraFin"
-            value={toDateString(fechaHoraFin)}
+            value={toISO(fechaHoraFin)}
             onChange={handleChange}
           />
         </Grid>
