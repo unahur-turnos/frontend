@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 
 import { actividadPorId } from '../../state/actividades';
-import { create } from '../../helpers/fetchApi';
+import { create, update } from '../../helpers/fetchApi';
 import { todosLosEspacios } from '../../state/espacios';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -47,6 +47,13 @@ export default function AltaActividad() {
   const crearActividad = (e) => {
     e.preventDefault();
     create('actividades', {
+      ...actividad,
+    });
+  };
+
+  const actualizarActividad = (e) => {
+    e.preventDefault();
+    update('actividades', id, {
       ...actividad,
     });
   };
@@ -240,12 +247,12 @@ export default function AltaActividad() {
               onChange={handleChange}
             >
               <FormControlLabel
-                value={'true'}
+                value={true}
                 control={<Radio color="primary" />}
                 label="Activo"
               />
               <FormControlLabel
-                value={'false'}
+                value={false}
                 control={<Radio color="primary" />}
                 label="Inactivo"
               />
@@ -265,12 +272,12 @@ export default function AltaActividad() {
             onChange={handleChange}
           >
             <FormControlLabel
-              value={'true'}
+              value={true}
               control={<Radio color="primary" />}
               label="Automatico"
             />
             <FormControlLabel
-              value={'false'}
+              value={false}
               control={<Radio color="primary" />}
               label="A confirmar"
             />
@@ -278,9 +285,23 @@ export default function AltaActividad() {
         </Grid>
 
         <Grid item xs={12} align="center">
-          <Button variant="contained" color="primary" onClick={crearActividad}>
-            Guardar
-          </Button>
+          {(!id && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={crearActividad}
+            >
+              Guardar
+            </Button>
+          )) || (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={actualizarActividad}
+            >
+              Actualizar
+            </Button>
+          )}
         </Grid>
       </Grid>
     </>

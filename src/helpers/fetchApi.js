@@ -22,6 +22,16 @@ export const create = async (route, data) => {
   }
 };
 
+export const update = async (route, id, data) => {
+  try {
+    console.log(`${route}/${id}`);
+    const response = await instance.put(`${route}/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.log(`Error al actualizar: ${error}`);
+  }
+};
+
 export const deleteById = async (route, id) => {
   try {
     const response = await instance.delete(`${route}/${id}`);
