@@ -33,12 +33,14 @@ export default function Espacio(props) {
       ...espacio,
       [e.target.name]: e.target.value,
     });
+    console.log(e.target.value);
+    console.log(e.target.name);
   };
 
   const saveData = () => {
     console.log(espacio);
     const data = {
-      edificioId: espacio.Edificio.id,
+      edificioId: espacio.edificioId,
       piso: espacio.piso,
       nombre: espacio.nombre,
       habilitado: espacio.habilitado,
@@ -92,7 +94,7 @@ export default function Espacio(props) {
                   labelId="labelIdEdificio"
                   id="selectIDEdificio"
                   defaultValue={espacio.Edificio.id}
-                  name="Edificio.nombre"
+                  name="edificioId"
                   onChange={handleChange}
                 >
                   {edificiosDB.map((edificio, key) => (

@@ -18,6 +18,7 @@ import { todosLosEspacios } from '../state/espacios';
 import { useRecoilValue } from 'recoil';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Link } from 'react-router-dom';
+import { Typography, Box } from '@material-ui/core';
 
 export default function PantallaEspacios() {
   const classes = useStyles();
@@ -34,77 +35,84 @@ export default function PantallaEspacios() {
   };
 
   return (
-    <Container className={classes.container}>
-      <TableContainer component={Paper} className={classes.tableContainer}>
-        <Table
-          className={classes.table}
-          size="medium"
-          aria-label="a dense table"
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell>Nombre</TableCell>
-              <TableCell>Edificio</TableCell>
-              <TableCell>Piso</TableCell>
-              <TableCell>Estado</TableCell>
-              <TableCell>Aforo</TableCell>
-              <TableCell> </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {espacios.map((espacio, id) => (
-              <TableRow key={id}>
-                <TableCell component="th" scope="row">
-                  {espacio.nombre}
-                </TableCell>
-                <TableCell>{espacio.Edificio.nombre}</TableCell>
-                <TableCell>{espacio.piso}</TableCell>
-                <TableCell>
-                  {espacio.habilitado ? (
-                    <FiberManualRecordIcon
-                      style={{ color: 'green' }}
-                      className={classes.tamañoBoton}
-                    />
-                  ) : (
-                    <FiberManualRecordIcon
-                      style={{ color: 'red' }}
-                      className={classes.tamañoBoton}
-                    />
-                  )}
-                </TableCell>
-                <TableCell>{espacio.aforo}</TableCell>
-                <TableCell>
-                  <IconButton
-                    edge="end"
-                    className={classes.tamañoBoton}
-                    color="inherit"
-                    aria-label="menu"
-                    component={Link}
-                    to={`/espacios/${espacio.id}`}
-                  >
-                    <CreateIcon />
-                  </IconButton>
-                  <IconButton
-                    edge="end"
-                    className={classes.tamañoBoton}
-                    color="inherit"
-                    aria-label="menu"
-                  >
-                    <DeleteIcon onClick={() => eliminarEspacio(espacio.id)} />
-                  </IconButton>
-                </TableCell>
+    <>
+      <Box mt={8}>
+        <Typography variant="h4" color="primary">
+          Tabla de espacios
+        </Typography>
+      </Box>
+      <Container className={classes.container}>
+        <TableContainer component={Paper} className={classes.tableContainer}>
+          <Table
+            className={classes.table}
+            size="medium"
+            aria-label="a dense table"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Edificio</TableCell>
+                <TableCell>Piso</TableCell>
+                <TableCell>Estado</TableCell>
+                <TableCell>Aforo</TableCell>
+                <TableCell> </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <VentanaModal
-          abrirModal={abrirModal}
-          setAbrirModal={setAbrirModal}
-          espacios={espacios}
-          setEspacios={setEspacios}
-          idEspacio={idEspacioAEliminar}
-        />
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {espacios.map((espacio, id) => (
+                <TableRow key={id}>
+                  <TableCell component="th" scope="row">
+                    {espacio.nombre}
+                  </TableCell>
+                  <TableCell>{espacio.Edificio.nombre}</TableCell>
+                  <TableCell>{espacio.piso}</TableCell>
+                  <TableCell>
+                    {espacio.habilitado ? (
+                      <FiberManualRecordIcon
+                        style={{ color: 'green' }}
+                        className={classes.tamañoBoton}
+                      />
+                    ) : (
+                      <FiberManualRecordIcon
+                        style={{ color: 'red' }}
+                        className={classes.tamañoBoton}
+                      />
+                    )}
+                  </TableCell>
+                  <TableCell>{espacio.aforo}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      edge="end"
+                      className={classes.tamañoBoton}
+                      color="inherit"
+                      aria-label="menu"
+                      component={Link}
+                      to={`/espacios/${espacio.id}`}
+                    >
+                      <CreateIcon />
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      className={classes.tamañoBoton}
+                      color="inherit"
+                      aria-label="menu"
+                    >
+                      <DeleteIcon onClick={() => eliminarEspacio(espacio.id)} />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <VentanaModal
+            abrirModal={abrirModal}
+            setAbrirModal={setAbrirModal}
+            espacios={espacios}
+            setEspacios={setEspacios}
+            idEspacio={idEspacioAEliminar}
+          />
+        </TableContainer>
+      </Container>
       <IconButton
         className={classes.tamañoBoton}
         color="inherit"
@@ -114,7 +122,7 @@ export default function PantallaEspacios() {
       >
         <AddCircleOutlineIcon />
       </IconButton>
-    </Container>
+    </>
   );
 }
 
