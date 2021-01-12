@@ -22,9 +22,9 @@ export const create = async (route, data) => {
   }
 };
 
-export const update = async (route, id, data) => {
+export const update = async (route, data) => {
   try {
-    const response = await api.put(`${route}/${id}`, data);
+    const response = await api.put(`${route}`, data);
     return response.data;
   } catch (error) {
     console.log(`Error al actualizar: ${error}`);

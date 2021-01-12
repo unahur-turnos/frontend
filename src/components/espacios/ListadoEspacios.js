@@ -1,5 +1,5 @@
+import { Box, Typography } from '@material-ui/core';
 import {
-  Box,
   IconButton,
   Table,
   TableBody,
@@ -7,21 +7,20 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from '@material-ui/core';
+import React, { useState } from 'react';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
+import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { toString } from '../../utils/dateUtils';
-import { todasLasActividades } from '../../state/actividades';
+import { todosLosEspacios } from '../../state/espacios';
 import { useRecoilValue } from 'recoil';
-import { useState } from 'react';
 
-export default function ListadoActividades() {
+export default function PantallaEspacios() {
   const useStyles = makeStyles({
     icon: {
       width: '30px',
@@ -36,14 +35,14 @@ export default function ListadoActividades() {
 
   const classes = useStyles();
 
-  const listaActividades = useRecoilValue(todasLasActividades);
-  const [actividades, setActividades] = useState(listaActividades);
+  const listaEspacios = useRecoilValue(todosLosEspacios);
+  const [espacios, setEspacios] = useState(listaEspacios);
 
   const [abrirModal, setAbrirModal] = useState(false);
-  const [idActividadAEliminar, setIdActividadAEliminar] = useState();
+  const [idEspacioAEliminar, setIdEspacioAEliminar] = useState();
 
-  const eliminarActividad = (idActividad) => {
-    setIdActividadAEliminar(idActividad);
+  const eliminarEspacio = (idEspacio) => {
+    setIdEspacioAEliminar(idEspacio);
     setAbrirModal(true);
   };
 
@@ -51,7 +50,7 @@ export default function ListadoActividades() {
     <>
       <Box mt={8}>
         <Typography variant="h4" color="primary">
-          Actividades
+          Espacios
         </Typography>
       </Box>
       <Box mt={2}>
@@ -60,34 +59,38 @@ export default function ListadoActividades() {
             <TableHead>
               <TableRow>
                 <TableCell>Nombre</TableCell>
-                <TableCell>Espacio</TableCell>
-                <TableCell>Responsable</TableCell>
-                <TableCell>Fecha/Hora Inicio</TableCell>
-                <TableCell>Fecha/Hora Fin</TableCell>
+                <TableCell>Edificio</TableCell>
+                <TableCell>Piso</TableCell>
+                <TableCell>Estado</TableCell>
+                <TableCell>Aforo</TableCell>
                 <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {actividades.map((actividad) => (
-                <TableRow key={actividad.id}>
-                  <TableCell>{actividad.nombre}</TableCell>
-                  <TableCell>{actividad.Espacio.nombre}</TableCell>
-                  <TableCell>{actividad.responsable}</TableCell>
-                  <TableCell>{toString(actividad.fechaHoraInicio)}</TableCell>
-                  <TableCell>{toString(actividad.fechaHoraFin)}</TableCell>
+              {espacios.map((espacio, id) => (
+                <TableRow key={id}>
+                  <TableCell>{espacio.nombre}</TableCell>
+                  <TableCell>{espacio.Edificio.nombre}</TableCell>
+                  <TableCell>{espacio.piso}</TableCell>
+                  <TableCell>
+                    {espacio.habilitado ? (
+                      <FiberManualRecordIcon style={{ color: 'green' }} />
+                    ) : (
+                      <FiberManualRecordIcon style={{ color: 'red' }} />
+                    )}
+                  </TableCell>
+                  <TableCell>{espacio.aforo}</TableCell>
                   <TableCell>
                     <IconButton
                       className={classes.icon}
                       aria-label="edit"
                       component={Link}
-                      to={`/actividades/${actividad.id}`}
+                      to={`/espacios/${espacio.id}`}
                     >
-                      <EditIcon />
+                      <CreateIcon />
                     </IconButton>
                     <IconButton className={classes.icon} aria-label="delete">
-                      <DeleteIcon
-                        onClick={() => eliminarActividad(actividad.id)}
-                      />
+                      <DeleteIcon onClick={() => eliminarEspacio(espacio.id)} />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -102,19 +105,19 @@ export default function ListadoActividades() {
           style={{ textDecoration: 'none' }}
           aria-label="add"
           component={Link}
-          to={`/actividades/nueva`}
+          to={`/espacios/nuevo`}
         >
-          Agregar actividad
+          Agregar espacio
         </Typography>
         <AddCircleIcon color="primary" />
       </Box>
       <ConfirmarEliminacion
         abrirModal={abrirModal}
         setAbrirModal={setAbrirModal}
-        ruta={'actividades'}
-        entidades={actividades}
-        setEntidades={setActividades}
-        idEntidadAEliminar={idActividadAEliminar}
+        ruta={'espacios'}
+        entidades={espacios}
+        setEntidades={setEspacios}
+        idEntidadAEliminar={idEspacioAEliminar}
       />
     </>
   );

@@ -1,6 +1,6 @@
-import { Link, useParams } from 'react-router-dom';
 import {
   Box,
+  Button,
   FormControl,
   FormControlLabel,
   Grid,
@@ -11,14 +11,15 @@ import {
   Select,
   TextField,
   Typography,
-  Button,
 } from '@material-ui/core';
+import { Link, useParams } from 'react-router-dom';
+import { create, update } from '../../helpers/fetchApi';
+
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { espacioPorId } from '../state/espacios';
-import { todosLosEdificios } from '../state/edificio';
+import { espacioPorId } from '../../state/espacios';
+import { todosLosEdificios } from '../../state/edificio';
 import { useRecoilValue } from 'recoil';
-import { create, update } from '../helpers/fetchApi';
+import { useState } from 'react';
 
 export default function Espacio(props) {
   const { id } = useParams();
@@ -85,7 +86,7 @@ export default function Espacio(props) {
                   name="edificioId"
                   onChange={handleChange}
                 >
-                  {edificiosDB.map((edificio, key) => (
+                  {edificiosDB.map((edificio) => (
                     <MenuItem key={edificio.id} value={edificio.id}>
                       {edificio.nombre}
                     </MenuItem>
@@ -141,7 +142,6 @@ export default function Espacio(props) {
                   value={espacio.habilitado.toString()}
                   onChange={handleChange}
                 >
-                  {/*Si llega de la bd no*/}
                   <FormControlLabel
                     value={'true'}
                     control={<Radio color="primary" />}
