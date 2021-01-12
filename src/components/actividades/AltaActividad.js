@@ -19,6 +19,7 @@ import { todosLosEspacios } from '../../state/espacios';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { toDateString } from '../../utils/dateUtils';
 
 export default function AltaActividad() {
   const { id } = useParams();
@@ -131,7 +132,7 @@ export default function AltaActividad() {
               onChange={handleChange}
             >
               {espacios.map((espacio) => (
-                <MenuItem value={[espacio.id][0]} key={espacio.id}>
+                <MenuItem value={espacio.id} key={espacio.id}>
                   {espacio.nombre}
                 </MenuItem>
               ))}
@@ -146,7 +147,7 @@ export default function AltaActividad() {
           <TextField
             type="datetime-local"
             name="fechaHoraInicio"
-            value={fechaHoraInicio}
+            value={toDateString(fechaHoraInicio)}
             onChange={handleChange}
           />
         </Grid>
@@ -158,7 +159,7 @@ export default function AltaActividad() {
           <TextField
             type="datetime-local"
             name="fechaHoraFin"
-            value={fechaHoraFin}
+            value={toDateString(fechaHoraFin)}
             onChange={handleChange}
           />
         </Grid>

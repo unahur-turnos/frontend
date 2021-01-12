@@ -5,3 +5,7 @@ export const formatearFecha = (fecha) => {
     .setLocale('es')
     .toLocaleString(DateTime.DATETIME_SHORT);
 };
+
+export const toDateString = (date) => {
+  return new Date(date).toISOString().slice(0, 16);
+};
