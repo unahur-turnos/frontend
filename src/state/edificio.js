@@ -8,5 +8,5 @@ export const todosLosEdificios = selector({
 
 export const edificioPorId = selectorFamily({
   key: 'edificioPorId',
-  get: (id) => async () => await getData(`edificios/${id}`),
+  get: (id) => () => getData(`edificios/${id}`),
 });

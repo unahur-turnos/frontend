@@ -54,7 +54,7 @@ export default function PantallaEspacios() {
     <>
       <Box mt={8} className={classes.titulo}>
         <Typography variant="h4" color="primary">
-          Tabla de espacios
+          Espacios
         </Typography>
       </Box>
       <Container className={classes.container}>
