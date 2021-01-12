@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { deleteById } from '../helpers/fetchApi';
 
 export default function VentanaModal(props) {
   const { abrirModal, setAbrirModal, espacios, setEspacios, idEspacio } = props;
@@ -14,15 +14,13 @@ export default function VentanaModal(props) {
   };
 
   const eliminarEspacio = () => {
-    axios
-      .delete(`${process.env.REACT_APP_API_URL}/espacios/${idEspacio}`)
-      .then((res) => {
+    deleteById('espacios', idEspacio)
+      .then(() => {
         const items = espacios.filter((espacio) => idEspacio !== espacio.id);
         setEspacios(items);
       })
-      .catch((err) => {
-        console.log('No se pudo hacer el delete: ' + err);
-      });
+      .catch((error) => console.log(error));
+
     cerrarModal();
   };
 
