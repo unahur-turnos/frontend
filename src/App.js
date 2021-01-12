@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Home from './components/Home';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import PantallaEspacios from './components/PantallaEspacios';
+import Espacio from './components/Espacio';
 
 export default function App() {
   return (
@@ -14,6 +15,12 @@ export default function App() {
       <Box my={4}>
         <Router>
           <Switch>
+            <Route path="/espacios/nuevo">
+              <Espacio titulo={'Carga de espacios'} />
+            </Route>
+            <Route path="/espacios/:id">
+              <Espacio titulo={'Modificar un espacio'} />
+            </Route>
             <Route exact path="/">
               <Home />
             </Route>

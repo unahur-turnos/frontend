@@ -9,5 +9,19 @@ export const todosLosEspacios = selector({
 
 export const espacioPorId = selectorFamily({
   key: 'espacioPorId',
-  get: (id) => async () => await getData(`espacios/${id}`),
+  get: (id) => async () =>
+    id !== undefined
+      ? await getData(`espacios/${id}`)
+      : {
+          data: {
+            Edificio: {
+              nombre: '',
+              id: '',
+            },
+            aforo: '',
+            nombre: '',
+            piso: '',
+            habilitado: 'true',
+          },
+        },
 });
