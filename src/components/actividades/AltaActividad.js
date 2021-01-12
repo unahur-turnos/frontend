@@ -13,24 +13,18 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import { actividadPorId } from '../../state/actividades';
 import { create } from '../../helpers/fetchApi';
 import { todosLosEspacios } from '../../state/espacios';
+import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
 export default function AltaActividad() {
-  const [actividad, setActividad] = useState({
-    espacioId: null,
-    nombre: '',
-    fechaHoraInicio: null,
-    fechaHoraFin: null,
-    responsable: '',
-    dniResponsable: null,
-    tipoResponsable: '',
-    estado: false,
-    requiereControl: false,
-  });
+  const { id } = useParams();
+  const actividadDB = useRecoilValue(actividadPorId(id));
 
+  const [actividad, setActividad] = useState(actividadDB.data);
   const {
     espacioId,
     nombre,

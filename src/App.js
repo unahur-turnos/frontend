@@ -5,7 +5,6 @@ import AltaActividad from './components/actividades/AltaActividad';
 import Header from './components/ui/Header';
 import Home from './components/Home';
 import ListadoActividades from './components/actividades/ListadoActividades';
-import ModificacionActividad from './components/actividades/ModificacionActividad';
 import PantallaEspacios from './components/espacios/PantallaEspacios';
 
 export default function App() {
@@ -24,11 +23,11 @@ export default function App() {
             <Route exact path="/actividades">
               <ListadoActividades />
             </Route>
-            <Route path="/actividades/alta">
+            <Route path="/actividades/nueva">
               <AltaActividad />
             </Route>
-            <Route path="/actividades/modificacion">
-              <ModificacionActividad />
+            <Route path="/actividades/:id">
+              <AltaActividad />
             </Route>
           </Switch>
         </Router>

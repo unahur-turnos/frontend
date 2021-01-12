@@ -84,7 +84,7 @@ export default function ListadoActividades() {
                       className={classes.icon}
                       aria-label="edit"
                       component={Link}
-                      to={`/actividades/modificacion`}
+                      to={`/actividades/${actividad.id}`}
                     >
                       <EditIcon />
                     </IconButton>
@@ -106,7 +106,7 @@ export default function ListadoActividades() {
           style={{ textDecoration: 'none' }}
           aria-label="add"
           component={Link}
-          to={`/actividades/alta`}
+          to={`/actividades/nueva`}
         >
           Agregar actividad
         </Typography>
