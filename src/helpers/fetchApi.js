@@ -30,3 +30,12 @@ export const deleteById = async (route, id) => {
     console.log(`Error al eliminar: ${error}`);
   }
 };
+
+export const update = async (route, data) => {
+  try {
+    const response = await instance.put(route, data);
+    return response;
+  } catch (error) {
+    console.log(`Error al hacer el update: ${error}`);
+  }
+};

@@ -16,12 +16,15 @@ import {
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { espacioPorId } from '../state/espacios';
+import { todosLosEdificios } from '../state/edificio';
 import { useRecoilValue } from 'recoil';
+import { create, update } from '../helpers/fetchApi';
 
 export default function Espacio(props) {
   const { id } = useParams();
   const { titulo } = props;
   const espacioDB = useRecoilValue(espacioPorId(id)).data;
+  const edificiosDB = useRecoilValue(todosLosEdificios);
 
   const [espacio, setEspacio] = useState(espacioDB);
 
@@ -34,6 +37,18 @@ export default function Espacio(props) {
 
   const saveData = () => {
     console.log(espacio);
+    const data = {
+      edificioId: espacio.Edificio.id,
+      piso: espacio.piso,
+      nombre: espacio.nombre,
+      habilitado: espacio.habilitado,
+      aforo: espacio.aforo,
+    };
+    console.log(data);
+    //Anda todo menos el create (post) no se porque
+    id !== undefined
+      ? update(`espacios/${id}`, data)
+      : create('espacios', data);
   };
 
   return (
@@ -76,13 +91,15 @@ export default function Espacio(props) {
                 <Select
                   labelId="labelIdEdificio"
                   id="selectIDEdificio"
-                  defaultValue={espacio.Edificio.edificioId}
+                  defaultValue={espacio.Edificio.id}
                   name="Edificio.nombre"
                   onChange={handleChange}
                 >
-                  <MenuItem value={'1'}>Malvinas Argentinas</MenuItem>
-                  <MenuItem value={'2'}>Origone A</MenuItem>
-                  <MenuItem value={'3'}>Origone B</MenuItem>
+                  {edificiosDB.map((edificio, key) => (
+                    <MenuItem key={edificio.id} value={edificio.id}>
+                      {edificio.nombre}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -151,7 +168,13 @@ export default function Espacio(props) {
         </Box>
 
         <Box mt={5}>
-          <Button variant="contained" color="primary" onClick={saveData}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={saveData}
+            component={Link}
+            to="/espacios"
+          >
             Guardar
           </Button>
           <Button component={Link} to="/espacios">

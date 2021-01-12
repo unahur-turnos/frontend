@@ -15,7 +15,7 @@ export const espacioPorId = selectorFamily({
           data: {
             Edificio: {
               nombre: '',
-              edificioId: '',
+              id: '',
             },
             aforo: '',
             nombre: '',
