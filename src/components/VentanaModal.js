@@ -4,7 +4,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { deleteById } from '../../helpers/fetchApi';
+import { deleteById } from '../helpers/fetchApi';
 
 export default function VentanaModal(props) {
   const {

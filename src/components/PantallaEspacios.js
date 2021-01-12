@@ -14,9 +14,9 @@ import React, { useState } from 'react';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import VentanaModal from '../ui/VentanaModal';
+import VentanaModal from './VentanaModal';
 import { makeStyles } from '@material-ui/core/styles';
-import { todosLosEspacios } from '../../state/espacios';
+import { todosLosEspacios } from '../state/espacios';
 import { useRecoilValue } from 'recoil';
 
 export default function PantallaEspacios() {

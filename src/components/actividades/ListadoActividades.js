@@ -14,7 +14,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
-import VentanaModal from '../ui/VentanaModal';
+import VentanaModal from '../VentanaModal';
 import { makeStyles } from '@material-ui/core/styles';
 import { toString } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
