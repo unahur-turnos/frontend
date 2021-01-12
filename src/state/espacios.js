@@ -13,10 +13,7 @@ export const espacioPorId = selectorFamily({
       ? await getData(`espacios/${id}`)
       : {
           data: {
-            Edificio: {
-              nombre: '',
-              id: '',
-            },
+            edificioId: '',
             aforo: '',
             nombre: '',
             piso: '',

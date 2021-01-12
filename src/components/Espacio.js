@@ -33,22 +33,12 @@ export default function Espacio(props) {
       ...espacio,
       [e.target.name]: e.target.value,
     });
-    console.log(e.target.value);
-    console.log(e.target.name);
   };
 
   const saveData = () => {
-    const data = {
-      edificioId: espacio.edificioId,
-      piso: espacio.piso,
-      nombre: espacio.nombre,
-      habilitado: espacio.habilitado,
-      aforo: espacio.aforo,
-    };
-
     id !== undefined
-      ? update(`espacios/${id}`, data)
-      : create('espacios', data);
+      ? update(`espacios/${id}`, espacio)
+      : create('espacios', espacio);
   };
 
   return (
@@ -91,7 +81,7 @@ export default function Espacio(props) {
                 <Select
                   labelId="labelIdEdificio"
                   id="selectIDEdificio"
-                  defaultValue={espacio.Edificio.id}
+                  defaultValue={espacio.edificioId}
                   name="edificioId"
                   onChange={handleChange}
                 >
@@ -134,6 +124,7 @@ export default function Espacio(props) {
                 style={{ minWidth: 250 }}
                 defaultValue={espacio.aforo}
                 name="aforo"
+                type="number"
                 onChange={handleChange}
               />
             </Grid>
