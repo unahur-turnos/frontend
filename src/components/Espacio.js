@@ -38,7 +38,6 @@ export default function Espacio(props) {
   };
 
   const saveData = () => {
-    console.log(espacio);
     const data = {
       edificioId: espacio.edificioId,
       piso: espacio.piso,
@@ -46,8 +45,7 @@ export default function Espacio(props) {
       habilitado: espacio.habilitado,
       aforo: espacio.aforo,
     };
-    console.log(data);
-    //Anda todo menos el create (post) no se porque
+
     id !== undefined
       ? update(`espacios/${id}`, data)
       : create('espacios', data);

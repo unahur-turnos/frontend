@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Container } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
@@ -16,16 +16,16 @@ import VentanaModal from './VentanaModal';
 import { makeStyles } from '@material-ui/core/styles';
 import { todosLosEspacios } from '../state/espacios';
 import { useRecoilValue } from 'recoil';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import AddCircleIcon from '@material-ui/icons/AddCircleOutline';
 import { Link } from 'react-router-dom';
 import { Typography, Box } from '@material-ui/core';
 
 export default function PantallaEspacios() {
   const classes = useStyles();
-
   const listaEspacios = useRecoilValue(todosLosEspacios);
 
   const [espacios, setEspacios] = useState(listaEspacios);
+
   const [abrirModal, setAbrirModal] = useState(false);
   const [idEspacioAEliminar, setIdEspacioAEliminar] = useState();
 
@@ -36,7 +36,7 @@ export default function PantallaEspacios() {
 
   return (
     <>
-      <Box mt={8}>
+      <Box mt={8} className={classes.titulo}>
         <Typography variant="h4" color="primary">
           Tabla de espacios
         </Typography>
@@ -113,22 +113,27 @@ export default function PantallaEspacios() {
           />
         </TableContainer>
       </Container>
-      <IconButton
-        className={classes.tamañoBoton}
-        color="inherit"
-        aria-label="menu"
-        component={Link}
-        to={`/espacios/nuevo`}
-      >
-        <AddCircleOutlineIcon />
-      </IconButton>
+      <Box className={classes.boxAgregar} mt={2}>
+        <Typography color="primary" aria-label="botonAgregar">
+          Agregar
+        </Typography>
+        <IconButton
+          color="inherit"
+          className={classes.botonAgregar}
+          aria-label="menu"
+          component={Link}
+          to={`/espacios/nuevo`}
+        >
+          <AddCircleIcon color="primary" />
+        </IconButton>
+      </Box>
     </>
   );
 }
 
 const useStyles = makeStyles({
   container: {
-    marginTop: '15%',
+    marginTop: '5%',
     display: 'flex',
     justifyContent: 'center',
   },
@@ -139,5 +144,19 @@ const useStyles = makeStyles({
     width: '30px',
     height: '30px',
     marginLeft: '15px',
+  },
+  titulo: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  boxAgregar: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginRight: '-150px',
+  },
+  botonAgregar: {
+    width: '40px',
+    height: '40px',
+    top: '-7px',
   },
 });
