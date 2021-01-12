@@ -1,5 +1,6 @@
 import { selector, selectorFamily } from 'recoil';
 
+import { DateTime } from 'luxon';
 import { getData } from '../helpers/fetchApi';
 
 export const todasLasActividades = selector({
@@ -16,8 +17,8 @@ export const actividadPorId = selectorFamily({
           data: {
             espacioId: null,
             nombre: '',
-            fechaHoraInicio: null,
-            fechaHoraFin: null,
+            fechaHoraInicio: DateTime.local().toISO().slice(0, 16),
+            fechaHoraFin: DateTime.local().toISO().slice(0, 16),
             responsable: '',
             dniResponsable: null,
             tipoResponsable: '',
