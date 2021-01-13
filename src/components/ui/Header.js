@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Zoom from '@material-ui/core/Zoom';
-import logoCovid from '../assets/logoCovid.png';
+import logoCovid from '../../assets/logoCovid.png';
 import { makeStyles } from '@material-ui/core/styles';
-import unahur from '../assets/unahur.png';
+import unahur from '../../assets/unahur.png';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 const useStyles = makeStyles((theme) => ({

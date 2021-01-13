@@ -1,4 +1,5 @@
 import { selector, selectorFamily } from 'recoil';
+
 import { getData } from '../helpers/fetchApi';
 
 export const todosLosEspacios = selector({

@@ -22,20 +22,20 @@ export const create = async (route, data) => {
   }
 };
 
+export const update = async (route, data) => {
+  try {
+    const response = await api.put(`${route}`, data);
+    return response.data;
+  } catch (error) {
+    console.log(`Error al actualizar: ${error}`);
+  }
+};
+
 export const deleteById = async (route, id) => {
   try {
     const response = await api.delete(`${route}/${id}`);
     return response;
   } catch (error) {
     console.log(`Error al eliminar: ${error}`);
-  }
-};
-
-export const update = async (route, data) => {
-  try {
-    const response = await api.put(route, data);
-    return response;
-  } catch (error) {
-    console.log(`Error al hacer el update: ${error}`);
   }
 };

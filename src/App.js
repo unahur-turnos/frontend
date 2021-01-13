@@ -1,27 +1,39 @@
 import { Box, Container } from '@material-ui/core';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Header from './components/Header';
-import PantallaEspacios from './components/PantallaEspacios';
-import Espacio from './components/Espacio';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+
+import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
+import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
+import Header from './components/ui/Header';
+import ListadoActividades from './components/actividades/ListadoActividades';
+import ListadoEspacios from './components/espacios/ListadoEspacios';
 
 export default function App() {
   return (
-    <Container maxWidth="sm">
+    <Container>
       <Header />
       <Box my={4}>
         <Router>
           <Switch>
+            <Route exact path="/">
+              <ListadoEspacios />
+            </Route>
+            <Route exact path="/espacios">
+              <ListadoEspacios />
+            </Route>
             <Route path="/espacios/nuevo">
-              <Espacio titulo={'Carga de espacios'} />
+              <AltaModificacionEspacio titulo={'Carga de espacios'} />
             </Route>
             <Route path="/espacios/:id">
-              <Espacio titulo={'Modificar un espacio'} />
+              <AltaModificacionEspacio titulo={'Modificar espacio'} />
             </Route>
-            <Route path="/espacios">
-              <PantallaEspacios />
+            <Route exact path="/actividades">
+              <ListadoActividades />
             </Route>
-            <Route path="/">
-              <PantallaEspacios />
+            <Route path="/actividades/nueva">
+              <AltaModificacionActividad titulo={'Carga de actividades'} />
+            </Route>
+            <Route path="/actividades/:id">
+              <AltaModificacionActividad titulo={'Modificar actividad'} />
             </Route>
           </Switch>
         </Router>
