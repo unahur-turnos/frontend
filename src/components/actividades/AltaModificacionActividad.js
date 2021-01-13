@@ -18,7 +18,7 @@ import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
 import { toISO } from '../../utils/dateUtils';
 import { todosLosEspacios } from '../../state/espacios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
@@ -47,18 +47,10 @@ export default function AltaActividad(props) {
     });
   };
 
-  const crearActividad = (e) => {
-    e.preventDefault();
-    create('actividades', {
-      ...actividad,
-    });
-  };
-
-  const actualizarActividad = (e) => {
-    e.preventDefault();
-    update('actividades', id, {
-      ...actividad,
-    });
+  const saveData = () => {
+    id !== undefined
+      ? update(`actividades/${id}`, actividad)
+      : create('actividades', actividad);
   };
 
   const espacios = useRecoilValue(todosLosEspacios);
@@ -287,24 +279,28 @@ export default function AltaActividad(props) {
           </RadioGroup>
         </Grid>
 
-        <Grid item xs={12} align="center">
-          {(!id && (
+        <Grid container item xs={12} align="center" spacing={3}>
+          <Grid item xs={6} align="right">
             <Button
               variant="contained"
               color="primary"
-              onClick={crearActividad}
+              onClick={saveData}
+              component={Link}
+              to="/actividades"
             >
-              Guardar
+              {!id ? 'Guardar' : 'Actualizar'}
             </Button>
-          )) || (
+          </Grid>
+          <Grid item xs={6} align="left">
             <Button
               variant="contained"
-              color="primary"
-              onClick={actualizarActividad}
+              color="secondary"
+              component={Link}
+              to="/actividades"
             >
-              Actualizar
+              Cancelar
             </Button>
-          )}
+          </Grid>
         </Grid>
       </Grid>
     </>
