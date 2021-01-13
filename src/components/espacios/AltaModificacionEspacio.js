@@ -12,11 +12,12 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { create, update } from '../../helpers/fetchApi';
 
 import PropTypes from 'prop-types';
 import { espacioPorId } from '../../state/espacios';
+import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { todosLosEdificios } from '../../state/edificio';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
@@ -26,6 +27,8 @@ export default function Espacio(props) {
   const { titulo } = props;
   const espacioDB = useRecoilValue(espacioPorId(id)).data;
   const edificiosDB = useRecoilValue(todosLosEdificios);
+  const history = useHistory();
+  const notificarActualizacion = useNotificarActualizacion('espacios');
 
   const [espacio, setEspacio] = useState(espacioDB);
 
@@ -36,10 +39,15 @@ export default function Espacio(props) {
     });
   };
 
-  const saveData = () => {
-    id !== undefined
-      ? update(`espacios/${id}`, espacio)
-      : create('espacios', espacio);
+  const saveData = async () => {
+    if (id !== undefined) {
+      await update(`espacios/${id}`, espacio);
+    } else {
+      await create('espacios', espacio);
+    }
+
+    notificarActualizacion();
+    history.push('/espacios');
   };
 
   return (
@@ -159,13 +167,7 @@ export default function Espacio(props) {
         </Box>
 
         <Box mt={5}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={saveData}
-            component={Link}
-            to="/espacios"
-          >
+          <Button variant="contained" color="primary" onClick={saveData}>
             Guardar
           </Button>
           <Button component={Link} to="/espacios">

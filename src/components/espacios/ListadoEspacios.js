@@ -35,8 +35,7 @@ export default function PantallaEspacios() {
 
   const classes = useStyles();
 
-  const listaEspacios = useRecoilValue(todosLosEspacios);
-  const [espacios, setEspacios] = useState(listaEspacios);
+  const espacios = useRecoilValue(todosLosEspacios);
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [idEspacioAEliminar, setIdEspacioAEliminar] = useState();
@@ -115,8 +114,6 @@ export default function PantallaEspacios() {
         abrirModal={abrirModal}
         setAbrirModal={setAbrirModal}
         ruta={'espacios'}
-        entidades={espacios}
-        setEntidades={setEspacios}
         idEntidadAEliminar={idEspacioAEliminar}
       />
     </>

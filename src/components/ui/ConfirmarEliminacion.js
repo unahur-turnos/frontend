@@ -5,31 +5,20 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { deleteById } from '../../helpers/fetchApi';
+import { useNotificarActualizacion } from '../../state/actualizaciones';
 
 export default function VentanaModal(props) {
-  const {
-    abrirModal,
-    setAbrirModal,
-    ruta,
-    entidades,
-    setEntidades,
-    idEntidadAEliminar,
-  } = props;
+  const { abrirModal, setAbrirModal, ruta, idEntidadAEliminar } = props;
+
+  const notificarActualizacion = useNotificarActualizacion(ruta);
 
   const cerrarModal = () => {
     setAbrirModal(false);
   };
 
-  const eliminar = () => {
-    deleteById(ruta, idEntidadAEliminar)
-      .then(() => {
-        const items = entidades.filter(
-          (entidad) => idEntidadAEliminar !== entidad.id
-        );
-        setEntidades(items);
-      })
-      .catch((error) => console.log(error));
-
+  const eliminar = async () => {
+    await deleteById(ruta, idEntidadAEliminar);
+    notificarActualizacion();
     cerrarModal();
   };
 
@@ -62,7 +51,5 @@ VentanaModal.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
   ruta: PropTypes.string,
-  entidades: PropTypes.array,
-  setEntidades: PropTypes.func,
   idEntidadAEliminar: PropTypes.number,
 };

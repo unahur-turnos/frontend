@@ -36,8 +36,7 @@ export default function ListadoActividades() {
 
   const classes = useStyles();
 
-  const listaActividades = useRecoilValue(todasLasActividades);
-  const [actividades, setActividades] = useState(listaActividades);
+  const actividades = useRecoilValue(todasLasActividades);
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [idActividadAEliminar, setIdActividadAEliminar] = useState();
@@ -112,8 +111,6 @@ export default function ListadoActividades() {
         abrirModal={abrirModal}
         setAbrirModal={setAbrirModal}
         ruta={'actividades'}
-        entidades={actividades}
-        setEntidades={setActividades}
         idEntidadAEliminar={idActividadAEliminar}
       />
     </>

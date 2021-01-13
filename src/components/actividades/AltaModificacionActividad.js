@@ -16,6 +16,7 @@ import { create, update } from '../../helpers/fetchApi';
 
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
+import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { dateFormatter } from '../../utils/dateUtils';
 import { todosLosEspacios } from '../../state/espacios';
 import { Link, useParams } from 'react-router-dom';
@@ -26,6 +27,7 @@ export default function AltaActividad(props) {
   const { id } = useParams();
   const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
+  const notificarActualizacion = useNotificarActualizacion('actividades');
 
   const [actividad, setActividad] = useState(actividadDB.data);
   const {
@@ -46,10 +48,15 @@ export default function AltaActividad(props) {
     });
   };
 
-  const saveData = () => {
-    id !== undefined
-      ? update(`actividades/${id}`, actividad)
-      : create('actividades', actividad);
+  const saveData = async () => {
+    if (id !== undefined) {
+      await update(`espacios/${id}`, actividad);
+    } else {
+      await create('espacios', actividad);
+    }
+
+    notificarActualizacion();
+    history.push('/espacios');
   };
 
   const espacios = useRecoilValue(todosLosEspacios);
@@ -249,13 +256,7 @@ export default function AltaActividad(props) {
 
         <Grid container item xs={12} align="center" spacing={3}>
           <Grid item xs={6} align="right">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={saveData}
-              component={Link}
-              to="/actividades"
-            >
+            <Button variant="contained" color="primary" onClick={saveData}>
               {!id ? 'Guardar' : 'Actualizar'}
             </Button>
           </Grid>
