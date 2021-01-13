@@ -24,7 +24,7 @@ export default function App() {
               <AltaModificacionEspacio titulo={'Carga de espacios'} />
             </Route>
             <Route path="/espacios/:id">
-              <AltaModificacionEspacio titulo={'Modificar un espacio'} />
+              <AltaModificacionEspacio titulo={'Modificar espacio'} />
             </Route>
             <Route exact path="/actividades">
               <ListadoActividades />
@@ -33,7 +33,7 @@ export default function App() {
               <AltaModificacionActividad titulo={'Carga de actividades'} />
             </Route>
             <Route path="/actividades/:id">
-              <AltaModificacionActividad titulo={'Editar actividad'} />
+              <AltaModificacionActividad titulo={'Modificar actividad'} />
             </Route>
           </Switch>
         </Router>

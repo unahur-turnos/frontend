@@ -16,7 +16,7 @@ import { create, update } from '../../helpers/fetchApi';
 
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
-import { toISO } from '../../utils/dateUtils';
+import { dateFormatter } from '../../utils/dateUtils';
 import { todosLosEspacios } from '../../state/espacios';
 import { Link, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -37,7 +37,6 @@ export default function AltaActividad(props) {
     dniResponsable,
     tipoResponsable,
     estado,
-    requiereControl,
   } = actividad;
 
   const handleChange = (e) => {
@@ -105,9 +104,14 @@ export default function AltaActividad(props) {
                 label="Invitados"
               />
               <FormControlLabel
-                value={'Ambos'}
+                value={'Docentes'}
                 control={<Radio color="primary" />}
-                label="Ambos"
+                label="Docentes"
+              />
+              <FormControlLabel
+                value={'No Docentes'}
+                control={<Radio color="primary" />}
+                label="No Docentes"
               />
             </RadioGroup>
           </FormControl>
@@ -141,7 +145,7 @@ export default function AltaActividad(props) {
           <TextField
             type="datetime-local"
             name="fechaHoraInicio"
-            value={toISO(fechaHoraInicio)}
+            value={dateFormatter(fechaHoraInicio)}
             onChange={handleChange}
           />
         </Grid>
@@ -153,7 +157,7 @@ export default function AltaActividad(props) {
           <TextField
             type="datetime-local"
             name="fechaHoraFin"
-            value={toISO(fechaHoraFin)}
+            value={dateFormatter(fechaHoraFin)}
             onChange={handleChange}
           />
         </Grid>
@@ -217,18 +221,6 @@ export default function AltaActividad(props) {
           </FormControl>
         </Grid>
 
-        <Grid item xs={6} align="right">
-          <Typography variant="h6">Destinada a:</Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl style={{ minWidth: 250 }}>
-            <InputLabel id="labelDestino">
-              Elija el destino de la actividad
-            </InputLabel>
-            <Select labelId="labelDestino">{}</Select>
-          </FormControl>
-        </Grid>
-
         <Grid item xs={6} component={Box} align="right" alignSelf="center">
           <Typography variant="h6">Estado:</Typography>
         </Grid>
@@ -253,30 +245,6 @@ export default function AltaActividad(props) {
               />
             </RadioGroup>
           </FormControl>
-        </Grid>
-
-        <Grid item xs={6} component={Box} align="right" alignSelf="center">
-          <Typography variant="h6">Tipo de turno:</Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <RadioGroup
-            row
-            aria-label="requiereControl"
-            name="requiereControl"
-            value={requiereControl.toString()}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value={'true'}
-              control={<Radio color="primary" />}
-              label="Automatico"
-            />
-            <FormControlLabel
-              value={'false'}
-              control={<Radio color="primary" />}
-              label="A confirmar"
-            />
-          </RadioGroup>
         </Grid>
 
         <Grid container item xs={12} align="center" spacing={3}>

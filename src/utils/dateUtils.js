@@ -6,6 +6,6 @@ export const toString = (fecha) => {
     .toLocaleString(DateTime.DATETIME_SHORT);
 };
 
-export const toISO = (fecha) => {
-  return DateTime.fromISO(fecha).setLocale('es').toISO().slice(0, 16);
+export const dateFormatter = (fecha) => {
+  return DateTime.fromISO(fecha).setLocale('es').toFormat("yyyy-MM-dd'T'HH:mm");
 };
