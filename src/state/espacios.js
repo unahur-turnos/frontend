@@ -14,8 +14,9 @@ export const todosLosEspacios = selector({
 
 export const espacioPorId = selectorFamily({
   key: 'espacioPorId',
-  get: (id) => async () =>
-    id !== undefined
+  get: (id) => async ({ get }) => {
+    get(contadorActualizacionesState('espacios'));
+    return id !== undefined
       ? await getData(`espacios/${id}`)
       : {
           data: {
@@ -25,5 +26,6 @@ export const espacioPorId = selectorFamily({
             piso: '',
             habilitado: 'true',
           },
-        },
+        };
+  },
 });

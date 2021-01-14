@@ -15,8 +15,9 @@ export const todasLasActividades = selector({
 
 export const actividadPorId = selectorFamily({
   key: 'actividadPorId',
-  get: (id) => async () =>
-    id !== undefined
+  get: (id) => async ({ get }) => {
+    get(contadorActualizacionesState('actividades'));
+    return id !== undefined
       ? await getData(`actividades/${id}`)
       : {
           data: {
@@ -29,5 +30,6 @@ export const actividadPorId = selectorFamily({
             tipoResponsable: '',
             estado: false,
           },
-        },
+        };
+  },
 });
