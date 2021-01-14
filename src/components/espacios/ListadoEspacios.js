@@ -38,10 +38,10 @@ export default function PantallaEspacios() {
   const espacios = useRecoilValue(todosLosEspacios);
 
   const [abrirModal, setAbrirModal] = useState(false);
-  const [idEspacioAEliminar, setIdEspacioAEliminar] = useState();
+  const [espacioAEliminar, setEspacioAEliminar] = useState();
 
-  const eliminarEspacio = (idEspacio) => {
-    setIdEspacioAEliminar(idEspacio);
+  const eliminarEspacio = (espacio) => {
+    setEspacioAEliminar(espacio);
     setAbrirModal(true);
   };
 
@@ -89,7 +89,7 @@ export default function PantallaEspacios() {
                       <CreateIcon />
                     </IconButton>
                     <IconButton className={classes.icon} aria-label="delete">
-                      <DeleteIcon onClick={() => eliminarEspacio(espacio.id)} />
+                      <DeleteIcon onClick={() => eliminarEspacio(espacio)} />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -114,7 +114,7 @@ export default function PantallaEspacios() {
         abrirModal={abrirModal}
         setAbrirModal={setAbrirModal}
         ruta={'espacios'}
-        idEntidadAEliminar={idEspacioAEliminar}
+        entidadAEliminar={espacioAEliminar}
       />
     </>
   );

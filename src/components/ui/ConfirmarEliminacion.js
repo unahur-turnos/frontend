@@ -7,9 +7,12 @@ import React from 'react';
 import { deleteById } from '../../helpers/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 
-export default function VentanaModal(props) {
-  const { abrirModal, setAbrirModal, ruta, idEntidadAEliminar } = props;
-
+export default function ConfirmarEliminacion({
+  abrirModal,
+  setAbrirModal,
+  ruta,
+  entidadAEliminar,
+}) {
   const notificarActualizacion = useNotificarActualizacion(ruta);
 
   const cerrarModal = () => {
@@ -17,7 +20,7 @@ export default function VentanaModal(props) {
   };
 
   const eliminar = async () => {
-    await deleteById(ruta, idEntidadAEliminar);
+    await deleteById(ruta, entidadAEliminar.id);
     notificarActualizacion();
     cerrarModal();
   };
@@ -29,17 +32,14 @@ export default function VentanaModal(props) {
       open={abrirModal}
     >
       <DialogTitle id="alert-dialog-slide-title">
-        {'¿Está seguro que desea borrar?'}
+        ¿Confirma que desea eliminar <strong>{entidadAEliminar?.nombre}</strong>
+        ?
       </DialogTitle>
       <DialogActions>
-        <Button variant="contained" onClick={() => cerrarModal()}>
+        <Button variant="contained" onClick={cerrarModal}>
           Cancelar
         </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => eliminar()}
-        >
+        <Button variant="contained" color="secondary" onClick={eliminar}>
           Borrar
         </Button>
       </DialogActions>
@@ -47,9 +47,12 @@ export default function VentanaModal(props) {
   );
 }
 
-VentanaModal.propTypes = {
+ConfirmarEliminacion.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
   ruta: PropTypes.string,
-  idEntidadAEliminar: PropTypes.number,
+  entidadAEliminar: PropTypes.shape({
+    id: PropTypes.number,
+    nombre: PropTypes.string,
+  }),
 };
