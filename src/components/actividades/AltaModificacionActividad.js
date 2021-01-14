@@ -19,7 +19,7 @@ import { actividadPorId } from '../../state/actividades';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { dateFormatter } from '../../utils/dateUtils';
 import { todosLosEspacios } from '../../state/espacios';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
@@ -28,6 +28,7 @@ export default function AltaActividad(props) {
   const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
   const notificarActualizacion = useNotificarActualizacion('actividades');
+  const history = useHistory();
 
   const [actividad, setActividad] = useState(actividadDB.data);
   const {
@@ -50,13 +51,13 @@ export default function AltaActividad(props) {
 
   const saveData = async () => {
     if (id !== undefined) {
-      await update(`espacios/${id}`, actividad);
+      await update(`actividades/${id}`, actividad);
     } else {
-      await create('espacios', actividad);
+      await create('actividades', actividad);
     }
 
     notificarActualizacion();
-    history.push('/espacios');
+    history.push('/actividades');
   };
 
   const espacios = useRecoilValue(todosLosEspacios);
