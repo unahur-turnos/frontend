@@ -44,7 +44,7 @@ export default function Espacio(props) {
 
   return (
     <>
-      <Box mt={8}>
+      <Box mt={15}>
         <Typography variant="h4" color="primary">
           {titulo}
         </Typography>

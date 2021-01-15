@@ -49,7 +49,7 @@ export default function ListadoActividades() {
 
   return (
     <>
-      <Box mt={8}>
+      <Box mt={15}>
         <Typography variant="h4" color="primary">
           Actividades
         </Typography>

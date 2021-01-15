@@ -15,7 +15,7 @@ export default function App() {
         <Router>
           <Switch>
             <Route exact path="/">
-              <ListadoEspacios />
+              <ListadoActividades />
             </Route>
             <Route exact path="/espacios">
               <ListadoEspacios />
