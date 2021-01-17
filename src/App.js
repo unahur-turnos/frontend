@@ -1,11 +1,12 @@
 import { Box, Container } from '@material-ui/core';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
+import Header from './components/ui/Header';
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
-import Header from './components/ui/Header';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
+import LoginYRegistro from './components/login/LoginYRegistro';
 
 export default function App() {
   return (
@@ -14,8 +15,8 @@ export default function App() {
       <Box my={4}>
         <Router>
           <Switch>
-            <Route exact path="/">
-              <ListadoEspacios />
+            <Route path="/login">
+              <LoginYRegistro />
             </Route>
             <Route exact path="/espacios">
               <ListadoEspacios />
