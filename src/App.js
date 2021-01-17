@@ -6,7 +6,8 @@ import AltaModificacionActividad from './components/actividades/AltaModificacion
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
-import LoginYRegistro from './components/login/LoginYRegistro';
+import Login from './components/login/Login';
+import Registro from './components/registro/Registro';
 
 export default function App() {
   return (
@@ -16,7 +17,10 @@ export default function App() {
         <Router>
           <Switch>
             <Route path="/login">
-              <LoginYRegistro />
+              <Login />
+            </Route>
+            <Route path="/registro">
+              <Registro />
             </Route>
             <Route exact path="/espacios">
               <ListadoEspacios />
