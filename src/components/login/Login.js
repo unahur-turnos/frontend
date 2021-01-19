@@ -8,18 +8,20 @@ import {
 } from '@material-ui/core';
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
+import { create } from '../../helpers/fetchApi';
 
 export default function Login() {
   const dniRegex = new RegExp('^[0-9]{8}$');
+  const history = useHistory();
   const [showPassword, setshowPassword] = useState(false);
   const [values, setValues] = useState({
-    documento: '',
-    contraseña: '',
+    dni: '',
+    contrasenia: '',
   });
 
   const handleChange = (e) => {
@@ -34,8 +36,9 @@ export default function Login() {
     setshowPassword(!showPassword);
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const validarLogin = () => {
+    create('/usuarios/login', ...values);
+    history.push('/');
   };
 
   return (
@@ -60,14 +63,14 @@ export default function Login() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="documento"
+                id="dni"
                 label="Ingrese su documento"
-                name="documento"
+                name="dni"
                 onChange={handleChange}
                 validations={{ matchRegexp: dniRegex }}
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="end">
+                    <InputAdornment position="start">
                       <AssignmentIndIcon />
                     </InputAdornment>
                   ),
@@ -81,9 +84,9 @@ export default function Login() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="contraseña"
+                id="contrasenia"
                 label="Ingrese una contraseña"
-                name="constraseña"
+                name="contrasenia"
                 type={showPassword ? 'text' : 'password'}
                 onChange={handleChange}
                 InputProps={{
@@ -92,7 +95,6 @@ export default function Login() {
                       <IconButton
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
                       >
                         {showPassword ? (
                           <VisibilityIcon />
@@ -109,7 +111,12 @@ export default function Login() {
           </Grid>
         </Box>
         <Box mt={7} justifyContent="center" display="flex">
-          <Button variant="contained" color="primary" component={Link} to="/">
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            onClick={validarLogin}
+          >
             Iniciar sesión
           </Button>
           <Button component={Link} to="/registro">
