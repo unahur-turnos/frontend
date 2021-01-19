@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  appBar: {
+    marginTop: '40px',
   },
   navColor: {
     backgroundColor: '#4DB6AD',
@@ -19,21 +23,52 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBar() {
   const classes = useStyles();
 
+  const [screen, setScreen] = useState('inicio');
+
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar className={classes.navColor}>
-          <Button className={classes.button} color="inherit" href="/">
+          <Button
+            onClick={() => setScreen('inicio')}
+            className={classes.button}
+            color="inherit"
+            style={{
+              backgroundColor: screen.includes('inicio')
+                ? '#009688'
+                : '#4DB6AD',
+            }}
+            component={Link}
+            to={`/`}
+          >
             Inicio
           </Button>
           <Button
+            onClick={() => setScreen('actividades')}
             className={classes.button}
             color="inherit"
-            href="/actividades"
+            style={{
+              backgroundColor: screen.includes('actividades')
+                ? '#009688'
+                : '#4DB6AD',
+            }}
+            component={Link}
+            to={`/actividades`}
           >
             Actividades
           </Button>
-          <Button className={classes.button} color="inherit" href="/espacios">
+          <Button
+            onClick={() => setScreen('espacios')}
+            className={classes.button}
+            color="inherit"
+            style={{
+              backgroundColor: screen.includes('espacios')
+                ? '#009688'
+                : '#4DB6AD',
+            }}
+            component={Link}
+            to={`/espacios`}
+          >
             Espacios
           </Button>
         </Toolbar>

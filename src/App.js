@@ -4,6 +4,8 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import Header from './components/ui/Header';
+import NavBar from './components/ui/NavBar';
+import Footer from './components/ui/Footer';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 
@@ -13,6 +15,7 @@ export default function App() {
       <Header />
       <Box my={4}>
         <Router>
+          <NavBar />
           <Switch>
             <Route exact path="/">
               <ListadoActividades />
@@ -38,6 +41,7 @@ export default function App() {
           </Switch>
         </Router>
       </Box>
+      <Footer />
     </Container>
   );
 }

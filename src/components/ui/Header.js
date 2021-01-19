@@ -10,7 +10,6 @@ import logoCovid from '../../assets/logoCovid.png';
 import { makeStyles } from '@material-ui/core/styles';
 import unahur from '../../assets/unahur.png';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import NavBar from './NavBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,7 +82,6 @@ export default function Header(props) {
           <img src={logoCovid} className={classes.tamañoImagen} alt="" />
           <img src={unahur} className={classes.tamañoUnahur} alt="" />
         </Toolbar>
-        <NavBar />
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
       <ScrollTop {...props}>
