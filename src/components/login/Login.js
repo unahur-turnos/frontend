@@ -14,11 +14,15 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { create } from '../../helpers/fetchApi';
 import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import informacionUsuarioState from '../../state/login';
 
 export default function Login() {
   const dniRegex = new RegExp('^[0-9]{8}$');
   const history = useHistory();
   const [showPassword, setshowPassword] = useState(false);
+  const [textFieldState, setTextFieldState] = useState(false);
+  const setInfoUsuario = useSetRecoilState(informacionUsuarioState);
   const [values, setValues] = useState({
     dni: '',
     contrasenia: '',
@@ -29,7 +33,6 @@ export default function Login() {
       ...values,
       [e.target.name]: e.target.value,
     });
-    console.log(e.target.value);
   };
 
   const handleClickShowPassword = () => {
@@ -37,8 +40,21 @@ export default function Login() {
   };
 
   const validarLogin = () => {
-    create('/usuarios/login', ...values);
-    history.push('/');
+    try {
+      if (values.dni === '' || values.contrasenia === '') {
+        setTextFieldState(true);
+        return;
+      } else if (values.dni.length !== 8 || values.contrasenia.length < 6) {
+        setTextFieldState(true);
+        console.log('DNI OR PASSWORD INVALID');
+        return;
+      }
+      setInfoUsuario(...values);
+      //create('/usuarios/login', ...values); CUANDO ANDE LA BD DESCOMENTAR
+      history.push('/');
+    } catch (err) {
+      console.log('Hola');
+    }
   };
 
   return (
@@ -60,6 +76,7 @@ export default function Login() {
         </Grid>
         <Grid item xs={6}>
           <TextField
+            required
             id="dni"
             label="Ingrese su documento"
             name="dni"
@@ -73,6 +90,7 @@ export default function Login() {
               ),
             }}
             style={{ minWidth: 250 }}
+            error={textFieldState}
           />
         </Grid>
 
@@ -81,6 +99,7 @@ export default function Login() {
         </Grid>
         <Grid item xs={6}>
           <TextField
+            required
             id="contrasenia"
             label="Ingrese una contraseña"
             name="contrasenia"
@@ -99,6 +118,7 @@ export default function Login() {
               ),
             }}
             style={{ minWidth: 250 }}
+            error={textFieldState}
           />
         </Grid>
 
