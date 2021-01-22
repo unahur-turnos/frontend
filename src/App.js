@@ -8,32 +8,37 @@ import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import Registro from './components/registro/Registro';
+import { useRecoilValue } from 'recoil';
+import informacionUsuarioState from './state/login';
 
 export default function App() {
+  const info = useRecoilValue(informacionUsuarioState);
+
   return (
     <Container>
+      {console.log(info)}
       <Header />
       <Box my={4}>
         <Router>
           <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/registro">
-              <Registro />
-            </Route>
-            <Route exact path="/espacios">
-              <ListadoEspacios />
-            </Route>
+            <Route exact path="/" />
+
+            <Route path="/login" component={Login} />
+
+            <Route path="/registro" component={Registro} />
+
+            <Route exact path="/espacios" component={ListadoEspacios} />
+
             <Route path="/espacios/nuevo">
               <AltaModificacionEspacio titulo={'Carga de espacios'} />
             </Route>
+
             <Route path="/espacios/:id">
               <AltaModificacionEspacio titulo={'Modificar espacio'} />
             </Route>
-            <Route exact path="/actividades">
-              <ListadoActividades />
-            </Route>
+
+            <Route exact path="/actividades" component={ListadoActividades} />
+
             <Route path="/actividades/nueva">
               <AltaModificacionActividad titulo={'Carga de actividades'} />
             </Route>

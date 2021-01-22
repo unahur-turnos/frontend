@@ -50,7 +50,7 @@ export default function Login() {
             <Grid item xs={6}>
               <TextField
                 id="documento"
-                label="Ingrese su documento"
+                label="Ingrese su nombre/s"
                 name="documento"
                 InputProps={{
                   endAdornment: (
@@ -69,9 +69,9 @@ export default function Login() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="contraseña"
-                label="Ingrese una contraseña"
-                name="constraeña"
+                id="apellidoUsuario"
+                label="Ingrese su apellido/s"
+                name="constraenia"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -83,13 +83,13 @@ export default function Login() {
               />
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="h6">Dni:</Typography>
+              <Typography variant="h6">DNI:</Typography>
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="contraseña"
-                label="Ingrese una contraseña"
-                name="constraseña"
+                id="dniUsuario"
+                label="Ingrese su DNI"
+                name="dni"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -106,9 +106,9 @@ export default function Login() {
             <Grid item xs={6}>
               <TextField
                 validations={{ matchRegexp: emailRegex }}
-                id="contraseña"
-                label="Ingrese una contraseña"
-                name="constraeña"
+                id="emailUsuario"
+                label="Ingrese una correo electrónico"
+                name="email"
                 type="email"
                 InputProps={{
                   endAdornment: (
@@ -125,9 +125,9 @@ export default function Login() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="contraseña"
+                id="contraseniaUsuario"
                 label="Ingrese una contraseña"
-                name="constraeña"
+                name="constraeniaUsuario"
                 type="password"
                 InputProps={{
                   endAdornment: (
@@ -144,9 +144,9 @@ export default function Login() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                id="contraseña"
+                id="constraeñaConfirmacion"
                 label="Confirme la contraseña"
-                name="constraeña"
+                name="constraeñaConfirmacion"
                 type="password"
                 InputProps={{
                   endAdornment: (

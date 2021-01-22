@@ -1,6 +1,6 @@
-import { atomFamily } from 'recoil';
+import { atom } from 'recoil';
 
-const informacionUsuarioState = atomFamily({
+const informacionUsuarioState = atom({
   key: 'informacionUsuarioState',
   default: { dni: '', contrasenia: '' },
 });

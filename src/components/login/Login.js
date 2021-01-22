@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
-
+import React from 'react';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -16,21 +16,27 @@ import { create } from '../../helpers/fetchApi';
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import informacionUsuarioState from '../../state/login';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 export default function Login() {
-  const dniRegex = new RegExp('^[0-9]{8}$');
   const history = useHistory();
   const [showPassword, setshowPassword] = useState(false);
-  const [textFieldState, setTextFieldState] = useState(false);
-  const setInfoUsuario = useSetRecoilState(informacionUsuarioState);
-  const [values, setValues] = useState({
+  const [tengoErrorEn, setTengoErrorEn] = useState({
+    dni: false,
+    contrasenia: false,
+    mandarError: false,
+  });
+
+  const [valoresEntrantes, setValoresEntrantes] = useState({
     dni: '',
     contrasenia: '',
   });
 
+  const setInfoUsuario = useSetRecoilState(informacionUsuarioState);
+
   const handleChange = (e) => {
-    setValues({
-      ...values,
+    setValoresEntrantes({
+      ...valoresEntrantes,
       [e.target.name]: e.target.value,
     });
   };
@@ -39,27 +45,45 @@ export default function Login() {
     setshowPassword(!showPassword);
   };
 
+  const irARegistro = () => {
+    history.push('/registro');
+  };
+
   const validarLogin = () => {
     try {
-      if (values.dni === '' || values.contrasenia === '') {
-        setTextFieldState(true);
-        return;
-      } else if (values.dni.length !== 8 || values.contrasenia.length < 6) {
-        setTextFieldState(true);
-        console.log('DNI OR PASSWORD INVALID');
+      if (tengoErrorEn.dni || tengoErrorEn.contrasenia) {
+        setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
         return;
       }
-      setInfoUsuario(...values);
-      //create('/usuarios/login', ...values); CUANDO ANDE LA BD DESCOMENTAR
+      create('/usuarios/login', valoresEntrantes) // CUANDO ANDE LA BD DESCOMENTAR
+        .then((res) => {
+          setInfoUsuario(res.token);
+        });
+
       history.push('/');
     } catch (err) {
-      console.log('Hola');
+      console.log(err);
+      setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
     }
+  };
+
+  const handleBlueLogin = (event) => {
+    const {
+      target: { value },
+    } = event;
+    //emailRef.current.validate(event.target.value); NO ANDA
+
+    let regex = new RegExp(/^[0-9]{8}$/).test(value);
+    if (!regex) {
+      setTengoErrorEn({ ...tengoErrorEn, [event.target.name]: true });
+      return;
+    }
+    setTengoErrorEn({ ...tengoErrorEn, dni: false });
   };
 
   return (
     <>
-      <Box mt={8}>
+      <Box mt={8} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
           Iniciar sesión
         </Typography>
@@ -75,23 +99,25 @@ export default function Login() {
           <Typography variant="h6">Número de documento:</Typography>
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            required
-            id="dni"
-            label="Ingrese su documento"
-            name="dni"
-            onChange={handleChange}
-            validations={{ matchRegexp: dniRegex }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <AssignmentIndIcon />
-                </InputAdornment>
-              ),
-            }}
-            style={{ minWidth: 250 }}
-            error={textFieldState}
-          />
+          <ValidatorForm instantValidate={false}>
+            <TextValidator
+              required
+              label="Ingrese su documento"
+              onBlur={handleBlueLogin}
+              onChange={handleChange}
+              name="dni"
+              error={tengoErrorEn.dni}
+              errorMessages={[ERRORES.dni, 'Insert a DNI GIL']}
+              style={{ minWidth: 250 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <AssignmentIndIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </ValidatorForm>
         </Grid>
 
         <Grid item xs={6} align="right">
@@ -118,9 +144,17 @@ export default function Login() {
               ),
             }}
             style={{ minWidth: 250 }}
-            error={textFieldState}
+            error={tengoErrorEn.contrasenia}
           />
         </Grid>
+
+        {tengoErrorEn.mandarError && (
+          <Grid item xs={12} align="center">
+            <Typography color="secondary">
+              Puede que tu nombre de usuario o contraseña sean incorrectos
+            </Typography>
+          </Grid>
+        )}
 
         <Grid container item xs={12} spacing={1}>
           <Grid item xs={6} align="right">
@@ -133,12 +167,12 @@ export default function Login() {
               Iniciar sesión
             </Button>
           </Grid>
-          <Grid item xs={6} align="left">
+          <Grid item xs={6}>
             <Button
               variant="contained"
               color="inherit"
               component={Link}
-              to="/registro"
+              onClick={irARegistro}
             >
               Registrarse
             </Button>
@@ -148,3 +182,28 @@ export default function Login() {
     </>
   );
 }
+
+/*
+<TextField
+            required
+            id="dni"
+            label="Ingrese su documento"
+            name="dni"
+            onChange={handleChange}
+            validations={{ matchRegexp: '^[0-9]{8}$') }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <AssignmentIndIcon />
+                </InputAdornment>
+              ),
+            }}
+            style={{ minWidth: 250 }}
+            error={textFieldState}
+          />
+*/
+
+const ERRORES = {
+  dni: 'Ingrese un DNI válido',
+  contrasenia: 'Ingrese una contraseña válida',
+};
