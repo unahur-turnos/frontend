@@ -8,15 +8,10 @@ import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import Registro from './components/registro/Registro';
-import { useRecoilValue } from 'recoil';
-import informacionUsuarioState from './state/login';
 
 export default function App() {
-  const info = useRecoilValue(informacionUsuarioState);
-
   return (
     <Container>
-      {console.log(info)}
       <Header />
       <Box my={4}>
         <Router>

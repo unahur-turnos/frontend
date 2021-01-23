@@ -20,6 +20,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 export default function Login() {
   const history = useHistory();
+
   const [showPassword, setshowPassword] = useState(false);
   const [tengoErrorEn, setTengoErrorEn] = useState({
     dni: false,
@@ -49,16 +50,17 @@ export default function Login() {
     history.push('/registro');
   };
 
+  //VALIDAR LOGIN.
   const validarLogin = () => {
     try {
       if (tengoErrorEn.dni || tengoErrorEn.contrasenia) {
         setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
         return;
       }
-      create('/usuarios/login', valoresEntrantes) // CUANDO ANDE LA BD DESCOMENTAR
-        .then((res) => {
-          setInfoUsuario(res.token);
-        });
+
+      create('/usuarios/login', valoresEntrantes).then((res) => {
+        setInfoUsuario(res.token); //PARA CAMBIAR A VARIABLE COMUN
+      });
 
       history.push('/');
     } catch (err) {
@@ -67,6 +69,7 @@ export default function Login() {
     }
   };
 
+  //VALIDAR EL DNI QUE SEA DE 8 DIGITOS... SI NO, MARCA ERROR.
   const handleBlueLogin = (event) => {
     const {
       target: { value },
@@ -74,6 +77,7 @@ export default function Login() {
     //emailRef.current.validate(event.target.value); NO ANDA
 
     let regex = new RegExp(/^[0-9]{8}$/).test(value);
+
     if (!regex) {
       setTengoErrorEn({ ...tengoErrorEn, [event.target.name]: true });
       return;
@@ -98,6 +102,7 @@ export default function Login() {
         <Grid item xs={6} align="right">
           <Typography variant="h6">Número de documento:</Typography>
         </Grid>
+
         <Grid item xs={6}>
           <ValidatorForm instantValidate={false}>
             <TextValidator
@@ -123,6 +128,7 @@ export default function Login() {
         <Grid item xs={6} align="right">
           <Typography variant="h6">Contraseña:</Typography>
         </Grid>
+
         <Grid item xs={6}>
           <TextField
             required
@@ -131,6 +137,8 @@ export default function Login() {
             name="contrasenia"
             type={showPassword ? 'text' : 'password'}
             onChange={handleChange}
+            style={{ minWidth: 250 }}
+            error={tengoErrorEn.contrasenia}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -143,8 +151,6 @@ export default function Login() {
                 </InputAdornment>
               ),
             }}
-            style={{ minWidth: 250 }}
-            error={tengoErrorEn.contrasenia}
           />
         </Grid>
 
