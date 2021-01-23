@@ -36,14 +36,13 @@ export default function ListadoActividades() {
 
   const classes = useStyles();
 
-  const listaActividades = useRecoilValue(todasLasActividades);
-  const [actividades, setActividades] = useState(listaActividades);
+  const actividades = useRecoilValue(todasLasActividades);
 
   const [abrirModal, setAbrirModal] = useState(false);
-  const [idActividadAEliminar, setIdActividadAEliminar] = useState();
+  const [actividadAEliminar, setActividadAEliminar] = useState();
 
-  const eliminarActividad = (idActividad) => {
-    setIdActividadAEliminar(idActividad);
+  const eliminarActividad = (actividad) => {
+    setActividadAEliminar(actividad);
     setAbrirModal(true);
   };
 
@@ -86,7 +85,7 @@ export default function ListadoActividades() {
                     </IconButton>
                     <IconButton className={classes.icon} aria-label="delete">
                       <DeleteIcon
-                        onClick={() => eliminarActividad(actividad.id)}
+                        onClick={() => eliminarActividad(actividad)}
                       />
                     </IconButton>
                   </TableCell>
@@ -112,9 +111,7 @@ export default function ListadoActividades() {
         abrirModal={abrirModal}
         setAbrirModal={setAbrirModal}
         ruta={'actividades'}
-        entidades={actividades}
-        setEntidades={setActividades}
-        idEntidadAEliminar={idActividadAEliminar}
+        entidadAEliminar={actividadAEliminar}
       />
     </>
   );
