@@ -5,23 +5,26 @@ import {
   InputAdornment,
   TextField,
   Typography,
+  CircularProgress,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
-import React from 'react';
+import React, { useState } from 'react';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { create } from '../../helpers/fetchApi';
-import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import informacionUsuarioState from '../../state/login';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { makeStyles } from '@material-ui/core/styles';
 
 export default function Login() {
   const history = useHistory();
+  const classes = useStyles();
 
   const [showPassword, setshowPassword] = useState(false);
+  const [iconoCargando, setIconoCargando] = useState(false);
   const [tengoErrorEn, setTengoErrorEn] = useState({
     dni: false,
     contrasenia: false,
@@ -51,22 +54,33 @@ export default function Login() {
   };
 
   //VALIDAR LOGIN.
-  const validarLogin = () => {
-    try {
-      if (tengoErrorEn.dni || tengoErrorEn.contrasenia) {
-        setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
-        return;
-      }
+  const validarLogin = async () => {
+    setIconoCargando(true);
+    setTengoErrorEn({ ...tengoErrorEn, mandarError: false });
 
-      create('/usuarios/login', valoresEntrantes).then((res) => {
-        setInfoUsuario(res.token); //PARA CAMBIAR A VARIABLE COMUN
-      });
+    await sleep(3000);
 
-      history.push('/');
-    } catch (err) {
-      console.log(err);
+    if (
+      valoresEntrantes.dni.length === 0 ||
+      tengoErrorEn.dni ||
+      tengoErrorEn.contrasenia
+    ) {
+      //LA CONTRASEÑA NO TIENE VALIDACIÓN, NO ANDA je
       setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
+      setIconoCargando(false);
+      return;
     }
+
+    setIconoCargando(false);
+
+    create('/usuarios/login', valoresEntrantes)
+      .then((res) => {
+        setInfoUsuario(res.token); //PARA CAMBIAR A VARIABLE COMUN
+        history.push('/');
+      })
+      .catch((err) => {
+        setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
+      });
   };
 
   //VALIDAR EL DNI QUE SEA DE 8 DIGITOS... SI NO, MARCA ERROR.
@@ -169,7 +183,15 @@ export default function Login() {
               color="primary"
               component={Link}
               onClick={validarLogin}
+              disabled={iconoCargando}
             >
+              {iconoCargando && (
+                <CircularProgress
+                  color="white"
+                  className={classes.loading}
+                  size={25}
+                />
+              )}
               Iniciar sesión
             </Button>
           </Grid>
@@ -213,3 +235,13 @@ const ERRORES = {
   dni: 'Ingrese un DNI válido',
   contrasenia: 'Ingrese una contraseña válida',
 };
+
+const useStyles = makeStyles((theme) => ({
+  loading: {
+    marginRight: '10px',
+  },
+}));
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
