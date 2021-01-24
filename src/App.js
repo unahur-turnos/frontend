@@ -1,6 +1,5 @@
-import { Box, Container } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import Header from './components/ui/Header';
@@ -11,9 +10,9 @@ import ListadoEspacios from './components/espacios/ListadoEspacios';
 
 export default function App() {
   return (
-    <Container>
+    <>
       <Header />
-      <Box my={4}>
+      <Box>
         <Router>
           <NavBar />
           <Switch>
@@ -42,6 +41,6 @@ export default function App() {
         </Router>
       </Box>
       <Footer />
-    </Container>
+    </>
   );
 }
