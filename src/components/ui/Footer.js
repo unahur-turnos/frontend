@@ -3,24 +3,26 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
-  root: {
+  text: {
     textAlign: 'center',
     padding: '20px',
-    position: 'fixed',
-    left: '0',
-    bottom: '0',
-    width: '100%',
-    backgroundColor: '#223238',
     color: '#FFFFFF',
-    height: '110px',
+  },
+  footer: {
+    marginTop: '2vw',
+    backgroundColor: '#223238',
+    height: '6vw',
+    minWidth: '100vw',
+    left: 0,
+    bottom: 0,
   },
 }));
 
 export default function Footer() {
   const classes = useStyles();
   return (
-    <Box>
-      <Typography className={classes.root} variant="h5">
+    <Box className={classes.footer}>
+      <Typography className={classes.text} variant="h4">
         Unahur
       </Typography>
     </Box>

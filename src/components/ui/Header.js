@@ -77,15 +77,15 @@ export default function Header(props) {
   const classes = useStyles();
   return (
     <Box display="flex">
-      <Toolbar className={classes.header}>
+      <Toolbar className={classes.header} id="back-to-top-anchor">
         <img src={logoCovid} className={classes.tamanioImagen} alt="" />
         <img src={unahur} className={classes.tamanioUnahur} alt="" />
+        <ScrollTop {...props}>
+          <Fab color="primary" size="small" aria-label="scroll back to top">
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </ScrollTop>
       </Toolbar>
-      <ScrollTop {...props} id="back-to-top-anchor">
-        <Fab color="primary" size="small" aria-label="scroll back to top">
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </ScrollTop>
     </Box>
   );
 }
