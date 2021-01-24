@@ -6,19 +6,19 @@ import { contadorActualizacionesState } from './actualizaciones';
 
 export const todasLasActividades = selector({
   key: 'todasLasActividades',
-  get: async ({ get }) => {
+  get: (headers) => async ({ get }) => {
     get(contadorActualizacionesState('actividades'));
-    const { data } = await getData('actividades');
+    const { data } = await getData('actividades', headers);
     return data;
   },
 });
 
 export const actividadPorId = selectorFamily({
   key: 'actividadPorId',
-  get: (id) => async ({ get }) => {
+  get: (id, data) => async ({ get }) => {
     get(contadorActualizacionesState('actividades'));
     return id !== undefined
-      ? await getData(`actividades/${id}`)
+      ? await getData(`actividades/${id}`, data)
       : {
           data: {
             espacioId: null,

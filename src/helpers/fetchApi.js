@@ -4,10 +4,10 @@ const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
 
-export const getData = async (route) => {
+export const getData = async (route, data) => {
   try {
-    const response = await api.get(route);
-    return response.data;
+    const response = await api.get(route, data);
+    return response;
   } catch (error) {
     console.log(`Error al obtener los datos: ${error}`);
   }
