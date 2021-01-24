@@ -61,11 +61,7 @@ export default function Login({ setEstaAutorizado }) {
 
     await sleep(3000);
 
-    if (
-      valoresEntrantes.dni.length === 0 ||
-      tengoErrorEn.dni ||
-      tengoErrorEn.contrasenia
-    ) {
+    if (tengoErrorEn.dni || tengoErrorEn.contrasenia) {
       //LA CONTRASEÑA NO TIENE VALIDACIÓN, NO ANDA je
       setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
       setIconoCargando(false);
@@ -84,24 +80,8 @@ export default function Login({ setEstaAutorizado }) {
       });
   };
 
-  //VALIDAR EL DNI QUE SEA DE 8 DIGITOS... SI NO, MARCA ERROR.
-  const handleBlueLogin = (event) => {
-    const {
-      target: { value },
-    } = event;
-    //emailRef.current.validate(event.target.value); NO ANDA
-
-    let regex = new RegExp(/^[0-9]{8}$/).test(value);
-
-    if (!regex) {
-      setTengoErrorEn({ ...tengoErrorEn, [event.target.name]: true });
-      return;
-    }
-    setTengoErrorEn({ ...tengoErrorEn, dni: false });
-  };
-
   return (
-    <>
+    <ValidatorForm onSubmit={validarLogin} instantValidate={false}>
       <Box mt={8} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
           Iniciar sesión
@@ -119,25 +99,23 @@ export default function Login({ setEstaAutorizado }) {
         </Grid>
 
         <Grid item xs={6}>
-          <ValidatorForm instantValidate={false}>
-            <TextValidator
-              required
-              label="Ingrese su documento"
-              onBlur={handleBlueLogin}
-              onChange={handleChange}
-              name="dni"
-              error={tengoErrorEn.dni}
-              errorMessages={[ERRORES.dni, 'Insert a DNI GIL']}
-              style={{ minWidth: 250 }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">
-                    <AssignmentIndIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </ValidatorForm>
+          <TextValidator
+            id="dni"
+            label="Ingrese su documento"
+            onChange={handleChange}
+            name="dni"
+            value={valoresEntrantes.dni}
+            validators={['required', 'matchRegexp:^[0-9]{7,8}$']}
+            errorMessages={['Este campo es requerido', ERRORES.dni]}
+            style={{ minWidth: 250 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <AssignmentIndIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
         </Grid>
 
         <Grid item xs={6} align="right">
@@ -145,15 +123,16 @@ export default function Login({ setEstaAutorizado }) {
         </Grid>
 
         <Grid item xs={6}>
-          <TextField
-            required
+          <TextValidator
             id="contrasenia"
             label="Ingrese una contraseña"
             name="contrasenia"
             type={showPassword ? 'text' : 'password'}
             onChange={handleChange}
             style={{ minWidth: 250 }}
-            error={tengoErrorEn.contrasenia}
+            value={valoresEntrantes.contrasenia}
+            validators={['required', 'minStringLength:5']}
+            errorMessages={['Este campo es requerido', ERRORES.contrasenia]}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -182,8 +161,7 @@ export default function Login({ setEstaAutorizado }) {
             <Button
               variant="contained"
               color="primary"
-              component={Link}
-              onClick={validarLogin}
+              type="submit"
               disabled={iconoCargando}
             >
               {iconoCargando && (
@@ -208,7 +186,7 @@ export default function Login({ setEstaAutorizado }) {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </ValidatorForm>
   );
 }
 
