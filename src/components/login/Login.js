@@ -61,20 +61,19 @@ export default function Login({ setEstaAutorizado }) {
 
     await sleep(3000);
 
-    if (tengoErrorEn.dni || tengoErrorEn.contrasenia) {
-      //LA CONTRASEÑA NO TIENE VALIDACIÓN, NO ANDA je
-      setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
-      setIconoCargando(false);
-      return;
-    }
-
     create('/usuarios/login', valoresEntrantes)
       .then((res) => {
-        setInfoUsuario(res.token); //PARA CAMBIAR A VARIABLE COMUN
+        setInfoUsuario({
+          token: res.token,
+          nombre: res.nombre,
+          apellido: res.apellido,
+          dni: res.dni,
+        });
         setEstaAutorizado(true);
         history.push('/');
       })
-      .catch((err) => {
+
+      .catch((error) => {
         setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
         setIconoCargando(false);
       });
@@ -131,7 +130,7 @@ export default function Login({ setEstaAutorizado }) {
             onChange={handleChange}
             style={{ minWidth: 250 }}
             value={valoresEntrantes.contrasenia}
-            validators={['required', 'minStringLength:5']}
+            validators={['required', 'minStringLength:6']}
             errorMessages={['Este campo es requerido', ERRORES.contrasenia]}
             InputProps={{
               endAdornment: (
@@ -151,7 +150,8 @@ export default function Login({ setEstaAutorizado }) {
         {tengoErrorEn.mandarError && (
           <Grid item xs={12} align="center">
             <Typography color="secondary">
-              Puede que tu nombre de usuario o contraseña sean incorrectos
+              El DNI y/o contraseña ingresados son inválidos, por favor vuelva a
+              intentar.
             </Typography>
           </Grid>
         )}
@@ -189,26 +189,6 @@ export default function Login({ setEstaAutorizado }) {
     </ValidatorForm>
   );
 }
-
-/*
-<TextField
-  required
-  id="dni"
-  label="Ingrese su documento"
-  name="dni"
-  onChange={handleChange}
-  validations={{ matchRegexp: '^[0-9]{8}$') }} ESTO TAMBIÉN SE PROBÓ COMO LISTA, CAMBIANDO LOS ' DE LUGAR
-  InputProps={{
-    endAdornment: (
-      <InputAdornment position="start">
-        <AssignmentIndIcon />
-      </InputAdornment>
-    ),
-  }}
-  style={{ minWidth: 250 }}
-  error={textFieldState}
-/>
-*/
 
 const ERRORES = {
   dni: 'Ingrese un DNI válido',

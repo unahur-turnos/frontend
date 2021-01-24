@@ -13,14 +13,9 @@ export const getData = async (route) => {
   }
 };
 
-//Para login este no va muy bien, si en un futuro hay seguridad, como hacemos acá?
 export const create = async (route, data) => {
-  try {
-    const response = await api.post(route, data);
-    return response.data;
-  } catch (error) {
-    console.log(`Error al dar de alta: ${error}`);
-  }
+  const response = await api.post(route, data);
+  return response;
 };
 
 export const update = async (route, data) => {

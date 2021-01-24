@@ -1,30 +1,37 @@
 import {
   Button,
   Grid,
-  TextField,
   Typography,
   InputAdornment,
   Box,
+  CircularProgress,
 } from '@material-ui/core';
 
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { create } from '../../helpers/fetchApi';
+import { useSetRecoilState } from 'recoil';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { create } from '../../helpers/fetchApi';
-import { useSetRecoilState } from 'recoil';
+import PropTypes from 'prop-types';
 import informacionUsuarioState from '../../state/login';
 
-export default function Registro() {
+export default function Registro({ setEstaAutorizado }) {
   const history = useHistory();
+  const classes = useStyles();
 
   const setInfoUsuario = useSetRecoilState(informacionUsuarioState);
 
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState({
+    contrasenia: '',
+    confirmarContraseña: '',
+  });
+  const [iconoCargando, setIconoCargando] = useState(false);
   const [tengoErrorEn, setTengoErrorEn] = useState({
     nombre: false,
     apellido: false,
@@ -41,21 +48,35 @@ export default function Registro() {
       ...user,
       [e.target.name]: e.target.value,
     });
-    console.log(user);
   };
 
   const validarRegistro = async () => {
-    sleep(3000);
+    setIconoCargando(true);
+    setTengoErrorEn({ ...tengoErrorEn, global: false });
+
+    await sleep(3000);
+
+    if (user.contrasenia !== user.confirmarContraseña) {
+      ERRORES.mensajeDeError = 'Las contraseñas no coinciden.';
+      setTengoErrorEn({ ...tengoErrorEn, global: true });
+      return;
+    }
 
     create('/usuarios/registro', user)
       .then((res) => {
-        console.log(res);
-        setInfoUsuario(res.token);
+        setInfoUsuario({
+          token: res.token,
+          nombre: res.nombre,
+          apellido: res.apellido,
+          dni: res,
+        });
+        setEstaAutorizado(true);
         history.push('/');
       })
       .catch((err) => {
+        ERRORES.mensajeDeError = err.response.data.error;
+        setIconoCargando(false);
         setTengoErrorEn({ ...tengoErrorEn, global: true });
-        console.log(err);
       });
   };
 
@@ -207,7 +228,7 @@ export default function Registro() {
               type="password"
               onChange={handleChange}
               value={user.contrasenia}
-              validators={['required', 'minStringLength:5']}
+              validators={['required', 'minStringLength:6']}
               errorMessages={['Este campo es requerido', ERRORES.contraseña]}
               InputProps={{
                 endAdornment: (
@@ -226,12 +247,13 @@ export default function Registro() {
 
           <Grid item xs={6}>
             <TextValidator
-              id="constraeñaConfirmacion"
+              id="confirmarContraseña"
               label="Confirme la contraseña"
-              name="constraeñaConfirmacion"
+              name="confirmarContraseña"
               type="password"
               onChange={handleChange}
-              validators={['required']}
+              value={user.confirmarContraseña}
+              validators={['required', 'minStringLength:6']}
               errorMessages={['Este campo es requerido', ERRORES.contraseña]}
               InputProps={{
                 endAdornment: (
@@ -247,14 +269,26 @@ export default function Registro() {
           {tengoErrorEn.global && (
             <Grid item xs={12} align="center">
               <Typography color="secondary">
-                Puede que tu nombre de usuario o contraseña sean incorrectos
+                {ERRORES.mensajeDeError}
               </Typography>
             </Grid>
           )}
 
           <Grid container item xs={12} spacing={1}>
             <Grid item xs={6} align="right">
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={iconoCargando}
+              >
+                {iconoCargando && (
+                  <CircularProgress
+                    color="white"
+                    className={classes.loading}
+                    size={25}
+                  />
+                )}
                 Guardar
               </Button>
             </Grid>
@@ -280,4 +314,15 @@ const ERRORES = {
   email: 'Ingrese un email válido.',
   telefono: 'Ingrese un número válido',
   contraseña: 'Ingrese una contraseña válida',
+  mensajeDeError: 'Puede que los datos ingresados ya esten siendo ocupados.',
+};
+
+const useStyles = makeStyles((theme) => ({
+  loading: {
+    marginRight: '10px',
+  },
+}));
+
+Registro.propTypes = {
+  setEstaAutorizado: PropTypes.func,
 };

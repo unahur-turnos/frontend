@@ -31,7 +31,9 @@ export default function App() {
               <Login setEstaAutorizado={setEstaAutorizado} />
             </Route>
 
-            <Route path="/registro" component={Registro} />
+            <Route path="/registro">
+              <Registro setEstaAutorizado={setEstaAutorizado} />
+            </Route>
 
             <PrivateRoute
               exact
