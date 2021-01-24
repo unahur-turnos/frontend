@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
+import InscripcionActividad from './components/actividades/InscripcionActividad';
 import Header from './components/ui/Header';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
@@ -14,9 +15,7 @@ export default function App() {
       <Box my={4}>
         <Router>
           <Switch>
-            <Route exact path="/">
-              <ListadoEspacios />
-            </Route>
+            <Route exact path="/"></Route>
             <Route exact path="/espacios">
               <ListadoEspacios />
             </Route>
@@ -34,6 +33,9 @@ export default function App() {
             </Route>
             <Route path="/actividades/:id">
               <AltaModificacionActividad titulo={'Modificar actividad'} />
+            </Route>
+            <Route path="/inscripcion">
+              <InscripcionActividad />
             </Route>
           </Switch>
         </Router>
