@@ -25,9 +25,9 @@ export default function Registro({ setEstaAutorizado }) {
   const history = useHistory();
   const classes = useStyles();
 
-  const setInfoUsuario = useSetRecoilState(informacionUsuarioState);
+  const setInfoUsuarioRecoil = useSetRecoilState(informacionUsuarioState);
 
-  const [user, setUser] = useState({
+  const [informacionDelUsuario, setInformacionDelUsuario] = useState({
     contrasenia: '',
     confirmarContraseña: '',
   });
@@ -44,8 +44,8 @@ export default function Registro({ setEstaAutorizado }) {
   const emailRegex = new RegExp('/S+@S+.S+/');
 
   const handleChange = (e) => {
-    setUser({
-      ...user,
+    setInformacionDelUsuario({
+      ...informacionDelUsuario,
       [e.target.name]: e.target.value,
     });
   };
@@ -56,15 +56,19 @@ export default function Registro({ setEstaAutorizado }) {
 
     await sleep(3000);
 
-    if (user.contrasenia !== user.confirmarContraseña) {
+    if (
+      informacionDelUsuario.contrasenia !==
+      informacionDelUsuario.confirmarContraseña
+    ) {
       ERRORES.mensajeDeError = 'Las contraseñas no coinciden.';
       setTengoErrorEn({ ...tengoErrorEn, global: true });
+      setIconoCargando(false);
       return;
     }
 
-    create('/usuarios/registro', user)
+    create('/usuarios/registro', informacionDelUsuario)
       .then((res) => {
-        setInfoUsuario({
+        setInfoUsuarioRecoil({
           token: res.token,
           nombre: res.nombre,
           apellido: res.apellido,
@@ -104,7 +108,7 @@ export default function Registro({ setEstaAutorizado }) {
               id="nombreUsuario"
               label="Ingrese su nombre/s"
               name="nombre"
-              value={user.nombre}
+              value={informacionDelUsuario.nombre}
               onChange={handleChange}
               style={{ minWidth: 250 }}
               validators={['required']}
@@ -129,7 +133,7 @@ export default function Registro({ setEstaAutorizado }) {
               label="Ingrese su apellido/s"
               name="apellido"
               onChange={handleChange}
-              value={user.apellido}
+              value={informacionDelUsuario.apellido}
               validators={['required']}
               errorMessages={['Este campo es requerido', ERRORES.apellido]}
               InputProps={{
@@ -153,7 +157,7 @@ export default function Registro({ setEstaAutorizado }) {
               label="Ingrese su DNI"
               name="dni"
               onChange={handleChange}
-              value={user.dni}
+              value={informacionDelUsuario.dni}
               validators={['required', 'matchRegexp:^[0-9]{7,8}$']}
               errorMessages={['Este campo es requerido', ERRORES.dni]}
               InputProps={{
@@ -178,7 +182,7 @@ export default function Registro({ setEstaAutorizado }) {
               label="Ingrese una correo electrónico"
               name="email"
               onChange={handleChange}
-              value={user.email}
+              value={informacionDelUsuario.email}
               validators={['required', 'isEmail']}
               errorMessages={['Este campo es requerido', ERRORES.email]}
               InputProps={{
@@ -202,7 +206,7 @@ export default function Registro({ setEstaAutorizado }) {
               label="Número de celular"
               name="telefono"
               onChange={handleChange}
-              value={user.telefono}
+              value={informacionDelUsuario.telefono}
               validators={['required']}
               errorMessages={['Este campo es requerido', ERRORES.telefono]}
               InputProps={{
@@ -227,7 +231,7 @@ export default function Registro({ setEstaAutorizado }) {
               name="contrasenia"
               type="password"
               onChange={handleChange}
-              value={user.contrasenia}
+              value={informacionDelUsuario.contrasenia}
               validators={['required', 'minStringLength:6']}
               errorMessages={['Este campo es requerido', ERRORES.contraseña]}
               InputProps={{
@@ -252,7 +256,7 @@ export default function Registro({ setEstaAutorizado }) {
               name="confirmarContraseña"
               type="password"
               onChange={handleChange}
-              value={user.confirmarContraseña}
+              value={informacionDelUsuario.confirmarContraseña}
               validators={['required', 'minStringLength:6']}
               errorMessages={['Este campo es requerido', ERRORES.contraseña]}
               InputProps={{
