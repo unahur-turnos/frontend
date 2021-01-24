@@ -18,8 +18,9 @@ import { useSetRecoilState } from 'recoil';
 import informacionUsuarioState from '../../state/login';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
-export default function Login() {
+export default function Login({ setEstaAutorizado }) {
   const history = useHistory();
   const classes = useStyles();
 
@@ -71,15 +72,15 @@ export default function Login() {
       return;
     }
 
-    setIconoCargando(false);
-
     create('/usuarios/login', valoresEntrantes)
       .then((res) => {
         setInfoUsuario(res.token); //PARA CAMBIAR A VARIABLE COMUN
+        setEstaAutorizado(true);
         history.push('/');
       })
       .catch((err) => {
         setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
+        setIconoCargando(false);
       });
   };
 
@@ -213,22 +214,22 @@ export default function Login() {
 
 /*
 <TextField
-            required
-            id="dni"
-            label="Ingrese su documento"
-            name="dni"
-            onChange={handleChange}
-            validations={{ matchRegexp: '^[0-9]{8}$') }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <AssignmentIndIcon />
-                </InputAdornment>
-              ),
-            }}
-            style={{ minWidth: 250 }}
-            error={textFieldState}
-          />
+  required
+  id="dni"
+  label="Ingrese su documento"
+  name="dni"
+  onChange={handleChange}
+  validations={{ matchRegexp: '^[0-9]{8}$') }} ESTO TAMBIÉN SE PROBÓ COMO LISTA, CAMBIANDO LOS ' DE LUGAR
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="start">
+        <AssignmentIndIcon />
+      </InputAdornment>
+    ),
+  }}
+  style={{ minWidth: 250 }}
+  error={textFieldState}
+/>
 */
 
 const ERRORES = {
@@ -245,3 +246,7 @@ const useStyles = makeStyles((theme) => ({
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+Login.propTypes = {
+  setEstaAutorizado: PropTypes.func,
+};

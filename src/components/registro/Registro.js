@@ -11,13 +11,18 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { create } from '../../helpers/fetchApi';
+import { useSetRecoilState } from 'recoil';
+import informacionUsuarioState from '../../state/login';
 
-export default function Login() {
+export default function Registro() {
   const history = useHistory();
+
+  const setInfoUsuario = useSetRecoilState(informacionUsuarioState);
 
   const [user, setUser] = useState('');
   const emailRegex = new RegExp('/S+@S+.S+/');
@@ -27,16 +32,18 @@ export default function Login() {
       ...user,
       [e.target.name]: e.target.value,
     });
+    console.log(user);
   };
 
-  const validarRegistro = () => {
-    try {
-      create('/usuarios/registro', user);
-      history.push('/login');
-    } catch (err) {
-      console.log(err);
-      //setTengoErrorEn({ ...tengoErrorEn, mandarError: true }); Sacar de el login
-    }
+  const validarRegistro = async () => {
+    create('/usuarios/registro', user)
+      .then((res) => {
+        setInfoUsuario(res.token);
+        history.push('/');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -61,8 +68,9 @@ export default function Login() {
           <ValidatorForm instantValidate={false}>
             <TextValidator
               required
+              id="nombreUsuario"
               label="Ingrese su nombre/s"
-              name="documento"
+              name="nombre"
               onChange={handleChange}
               style={{ minWidth: 250 }}
               InputProps={{
@@ -85,7 +93,8 @@ export default function Login() {
             required
             id="apellidoUsuario"
             label="Ingrese su apellido/s"
-            name="apellidoUsuario"
+            name="apellido"
+            onChange={handleChange}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -106,6 +115,8 @@ export default function Login() {
             id="dniUsuario"
             label="Ingrese su DNI"
             name="dni"
+            onChange={handleChange}
+            required
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -128,10 +139,34 @@ export default function Login() {
             label="Ingrese una correo electrónico"
             name="email"
             type="email"
+            onChange={handleChange}
+            required
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <EmailIcon />
+                </InputAdornment>
+              ),
+            }}
+            style={{ minWidth: 250 }}
+          />
+        </Grid>
+
+        <Grid item xs={6} align="right">
+          <Typography variant="h6">Número de celular:</Typography>
+        </Grid>
+
+        <Grid item xs={6}>
+          <TextField
+            id="telefono"
+            label="Número de celular"
+            name="telefono"
+            onChange={handleChange}
+            required
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <PhoneEnabledIcon />
                 </InputAdornment>
               ),
             }}
@@ -147,8 +182,10 @@ export default function Login() {
           <TextField
             id="contraseniaUsuario"
             label="Ingrese una contraseña"
-            name="constraeniaUsuario"
+            name="contrasenia"
             type="password"
+            required
+            onChange={handleChange}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -170,6 +207,8 @@ export default function Login() {
             label="Confirme la contraseña"
             name="constraeñaConfirmacion"
             type="password"
+            required
+            onChange={handleChange}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
