@@ -36,7 +36,6 @@ export default function Espacio(props) {
     setEspacio({
       ...espacio,
       [e.target.name]: e.target.value,
-      edificioId: 123,
     });
   };
 

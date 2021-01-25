@@ -5,12 +5,8 @@ const api = axios.create({
 });
 
 export const getData = async (route) => {
-  try {
-    const response = await api.get(route);
-    return response.data;
-  } catch (error) {
-    console.log(`Error al obtener los datos: ${error}`);
-  }
+  const response = await api.get(route);
+  return response;
 };
 
 export const create = async (route, data) => {
@@ -19,19 +15,11 @@ export const create = async (route, data) => {
 };
 
 export const update = async (route, data) => {
-  try {
-    const response = await api.put(`${route}`, data);
-    return response.data;
-  } catch (error) {
-    console.log(`Error al actualizar: ${error}`);
-  }
+  const response = await api.put(`${route}`, data);
+  return response.data;
 };
 
 export const deleteById = async (route, id) => {
-  try {
-    const response = await api.delete(`${route}/${id}`);
-    return response;
-  } catch (error) {
-    console.log(`Error al eliminar: ${error}`);
-  }
+  const response = await api.delete(`${route}/${id}`);
+  return response;
 };

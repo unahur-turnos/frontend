@@ -14,25 +14,26 @@ import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import Registro from './components/registro/Registro';
 import PropTypes from 'prop-types';
+import estaAutorizadoState from './state/estaAutorizado';
+import { useRecoilValue } from 'recoil';
 
 export default function App() {
-  const [estaAutorizado, setEstaAutorizado] = useState(false);
+  const estaAutorizado = useRecoilValue(estaAutorizadoState);
 
   return (
     <Container>
       <Header />
-      {console.log(estaAutorizado)}
       <Box my={4}>
         <Router>
           <Switch>
-            <Route exact path="/" />
+            <Route exact path="/" component={Login} />
 
             <Route path="/login">
-              <Login setEstaAutorizado={setEstaAutorizado} />
+              <Login />
             </Route>
 
             <Route path="/registro">
-              <Registro setEstaAutorizado={setEstaAutorizado} />
+              <Registro />
             </Route>
 
             <PrivateRoute
@@ -86,9 +87,7 @@ function PrivateRoute({ children, isAuthenticated, ...rest }) {
   return (
     <Route
       {...rest}
-      render={() => {
-        return isAuthenticated === true ? children : <Redirect to={'/login'} />;
-      }}
+      render={() => (isAuthenticated ? children : <Redirect to={'/login'} />)}
     />
   );
 }

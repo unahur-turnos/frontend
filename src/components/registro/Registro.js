@@ -18,14 +18,18 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
-import PropTypes from 'prop-types';
-import informacionUsuarioState from '../../state/login';
+import usuario from '../../state/login';
+import ERRORES from '../ErroresText/Errores';
 
-export default function Registro({ setEstaAutorizado }) {
+export default function Registro() {
   const history = useHistory();
   const classes = useStyles();
+  ValidatorForm.addValidationRule(
+    'isPasswordMatch',
+    (value) => value === informacionDelUsuario.contrasenia
+  );
 
-  const setInfoUsuarioRecoil = useSetRecoilState(informacionUsuarioState);
+  const setInfoUsuarioRecoil = useSetRecoilState(usuario);
 
   const [informacionDelUsuario, setInformacionDelUsuario] = useState({
     contrasenia: '',
@@ -41,7 +45,6 @@ export default function Registro({ setEstaAutorizado }) {
     contraseña: false,
     global: false,
   });
-  const emailRegex = new RegExp('/S+@S+.S+/');
 
   const handleChange = (e) => {
     setInformacionDelUsuario({
@@ -56,16 +59,6 @@ export default function Registro({ setEstaAutorizado }) {
 
     await sleep(3000);
 
-    if (
-      informacionDelUsuario.contrasenia !==
-      informacionDelUsuario.confirmarContraseña
-    ) {
-      ERRORES.mensajeDeError = 'Las contraseñas no coinciden.';
-      setTengoErrorEn({ ...tengoErrorEn, global: true });
-      setIconoCargando(false);
-      return;
-    }
-
     create('/usuarios/registro', informacionDelUsuario)
       .then((res) => {
         setInfoUsuarioRecoil({
@@ -74,7 +67,6 @@ export default function Registro({ setEstaAutorizado }) {
           apellido: res.apellido,
           dni: res,
         });
-        setEstaAutorizado(true);
         history.push('/');
       })
       .catch((err) => {
@@ -112,7 +104,7 @@ export default function Registro({ setEstaAutorizado }) {
               onChange={handleChange}
               style={{ minWidth: 250 }}
               validators={['required']}
-              errorMessages={['Este campo es requerido', ERRORES.nombre]}
+              errorMessages={[ERRORES.requerido, ERRORES.nombre]}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -135,7 +127,7 @@ export default function Registro({ setEstaAutorizado }) {
               onChange={handleChange}
               value={informacionDelUsuario.apellido}
               validators={['required']}
-              errorMessages={['Este campo es requerido', ERRORES.apellido]}
+              errorMessages={[ERRORES.requerido, ERRORES.apellido]}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -158,8 +150,12 @@ export default function Registro({ setEstaAutorizado }) {
               name="dni"
               onChange={handleChange}
               value={informacionDelUsuario.dni}
-              validators={['required', 'matchRegexp:^[0-9]{7,8}$']}
-              errorMessages={['Este campo es requerido', ERRORES.dni]}
+              validators={[
+                'required',
+                'minNumber:1000000',
+                'maxNumber:99999999',
+              ]}
+              errorMessages={[ERRORES.requerido, ERRORES.dni]}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -177,14 +173,13 @@ export default function Registro({ setEstaAutorizado }) {
 
           <Grid item xs={6}>
             <TextValidator
-              validations={{ matchRegexp: emailRegex }}
               id="emailUsuario"
               label="Ingrese una correo electrónico"
               name="email"
               onChange={handleChange}
               value={informacionDelUsuario.email}
               validators={['required', 'isEmail']}
-              errorMessages={['Este campo es requerido', ERRORES.email]}
+              errorMessages={[ERRORES.requerido, ERRORES.email]}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -208,7 +203,7 @@ export default function Registro({ setEstaAutorizado }) {
               onChange={handleChange}
               value={informacionDelUsuario.telefono}
               validators={['required']}
-              errorMessages={['Este campo es requerido', ERRORES.telefono]}
+              errorMessages={[ERRORES.requerido, ERRORES.telefono]}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -233,7 +228,7 @@ export default function Registro({ setEstaAutorizado }) {
               onChange={handleChange}
               value={informacionDelUsuario.contrasenia}
               validators={['required', 'minStringLength:6']}
-              errorMessages={['Este campo es requerido', ERRORES.contraseña]}
+              errorMessages={[ERRORES.requerido, ERRORES.contrasenia]}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -257,8 +252,11 @@ export default function Registro({ setEstaAutorizado }) {
               type="password"
               onChange={handleChange}
               value={informacionDelUsuario.confirmarContraseña}
-              validators={['required', 'minStringLength:6']}
-              errorMessages={['Este campo es requerido', ERRORES.contraseña]}
+              validators={['required', 'isPasswordMatch']}
+              errorMessages={[
+                ERRORES.requerido,
+                ERRORES.contraseniasNoCoinciden,
+              ]}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -312,21 +310,8 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-const ERRORES = {
-  nombre: 'Ingrese su nombre.',
-  apellido: 'Ingrese su apellido.',
-  email: 'Ingrese un email válido.',
-  telefono: 'Ingrese un número válido',
-  contraseña: 'Ingrese una contraseña válida',
-  mensajeDeError: 'Puede que los datos ingresados ya esten siendo ocupados.',
-};
-
 const useStyles = makeStyles((theme) => ({
   loading: {
     marginRight: '10px',
   },
 }));
-
-Registro.propTypes = {
-  setEstaAutorizado: PropTypes.func,
-};

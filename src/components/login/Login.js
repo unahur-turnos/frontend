@@ -3,7 +3,6 @@ import {
   Button,
   Grid,
   InputAdornment,
-  TextField,
   Typography,
   CircularProgress,
 } from '@material-ui/core';
@@ -15,12 +14,12 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { create } from '../../helpers/fetchApi';
 import { useSetRecoilState } from 'recoil';
-import informacionUsuarioState from '../../state/login';
+import usuario from '../../state/login';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+import ERRORES from '../ErroresText/Errores';
 
-export default function Login({ setEstaAutorizado }) {
+export default function Login() {
   const history = useHistory();
   const classes = useStyles();
 
@@ -37,7 +36,7 @@ export default function Login({ setEstaAutorizado }) {
     contrasenia: '',
   });
 
-  const setInfoUsuario = useSetRecoilState(informacionUsuarioState);
+  const setInfoUsuario = useSetRecoilState(usuario);
 
   const handleChange = (e) => {
     setValoresEntrantes({
@@ -60,22 +59,16 @@ export default function Login({ setEstaAutorizado }) {
     setTengoErrorEn({ ...tengoErrorEn, mandarError: false });
 
     await sleep(3000);
+    setIconoCargando(false);
 
     create('/usuarios/login', valoresEntrantes)
       .then((res) => {
-        setInfoUsuario({
-          token: res.token,
-          nombre: res.nombre,
-          apellido: res.apellido,
-          dni: res.dni,
-        });
-        setEstaAutorizado(true);
+        setInfoUsuario(res);
         history.push('/');
       })
 
       .catch((error) => {
         setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
-        setIconoCargando(false);
       });
   };
 
@@ -103,9 +96,10 @@ export default function Login({ setEstaAutorizado }) {
             label="Ingrese su documento"
             onChange={handleChange}
             name="dni"
+            type="number"
             value={valoresEntrantes.dni}
-            validators={['required', 'matchRegexp:^[0-9]{7,8}$']}
-            errorMessages={['Este campo es requerido', ERRORES.dni]}
+            validators={['required', 'minNumber:1000000', 'maxNumber:99999999']}
+            errorMessages={[ERRORES.requerido, ERRORES.dni]}
             style={{ minWidth: 250 }}
             InputProps={{
               endAdornment: (
@@ -131,7 +125,7 @@ export default function Login({ setEstaAutorizado }) {
             style={{ minWidth: 250 }}
             value={valoresEntrantes.contrasenia}
             validators={['required', 'minStringLength:6']}
-            errorMessages={['Este campo es requerido', ERRORES.contrasenia]}
+            errorMessages={[ERRORES.requerido, ERRORES.contrasenia]}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -190,11 +184,6 @@ export default function Login({ setEstaAutorizado }) {
   );
 }
 
-const ERRORES = {
-  dni: 'Ingrese un DNI válido',
-  contrasenia: 'Ingrese una contraseña válida',
-};
-
 const useStyles = makeStyles((theme) => ({
   loading: {
     marginRight: '10px',
@@ -204,7 +193,3 @@ const useStyles = makeStyles((theme) => ({
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-
-Login.propTypes = {
-  setEstaAutorizado: PropTypes.func,
-};
