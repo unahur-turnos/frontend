@@ -16,44 +16,40 @@ import { useRecoilValue } from 'recoil';
 import { todasLasActividades } from '../../state/actividades';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-export default function Paso1DDJJ({ handleChange }) {
-  const headers = {
-    headers: {
-      Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImRuaSI6MzMsImlhdCI6MTYxMTUyODU0OSwiZXhwIjoxNjI3MDgwNTQ5fQ.SA77Q9lHe390tJxuRFAwQOUKWmnlRke1xn23LCYWYjE',
-    },
-  };
-
-  const actividadesPorIdDB = useRecoilValue(todasLasActividades(headers));
-  //const actividadesPorIdDB = useRecoilValue(actividadPorId);
-  //const actividadesDB = useRecoilValue(todasLasActividades);
+export default function Paso1DDJJ({ handleChange, informacionSeleccionada }) {
+  // const actividadesPorIdDB = useRecoilValue(todasLasActividades({
+  //   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImRuaSI6MzMsImlhdCI6MTYxMTUyODU0OSwiZXhwIjoxNjI3MDgwNTQ5fQ.SA77Q9lHe390tJxuRFAwQOUKWmnlRke1xn23LCYWYjE',
+  // }));
 
   const classes = useStyles();
+  const horaSeleccionada = new Date(
+    informacionSeleccionada.actividadSeleccionada.fechaHoraInicio
+  );
 
-  // useEffect( async () => {
-  //   try{
-  //     const response = await getData('actividades', {
-  //       'headers': {
-  //         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImRuaSI6MzMsImlhdCI6MTYxMTUyODU0OSwiZXhwIjoxNjI3MDgwNTQ5fQ.SA77Q9lHe390tJxuRFAwQOUKWmnlRke1xn23LCYWYjE'
-  //       }
-  //     });
-  //     setActividad(response.data.data);
-  //   }
-  //   catch(error){
-  //     return;
-  //   }
-  // }, [])
+  useEffect(async () => {
+    try {
+      const response = await getData('actividades', {
+        headers: {
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImRuaSI6MzMsImlhdCI6MTYxMTUyODU0OSwiZXhwIjoxNjI3MDgwNTQ5fQ.SA77Q9lHe390tJxuRFAwQOUKWmnlRke1xn23LCYWYjE',
+        },
+      });
 
-  const [actividad, setActividad] = useState(actividadesPorIdDB);
+      setActividad(response.data.data);
+    } catch (error) {
+      return;
+    }
+  }, []);
+
+  const [actividad, setActividad] = useState([]);
 
   const matches = useMediaQuery('(min-width:600px)');
 
   return (
     <>
-      {console.log()}
       <Box mt={8} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
-          Declaración jurada
+          Solicitud de una actividad
         </Typography>
       </Box>
       <Grid
@@ -72,13 +68,13 @@ export default function Paso1DDJJ({ handleChange }) {
               Actividades disponibles:
             </InputLabel>
             <Select
-              labelId="labelIdActividad"
-              id="selectIDActividad"
-              name="actividadId"
+              labelId="actividadesDisponibles"
+              id="actividadSeleccionada"
+              name="actividadSeleccionada"
               onChange={handleChange}
             >
               {actividad.map((actividad, id) => (
-                <MenuItem key={actividad.id} value={actividad.id}>
+                <MenuItem key={actividad.id} value={actividad}>
                   {actividad.nombre}
                 </MenuItem>
               ))}
@@ -92,13 +88,29 @@ export default function Paso1DDJJ({ handleChange }) {
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <FormControl style={{ minWidth: 250 }}>
-            <InputLabel id="labelEspacios">Único horario</InputLabel>
+            <InputLabel id="labelHorario">Único horario</InputLabel>
             <Select
-              labelId="labelEspacios"
-              name="espacioId"
+              labelId="labelHorario"
+              name="horario"
+              defaultValue={horaSeleccionada}
               onChange={handleChange}
             >
-              <MenuItem>Hardcode</MenuItem>
+              <MenuItem
+                key={horaSeleccionada}
+                value={
+                  horaSeleccionada.toLocaleDateString() +
+                  ' ' +
+                  horaSeleccionada.getHours() +
+                  ':' +
+                  horaSeleccionada.getMinutes()
+                }
+              >
+                {horaSeleccionada.toLocaleDateString() +
+                  ' ' +
+                  horaSeleccionada.getHours() +
+                  ':' +
+                  horaSeleccionada.getMinutes()}
+              </MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -135,6 +147,7 @@ const useStyles = makeStyles({
 
 Paso1DDJJ.propTypes = {
   handleChange: PropTypes.func,
+  informacionSeleccionada: PropTypes.object,
 };
 
 const styles = (theme) => ({

@@ -1,18 +1,12 @@
 import {
   Box,
-  Button,
   FormControl,
   FormControlLabel,
   Grid,
-  InputLabel,
-  MenuItem,
   Radio,
   RadioGroup,
-  Select,
-  TextField,
   Typography,
 } from '@material-ui/core';
-import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
 

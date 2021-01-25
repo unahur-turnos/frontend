@@ -8,7 +8,9 @@ export const todasLasActividades = selector({
   key: 'todasLasActividades',
   get: (headers) => async ({ get }) => {
     get(contadorActualizacionesState('actividades'));
-    const { data } = await getData('actividades', headers);
+    const { data } = await getData('actividades', {
+      headers: headers,
+    });
     return data;
   },
 });

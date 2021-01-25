@@ -12,11 +12,13 @@ export default function Actividad() {
   const { id } = useParams();
   const classes = useStyles();
 
-  const [actividad, setActividad] = useState();
+  const [informacionSeleccionada, setInformacionSeleccionada] = useState(
+    ESTADOINICIAL
+  );
 
   const handleChange = (e) => {
-    setActividad({
-      ...actividad,
+    setInformacionSeleccionada({
+      ...informacionSeleccionada,
       [e.target.name]: e.target.value,
     });
   };
@@ -27,7 +29,12 @@ export default function Actividad() {
 
   return (
     <>
-      {numeroPaso === 1 && <Paso1DDJJ handleChange={handleChange} />}
+      {numeroPaso === 1 && (
+        <Paso1DDJJ
+          handleChange={handleChange}
+          informacionSeleccionada={informacionSeleccionada}
+        />
+      )}
       {numeroPaso === 2 && <Paso2DDJJ handleChange={handleChange} />}
       {numeroPaso === 3 && <Paso3DDJJ handleChange={handleChange} />}
 
@@ -71,3 +78,9 @@ const useStyles = makeStyles({
     marginTop: '25px',
   },
 });
+
+const ESTADOINICIAL = {
+  actividadSeleccionada: {
+    fechaHoraInicio: '',
+  },
+};
