@@ -1,21 +1,23 @@
-import { Box, Container } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import Header from './components/ui/Header';
+import NavBar from './components/ui/NavBar';
+import Footer from './components/ui/Footer';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 
 export default function App() {
   return (
-    <Container>
+    <>
       <Header />
-      <Box my={4}>
+      <Box>
         <Router>
+          <NavBar />
           <Switch>
             <Route exact path="/">
-              <ListadoEspacios />
+              <ListadoActividades />
             </Route>
             <Route exact path="/espacios">
               <ListadoEspacios />
@@ -38,6 +40,7 @@ export default function App() {
           </Switch>
         </Router>
       </Box>
-    </Container>
+      <Footer />
+    </>
   );
 }
