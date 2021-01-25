@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import InscripcionActividad from './components/actividadUsuario/InscripcionActividad';
+import FinalDDJJ from './components/actividadUsuario/FinalDDJJ';
 import Header from './components/ui/Header';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
@@ -16,6 +17,9 @@ export default function App() {
         <Router>
           <Switch>
             <Route exact path="/"></Route>
+            <Route path="/final">
+              <FinalDDJJ />
+            </Route>
             <Route exact path="/espacios">
               <ListadoEspacios />
             </Route>
