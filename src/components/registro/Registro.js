@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { create } from '../../helpers/fetchApi';
+import { useApi } from '../../helpers/fetchApi';
 import { useSetRecoilState } from 'recoil';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
@@ -24,12 +24,13 @@ import ERRORES from '../ErroresText/Errores';
 export default function Registro() {
   const history = useHistory();
   const classes = useStyles();
+  const { create } = useApi('usuarios/registro');
   ValidatorForm.addValidationRule(
     'isPasswordMatch',
     (value) => value === informacionDelUsuario.contrasenia
   );
 
-  const setInfoUsuarioRecoil = useSetRecoilState(usuarioState);
+  const setUsuario = useSetRecoilState(usuarioState);
 
   const [informacionDelUsuario, setInformacionDelUsuario] = useState({
     contrasenia: '',
@@ -57,15 +58,10 @@ export default function Registro() {
     setIconoCargando(true);
     setTengoErrorEn({ ...tengoErrorEn, global: false });
 
-    create('/usuarios/registro', informacionDelUsuario)
+    create(informacionDelUsuario)
       .then((res) => {
-        setInfoUsuarioRecoil({
-          token: res.token,
-          nombre: res.nombre,
-          apellido: res.apellido,
-          dni: res,
-        });
-        history.push('/');
+        setUsuario(res);
+        history.push('/actividades');
       })
       .catch((err) => {
         ERRORES.mensajeDeError = err.response.data.error;

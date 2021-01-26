@@ -1,3 +1,4 @@
+import { has } from 'ramda';
 import { atom, selector } from 'recoil';
 
 export const usuarioState = atom({
@@ -7,5 +8,5 @@ export const usuarioState = atom({
 
 export const estaAutorizadoState = selector({
   key: 'estaAutorizado',
-  get: ({ get }) => get(usuarioState).token !== undefined,
+  get: ({ get }) => has('token', get(usuarioState)),
 });

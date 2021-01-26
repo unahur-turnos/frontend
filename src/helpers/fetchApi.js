@@ -1,11 +1,16 @@
 import axios from 'axios';
+import { has } from 'ramda';
+import { useRecoilValue } from 'recoil';
+import { usuarioState } from '../state/usuario';
 
-const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-});
+const makeApi = (usuario) =>
+  axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+    ...makeOptions(usuario),
+  });
 
 const makeOptions = (usuario) =>
-  usuario
+  has('token', usuario)
     ? {
         headers: {
           Authorization: `Bearer ${usuario.token}`,
@@ -13,22 +18,27 @@ const makeOptions = (usuario) =>
       }
     : {};
 
-export const getData = async (route, usuario) => {
-  const response = await api.get(route, makeOptions(usuario));
-  return response.data;
+export const getData = async (path, usuario) => {
+  const { data } = await makeApi(usuario).get(path);
+  return data;
 };
 
-export const create = async (route, data, usuario) => {
-  const response = await api.post(route, data, makeOptions(usuario));
-  return response;
-};
+export function useApi(path) {
+  const usuario = useRecoilValue(usuarioState);
+  const api = makeApi(usuario);
 
-export const update = async (route, data, usuario) => {
-  const response = await api.put(`${route}`, data, makeOptions(usuario));
-  return response.data;
-};
-
-export const deleteById = async (route, id, usuario) => {
-  const response = await api.delete(`${route}/${id}`, makeOptions(usuario));
-  return response;
-};
+  return {
+    create: async (entity) => {
+      const { data } = await api.post(path, entity);
+      return data;
+    },
+    update: async (entity) => {
+      const { data } = await api.put(`${path}/${entity.id}`, entity);
+      return data;
+    },
+    deleteById: async (id) => {
+      const { data } = await api.delete(`${path}/${id}`);
+      return data;
+    },
+  };
+}

@@ -12,7 +12,7 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { create } from '../../helpers/fetchApi';
+import { useApi } from '../../helpers/fetchApi';
 import { useSetRecoilState } from 'recoil';
 import { usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
@@ -22,6 +22,7 @@ import ERRORES from '../ErroresText/Errores';
 export default function Login() {
   const history = useHistory();
   const classes = useStyles();
+  const { create } = useApi('usuarios/login');
 
   const [showPassword, setshowPassword] = useState(false);
   const [iconoCargando, setIconoCargando] = useState(false);
@@ -36,7 +37,7 @@ export default function Login() {
     contrasenia: '',
   });
 
-  const setInfoUsuario = useSetRecoilState(usuarioState);
+  const setUsuario = useSetRecoilState(usuarioState);
 
   const handleChange = (e) => {
     setValoresEntrantes({
@@ -59,9 +60,9 @@ export default function Login() {
     setTengoErrorEn({ ...tengoErrorEn, mandarError: false });
     setIconoCargando(false);
 
-    create('/usuarios/login', valoresEntrantes)
-      .then(({ data }) => {
-        setInfoUsuario(data);
+    create(valoresEntrantes)
+      .then((usuario) => {
+        setUsuario(usuario);
         history.push('/actividades');
       })
 

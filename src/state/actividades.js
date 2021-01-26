@@ -19,7 +19,7 @@ export const actividadPorId = selectorFamily({
   get: (id) => async ({ get }) => {
     get(contadorActualizacionesState('actividades'));
     return id !== undefined
-      ? await getData(`actividades/${id}`)
+      ? await getData(`actividades/${id}`, get(usuarioState))
       : {
           data: {
             espacioId: null,
