@@ -21,12 +21,14 @@ import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { todosLosEdificios } from '../../state/edificio';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { usuarioState } from '../../state/usuario';
 
 export default function Espacio(props) {
   const { id } = useParams();
   const { titulo } = props;
   const espacioDB = useRecoilValue(espacioPorId(id)).data;
   const edificiosDB = useRecoilValue(todosLosEdificios);
+  const usuario = useRecoilValue(usuarioState);
   const history = useHistory();
   const notificarActualizacion = useNotificarActualizacion('espacios');
 
@@ -41,9 +43,9 @@ export default function Espacio(props) {
 
   const saveData = async () => {
     if (id !== undefined) {
-      await update(`espacios/${id}`, espacio);
+      await update(`espacios/${id}`, espacio, usuario);
     } else {
-      await create('espacios', espacio);
+      await create('espacios', espacio, usuario);
     }
 
     notificarActualizacion();

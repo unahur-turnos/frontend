@@ -4,8 +4,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useRecoilValue } from 'recoil';
 import { deleteById } from '../../helpers/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
+import { usuarioState } from '../../state/usuario';
 
 export default function ConfirmarEliminacion({
   abrirModal,
@@ -14,13 +16,14 @@ export default function ConfirmarEliminacion({
   entidadAEliminar,
 }) {
   const notificarActualizacion = useNotificarActualizacion(ruta);
+  const usuario = useRecoilValue(usuarioState);
 
   const cerrarModal = () => {
     setAbrirModal(false);
   };
 
   const eliminar = async () => {
-    await deleteById(ruta, entidadAEliminar.id);
+    await deleteById(ruta, entidadAEliminar.id, usuario);
     notificarActualizacion();
     cerrarModal();
   };
