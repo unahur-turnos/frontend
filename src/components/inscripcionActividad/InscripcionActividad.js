@@ -23,20 +23,31 @@ export default function Actividad() {
     });
   };
 
+  const agregarUnValor = (name, valor) => {
+    setInformacionSeleccionada({
+      ...informacionSeleccionada,
+      [name]: valor,
+    });
+  };
+
   const avanzarAlSiguiente = () => {
     setNumeroPaso(numeroPaso + 1);
   };
 
   return (
     <>
+      {console.log(informacionSeleccionada)}
       {numeroPaso === 1 && (
         <Paso1DDJJ
           handleChange={handleChange}
-          informacionSeleccionada={informacionSeleccionada}
+          setInformacionSeleccionada={setInformacionSeleccionada}
+          agregarUnValor={agregarUnValor}
         />
       )}
       {numeroPaso === 2 && <Paso2DDJJ handleChange={handleChange} />}
-      {numeroPaso === 3 && <Paso3DDJJ handleChange={handleChange} />}
+      {numeroPaso === 3 && (
+        <Paso3DDJJ informacionSeleccionada={informacionSeleccionada} />
+      )}
 
       <Grid item xs={12}>
         <Typography
@@ -80,7 +91,9 @@ const useStyles = makeStyles({
 });
 
 const ESTADOINICIAL = {
-  actividadSeleccionada: {
-    fechaHoraInicio: '',
-  },
+  medioDeTransporte: 'Auto',
+  personaDeRiesgo: false,
+  estuvoEnContacto: false,
+  autorizacionCuidar: false,
+  capacitacionUNAHUR: false,
 };

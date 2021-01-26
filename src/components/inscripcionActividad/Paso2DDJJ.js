@@ -40,16 +40,16 @@ export default function Paso2DDJJ({ handleChange }) {
               row
               aria-label="personaDeRiesgo"
               name="personaDeRiesgo"
-              value={'Si'}
               onChange={handleChange}
+              defaultValue={'false'}
             >
               <FormControlLabel
-                value={'Si'}
+                value={'true'}
                 control={<Radio color="primary" />}
                 label="Si"
               />
               <FormControlLabel
-                value={'No'}
+                value={'false'}
                 control={<Radio color="primary" />}
                 label="No"
               />
@@ -70,16 +70,16 @@ export default function Paso2DDJJ({ handleChange }) {
               row
               aria-label="contactoConAlguien"
               name="contactoConAlguien"
-              value={'Si'}
               onChange={handleChange}
+              defaultValue={'false'}
             >
               <FormControlLabel
-                value={'Si'}
+                value={'true'}
                 control={<Radio color="primary" />}
                 label="Si"
               />
               <FormControlLabel
-                value={'No'}
+                value={'false'}
                 control={<Radio color="primary" />}
                 label="No"
               />
@@ -97,47 +97,18 @@ export default function Paso2DDJJ({ handleChange }) {
           <FormControl>
             <RadioGroup
               row
-              aria-label="contactoConAlguien"
-              name="contactoConAlguien"
-              value={'Si'}
+              aria-label="autorizacionCuidar"
+              name="autorizacionCuidar"
               onChange={handleChange}
+              defaultValue={'false'}
             >
               <FormControlLabel
-                value={'Si'}
+                value={'true'}
                 control={<Radio color="primary" />}
                 label="Si"
               />
               <FormControlLabel
-                value={'No'}
-                control={<Radio color="primary" />}
-                label="No"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12} align="center">
-          <Typography variant="h6">
-            ¿Qué medio de transporte utilizaría para ir a la universidad?
-          </Typography>
-        </Grid>
-
-        <Grid item xs={12} align="center">
-          <FormControl>
-            <RadioGroup
-              row
-              aria-label="contactoConAlguien"
-              name="contactoConAlguien"
-              value={'Si'}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value={'Si'}
-                control={<Radio color="primary" />}
-                label="Si"
-              />
-              <FormControlLabel
-                value={'No'}
+                value={'false'}
                 control={<Radio color="primary" />}
                 label="No"
               />
@@ -155,18 +126,18 @@ export default function Paso2DDJJ({ handleChange }) {
           <FormControl>
             <RadioGroup
               row
-              aria-label="contactoConAlguien"
-              name="contactoConAlguien"
-              value={'Si'}
+              aria-label="capacitacionUNAHUR"
+              name="capacitacionUNAHUR"
+              defaultValue={'false'}
               onChange={handleChange}
             >
               <FormControlLabel
-                value={'Si'}
+                value={'true'}
                 control={<Radio color="primary" />}
                 label="Si"
               />
               <FormControlLabel
-                value={'No'}
+                value={'false'}
                 control={<Radio color="primary" />}
                 label="No"
               />

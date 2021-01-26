@@ -4,13 +4,11 @@ import { getData } from '../helpers/fetchApi';
 import { dateFormatter } from '../utils/dateUtils';
 import { contadorActualizacionesState } from './actualizaciones';
 
-export const todasLasActividades = selector({
+export const todasLasActividades = selectorFamily({
   key: 'todasLasActividades',
   get: (headers) => async ({ get }) => {
     get(contadorActualizacionesState('actividades'));
-    const { data } = await getData('actividades', {
-      headers: headers,
-    });
+    const { data } = await getData('actividades', headers);
     return data;
   },
 });
