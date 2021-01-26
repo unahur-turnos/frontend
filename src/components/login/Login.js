@@ -13,8 +13,8 @@ import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useApi } from '../../helpers/fetchApi';
-import { useSetRecoilState } from 'recoil';
-import { usuarioState } from '../../state/usuario';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { rutaInicialUsuarioState, usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
 import ERRORES from '../ErroresText/Errores';
@@ -38,6 +38,7 @@ export default function Login() {
   });
 
   const setUsuario = useSetRecoilState(usuarioState);
+  const rutaInicialUsuario = useRecoilValue(rutaInicialUsuarioState);
 
   const handleChange = (e) => {
     setValoresEntrantes({
@@ -63,7 +64,7 @@ export default function Login() {
     create(valoresEntrantes)
       .then((usuario) => {
         setUsuario(usuario);
-        history.push('/actividades');
+        history.push(rutaInicialUsuario);
       })
 
       .catch(() => {

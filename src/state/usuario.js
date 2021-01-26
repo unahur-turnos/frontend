@@ -6,7 +6,14 @@ export const usuarioState = atom({
   default: { dni: '', contrasenia: '' },
 });
 
+// TODO: modificar este selector cuando la autorización dependa del rol
 export const estaAutorizadoState = selector({
   key: 'estaAutorizado',
   get: ({ get }) => has('token', get(usuarioState)),
+});
+
+// TODO: modificar este selector cuando la ruta dependa del rol
+export const rutaInicialUsuarioState = selector({
+  key: 'rutaInicialUsuario',
+  get: () => '/actividades',
 });

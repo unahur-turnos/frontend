@@ -12,13 +12,13 @@ import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { useApi } from '../../helpers/fetchApi';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
-import { usuarioState } from '../../state/usuario';
+import { rutaInicialUsuarioState, usuarioState } from '../../state/usuario';
 import ERRORES from '../ErroresText/Errores';
 
 export default function Registro() {
@@ -31,6 +31,7 @@ export default function Registro() {
   );
 
   const setUsuario = useSetRecoilState(usuarioState);
+  const rutaInicialUsuario = useRecoilValue(rutaInicialUsuarioState);
 
   const [informacionDelUsuario, setInformacionDelUsuario] = useState({
     contrasenia: '',
@@ -61,7 +62,7 @@ export default function Registro() {
     create(informacionDelUsuario)
       .then((res) => {
         setUsuario(res);
-        history.push('/actividades');
+        history.push(rutaInicialUsuario);
       })
       .catch((err) => {
         ERRORES.mensajeDeError = err.response.data.error;
