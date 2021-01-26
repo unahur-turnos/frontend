@@ -1,12 +1,8 @@
 import { Box } from '@material-ui/core';
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  Redirect,
-} from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
+import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Header from './components/ui/Header';
 import NavBar from './components/ui/NavBar';
 import Footer from './components/ui/Footer';
@@ -14,13 +10,8 @@ import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import Registro from './components/registro/Registro';
-import PropTypes from 'prop-types';
-import { estaAutorizadoState } from './state/usuario';
-import { useRecoilValue } from 'recoil';
 
 export default function App() {
-  const estaAutorizado = useRecoilValue(estaAutorizadoState);
-
   return (
     <>
       <Header />
@@ -38,44 +29,27 @@ export default function App() {
               <Registro />
             </Route>
 
-            <PrivateRoute
-              exact
-              path="/espacios"
-              isAuthenticated={estaAutorizado}
-            >
+            <PrivateRoute exact path="/espacios">
               <ListadoEspacios />
             </PrivateRoute>
 
-            <PrivateRoute
-              path="/espacios/nuevo"
-              isAuthenticated={estaAutorizado}
-            >
+            <PrivateRoute path="/espacios/nuevo">
               <AltaModificacionEspacio titulo={'Carga de espacios'} />
             </PrivateRoute>
 
-            <PrivateRoute path="/espacios/:id" isAuthenticated={estaAutorizado}>
+            <PrivateRoute path="/espacios/:id">
               <AltaModificacionEspacio titulo={'Modificar espacio'} />
             </PrivateRoute>
 
-            <PrivateRoute
-              exact
-              path="/actividades"
-              isAuthenticated={estaAutorizado}
-            >
+            <PrivateRoute exact path="/actividades">
               <ListadoActividades />
             </PrivateRoute>
 
-            <PrivateRoute
-              path="/actividades/nueva"
-              isAuthenticated={estaAutorizado}
-            >
+            <PrivateRoute path="/actividades/nueva">
               <AltaModificacionActividad titulo={'Carga de actividades'} />
             </PrivateRoute>
 
-            <PrivateRoute
-              path="/actividades/:id"
-              isAuthenticated={estaAutorizado}
-            >
+            <PrivateRoute path="/actividades/:id">
               <AltaModificacionActividad titulo={'Modificar actividad'} />
             </PrivateRoute>
           </Switch>
@@ -85,17 +59,3 @@ export default function App() {
     </>
   );
 }
-
-function PrivateRoute({ children, isAuthenticated, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={() => (isAuthenticated ? children : <Redirect to={'/login'} />)}
-    />
-  );
-}
-
-PrivateRoute.propTypes = {
-  isAuthenticated: PropTypes.bool,
-  children: PropTypes.object,
-};
