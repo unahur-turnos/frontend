@@ -18,7 +18,7 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
-import usuario from '../../state/login';
+import { usuarioState } from '../../state/usuario';
 import ERRORES from '../ErroresText/Errores';
 
 export default function Registro() {
@@ -29,7 +29,7 @@ export default function Registro() {
     (value) => value === informacionDelUsuario.contrasenia
   );
 
-  const setInfoUsuarioRecoil = useSetRecoilState(usuario);
+  const setInfoUsuarioRecoil = useSetRecoilState(usuarioState);
 
   const [informacionDelUsuario, setInformacionDelUsuario] = useState({
     contrasenia: '',
@@ -56,8 +56,6 @@ export default function Registro() {
   const validarRegistro = async () => {
     setIconoCargando(true);
     setTengoErrorEn({ ...tengoErrorEn, global: false });
-
-    await sleep(3000);
 
     create('/usuarios/registro', informacionDelUsuario)
       .then((res) => {
@@ -155,7 +153,7 @@ export default function Registro() {
                 'minNumber:1000000',
                 'maxNumber:99999999',
               ]}
-              errorMessages={[ERRORES.requerido, ERRORES.dni]}
+              errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -306,11 +304,7 @@ export default function Registro() {
   );
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   loading: {
     marginRight: '10px',
   },

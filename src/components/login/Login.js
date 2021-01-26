@@ -14,7 +14,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { create } from '../../helpers/fetchApi';
 import { useSetRecoilState } from 'recoil';
-import usuario from '../../state/login';
+import { usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
 import ERRORES from '../ErroresText/Errores';
@@ -36,7 +36,7 @@ export default function Login() {
     contrasenia: '',
   });
 
-  const setInfoUsuario = useSetRecoilState(usuario);
+  const setInfoUsuario = useSetRecoilState(usuarioState);
 
   const handleChange = (e) => {
     setValoresEntrantes({
@@ -57,17 +57,15 @@ export default function Login() {
   const validarLogin = async () => {
     setIconoCargando(true);
     setTengoErrorEn({ ...tengoErrorEn, mandarError: false });
-
-    await sleep(3000);
     setIconoCargando(false);
 
     create('/usuarios/login', valoresEntrantes)
-      .then((res) => {
-        setInfoUsuario(res);
-        history.push('/');
+      .then(({ data }) => {
+        setInfoUsuario(data);
+        history.push('/actividades');
       })
 
-      .catch((error) => {
+      .catch(() => {
         setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
       });
   };
@@ -99,7 +97,7 @@ export default function Login() {
             type="number"
             value={valoresEntrantes.dni}
             validators={['required', 'minNumber:1000000', 'maxNumber:99999999']}
-            errorMessages={[ERRORES.requerido, ERRORES.dni]}
+            errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
             style={{ minWidth: 250 }}
             InputProps={{
               endAdornment: (
@@ -184,12 +182,8 @@ export default function Login() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   loading: {
     marginRight: '10px',
   },
 }));
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}

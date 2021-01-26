@@ -5,7 +5,6 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
-import { useState } from 'react';
 import Header from './components/ui/Header';
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
@@ -14,7 +13,7 @@ import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import Registro from './components/registro/Registro';
 import PropTypes from 'prop-types';
-import estaAutorizadoState from './state/estaAutorizado';
+import { estaAutorizadoState } from './state/usuario';
 import { useRecoilValue } from 'recoil';
 
 export default function App() {
