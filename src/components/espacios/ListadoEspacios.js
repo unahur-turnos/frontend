@@ -47,7 +47,7 @@ export default function PantallaEspacios() {
 
   return (
     <>
-      <Box mt={8}>
+      <Box mt={5}>
         <Typography variant="h4" color="primary">
           Espacios
         </Typography>

@@ -66,7 +66,7 @@ export default function AltaActividad(props) {
 
   return (
     <>
-      <Box mt={8}>
+      <Box mt={5}>
         <Typography variant="h4" color="primary">
           {titulo}
         </Typography>

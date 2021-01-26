@@ -1,13 +1,15 @@
-import { Box, Container } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import {
   Route,
   BrowserRouter as Router,
   Switch,
   Redirect,
 } from 'react-router-dom';
-import Header from './components/ui/Header';
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
+import Header from './components/ui/Header';
+import NavBar from './components/ui/NavBar';
+import Footer from './components/ui/Footer';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
@@ -20,10 +22,11 @@ export default function App() {
   const estaAutorizado = useRecoilValue(estaAutorizadoState);
 
   return (
-    <Container>
+    <>
       <Header />
-      <Box my={4}>
+      <Box>
         <Router>
+          <NavBar />
           <Switch>
             <Route exact path="/" component={Login} />
 
@@ -78,7 +81,8 @@ export default function App() {
           </Switch>
         </Router>
       </Box>
-    </Container>
+      <Footer />
+    </>
   );
 }
 
