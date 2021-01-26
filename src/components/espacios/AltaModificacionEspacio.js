@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { useApi } from '../../helpers/fetchApi';
+import { useApi } from '../../utils/fetchApi';
 import PropTypes from 'prop-types';
 import { espacioPorId } from '../../state/espacios';
 import { useNotificarActualizacion } from '../../state/actualizaciones';

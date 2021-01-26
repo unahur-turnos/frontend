@@ -12,7 +12,7 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { useApi } from '../../helpers/fetchApi';
+import { useApi } from '../../utils/fetchApi';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { rutaInicialUsuarioState, usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';

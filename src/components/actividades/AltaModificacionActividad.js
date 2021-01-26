@@ -12,7 +12,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { useApi } from '../../helpers/fetchApi';
+import { useApi } from '../../utils/fetchApi';
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
 import { useNotificarActualizacion } from '../../state/actualizaciones';

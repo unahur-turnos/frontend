@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { useApi } from '../../helpers/fetchApi';
+import { useApi } from '../../utils/fetchApi';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
