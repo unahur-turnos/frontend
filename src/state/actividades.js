@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { dateFormatter } from '../utils/dateUtils';
 import { apiById, apiIndex } from './api';
 
-export const todasLasActividades = selectorFamily({
+export const todasLasActividades = selector({
   key: 'todasLasActividades',
   get: async ({ get }) => {
     const { data } = get(apiIndex('actividades'));

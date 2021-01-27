@@ -12,26 +12,16 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { PropTypes } from 'prop-types';
-import { useState, useEffect } from 'react';
-import { getData } from '../../helpers/fetchApi';
+import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { actividadPorId, todasLasActividades } from '../../state/actividades';
+import { todasLasActividades } from '../../state/actividades';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import moment from 'moment';
 
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   const matches = useMediaQuery('(min-width:600px)');
 
-  const actividadesDB = useRecoilValue(
-    todasLasActividades({
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImRuaSI6MTExMTIyMjIsImlhdCI6MTYxMTY5Njk2NSwiZXhwIjoxNjI3MjQ4OTY1fQ.eEttlDmeTCybNuQqTLXUum_FsmGC_QmEXdSQj3wCaIU',
-      },
-    })
-  );
-
-  const [actividades, setActividades] = useState(actividadesDB.data);
+  const actividades = useRecoilValue(todasLasActividades);
 
   const cambioDeActividad = (nombre, actividad) => {
     agregarUnValor(nombre, actividad);

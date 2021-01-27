@@ -1,16 +1,21 @@
 import { Button, Grid, Typography } from '@material-ui/core';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 import Paso1DDJJ from './Paso1DDJJ';
 import Paso2DDJJ from './Paso2DDJJ';
 import Paso3DDJJ from './Paso3DDJJ';
+import { useApi } from '../../utils/fetchApi';
+import { useRecoilValue } from 'recoil';
+import { usuarioState } from '../../state/usuario';
 
 export default function Actividad() {
-  const [numeroPaso, setNumeroPaso] = useState(1);
-
-  const { id } = useParams();
+  const history = useHistory();
   const classes = useStyles();
+  const { create } = useApi('autorizaciones');
+  const usuario = useRecoilValue(usuarioState);
+
+  const [numeroPaso, setNumeroPaso] = useState(1);
 
   const [informacionSeleccionada, setInformacionSeleccionada] = useState(
     ESTADOINICIAL
@@ -34,9 +39,26 @@ export default function Actividad() {
     setNumeroPaso(numeroPaso + 1);
   };
 
+  const guardarInscripcion = async () => {
+    try {
+      await create({
+        actividadId: informacionSeleccionada.actividad.id,
+        estuvoEnContacto: informacionSeleccionada.estuvoEnContacto,
+        usuarioId: usuario.id,
+      });
+
+      history.push('/inscripcion/final');
+    } catch (error) {
+      console.log(
+        'Hubo un error al crear la autorización. (Hay que ver de mandar un mensaje cuando falla: ' +
+          error
+      );
+      return;
+    }
+  };
+
   return (
     <>
-      {console.log(informacionSeleccionada)}
       {numeroPaso === 1 && (
         <Paso1DDJJ
           handleChange={handleChange}
@@ -61,7 +83,11 @@ export default function Actividad() {
 
       <Grid align="center" className={classes.marginBotonYTexto}>
         {numeroPaso === 3 && (
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={guardarInscripcion}
+          >
             Guardar
           </Button>
         )}

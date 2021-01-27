@@ -28,7 +28,7 @@ export default function App() {
             </Route>
             <Route exact path="/"></Route>
 
-            <Route path="/final">
+            <Route path="/inscripcion/final">
               <FinalDDJJ />
             </Route>
 
