@@ -1,25 +1,21 @@
 import { selector, selectorFamily } from 'recoil';
 import { DateTime } from 'luxon';
-import { getData } from '../helpers/fetchApi';
 import { dateFormatter } from '../utils/dateUtils';
-import { contadorActualizacionesState } from './actualizaciones';
-import { usuarioState } from './usuario';
+import { apiById, apiIndex } from './api';
 
 export const todasLasActividades = selectorFamily({
   key: 'todasLasActividades',
-  get: (headers) => async ({ get }) => {
-    get(contadorActualizacionesState('actividades'));
-    const { data } = await getData('actividades', get(usuarioState));
+  get: async ({ get }) => {
+    const { data } = get(apiIndex('actividades'));
     return data;
   },
 });
 
 export const actividadPorId = selectorFamily({
   key: 'actividadPorId',
-  get: (id, data) => async ({ get }) => {
-    get(contadorActualizacionesState('actividades'));
-    return id !== undefined
-      ? await getData(`actividades/${id}`, data)
+  get: (id) => async ({ get }) =>
+    id !== undefined
+      ? get(apiById({ path: 'actividades', id }))
       : {
           data: {
             espacioId: null,
@@ -31,6 +27,5 @@ export const actividadPorId = selectorFamily({
             tipoResponsable: '',
             estado: false,
           },
-        };
-  },
+        },
 });

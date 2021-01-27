@@ -1,23 +1,19 @@
 import { selector, selectorFamily } from 'recoil';
-import { getData } from '../helpers/fetchApi';
-import { contadorActualizacionesState } from './actualizaciones';
-import { usuarioState } from './usuario';
+import { apiById, apiIndex } from './api';
 
-export const todosLosEspacios = selectorFamily({
+export const todosLosEspacios = selector({
   key: 'todosLosEspacios',
-  get: (header) => async ({ get }) => {
-    get(contadorActualizacionesState('espacios'));
-    const { data } = await getData('espacios', get(usuarioState));
+  get: async ({ get }) => {
+    const { data } = get(apiIndex('espacios'));
     return data;
   },
 });
 
 export const espacioPorId = selectorFamily({
   key: 'espacioPorId',
-  get: (id, header) => async ({ get }) => {
-    get(contadorActualizacionesState('espacios'));
-    return id !== undefined
-      ? await getData(`espacios/${id}`, get(usuarioState))
+  get: (id) => async ({ get }) =>
+    id !== undefined
+      ? get(apiById({ path: 'espacios', id }))
       : {
           data: {
             edificioId: '',
@@ -26,6 +22,5 @@ export const espacioPorId = selectorFamily({
             piso: '',
             habilitado: 'true',
           },
-        };
-  },
+        },
 });

@@ -1,5 +1,5 @@
 import { selector, selectorFamily } from 'recoil';
-import { getData } from '../helpers/fetchApi';
+import { getData } from '../utils/fetchApi';
 import { usuarioState } from './usuario';
 
 export const todosLosEdificios = selector({
