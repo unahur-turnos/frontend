@@ -12,9 +12,9 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { create } from '../../helpers/fetchApi';
-import { useSetRecoilState } from 'recoil';
-import { usuarioState } from '../../state/usuario';
+import { useApi } from '../../utils/fetchApi';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { rutaInicialUsuarioState, usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
 import ERRORES from '../ErroresText/Errores';
@@ -22,6 +22,7 @@ import ERRORES from '../ErroresText/Errores';
 export default function Login() {
   const history = useHistory();
   const classes = useStyles();
+  const { create } = useApi('usuarios/login');
 
   const [showPassword, setshowPassword] = useState(false);
   const [iconoCargando, setIconoCargando] = useState(false);
@@ -36,7 +37,8 @@ export default function Login() {
     contrasenia: '',
   });
 
-  const setInfoUsuario = useSetRecoilState(usuarioState);
+  const setUsuario = useSetRecoilState(usuarioState);
+  const rutaInicialUsuario = useRecoilValue(rutaInicialUsuarioState);
 
   const handleChange = (e) => {
     setValoresEntrantes({
@@ -59,10 +61,10 @@ export default function Login() {
     setTengoErrorEn({ ...tengoErrorEn, mandarError: false });
     setIconoCargando(false);
 
-    create('/usuarios/login', valoresEntrantes)
-      .then(({ data }) => {
-        setInfoUsuario(data);
-        history.push('/actividades');
+    create(valoresEntrantes)
+      .then((usuario) => {
+        setUsuario(usuario);
+        history.push(rutaInicialUsuario);
       })
 
       .catch(() => {

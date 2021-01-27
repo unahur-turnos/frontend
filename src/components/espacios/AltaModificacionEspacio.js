@@ -13,24 +13,22 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { create, update } from '../../helpers/fetchApi';
-
+import { useApi } from '../../utils/fetchApi';
 import PropTypes from 'prop-types';
 import { espacioPorId } from '../../state/espacios';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { todosLosEdificios } from '../../state/edificio';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { usuarioState } from '../../state/usuario';
 
 export default function Espacio(props) {
   const { id } = useParams();
   const { titulo } = props;
   const espacioDB = useRecoilValue(espacioPorId(id)).data;
   const edificiosDB = useRecoilValue(todosLosEdificios);
-  const usuario = useRecoilValue(usuarioState);
   const history = useHistory();
   const notificarActualizacion = useNotificarActualizacion('espacios');
+  const { create, update } = useApi('espacios');
 
   const [espacio, setEspacio] = useState(espacioDB);
 
@@ -43,9 +41,9 @@ export default function Espacio(props) {
 
   const saveData = async () => {
     if (id !== undefined) {
-      await update(`espacios/${id}`, espacio, usuario);
+      await update(espacio);
     } else {
-      await create('espacios', espacio, usuario);
+      await create(espacio);
     }
 
     notificarActualizacion();

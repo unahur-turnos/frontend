@@ -12,8 +12,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { create, update } from '../../helpers/fetchApi';
-
+import { useApi } from '../../utils/fetchApi';
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
@@ -22,15 +21,14 @@ import { todosLosEspacios } from '../../state/espacios';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { usuarioState } from '../../state/usuario';
 
 export default function AltaActividad(props) {
   const { id } = useParams();
   const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
   const notificarActualizacion = useNotificarActualizacion('actividades');
-  const usuario = useRecoilValue(usuarioState);
   const history = useHistory();
+  const { create, update } = useApi('actividades');
 
   const [actividad, setActividad] = useState(actividadDB.data);
   const {
@@ -53,9 +51,9 @@ export default function AltaActividad(props) {
 
   const saveData = async () => {
     if (id !== undefined) {
-      await update(`actividades/${id}`, actividad, usuario);
+      await update(actividad);
     } else {
-      await create('actividades', actividad, usuario);
+      await create(actividad);
     }
 
     notificarActualizacion();
