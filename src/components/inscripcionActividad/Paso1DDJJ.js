@@ -20,10 +20,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import moment from 'moment';
 
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
-  //   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImRuaSI6MzMsImlhdCI6MTYxMTUyODU0OSwiZXhwIjoxNjI3MDgwNTQ5fQ.SA77Q9lHe390tJxuRFAwQOUKWmnlRke1xn23LCYWYjE',
-  // }));
-
-  const classes = useStyles();
   const matches = useMediaQuery('(min-width:600px)');
 
   const actividadesDB = useRecoilValue(
@@ -36,12 +32,9 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   );
 
   const [actividades, setActividades] = useState(actividadesDB.data);
-  const [horaDisponible, setHoraDisponible] = useState(
-    new Date(actividadesDB.data[0].fechaHoraInicio)
-  );
 
-  const cambioDeActividad = (nombre, id) => {
-    agregarUnValor(nombre, id);
+  const cambioDeActividad = (nombre, actividad) => {
+    agregarUnValor(nombre, actividad);
   };
 
   return (
@@ -66,25 +59,25 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
             <Autocomplete //NO SE NOS OCURRIÓ UNA FORMA MEJOR PARA ESTO
               options={actividades}
               onChange={(event, newValue) => {
-                cambioDeActividad('actividadId', newValue.id);
+                cambioDeActividad('actividad', newValue);
               }}
-              getOptionLabel={(option) => {
-                const horaInicio = moment(option.fechaHoraInicio).format(
+              getOptionLabel={(actividad) => {
+                const horaInicio = moment(actividad.fechaHoraInicio).format(
                   'DD/MM'
                 );
-                const minutosInicio = moment(option.fechaHoraInicio).format(
+                const minutosInicio = moment(actividad.fechaHoraInicio).format(
                   'HH:mm'
                 );
-                const minutosFinal = moment(option.fechaHoraFin).format(
+                const minutosFinal = moment(actividad.fechaHoraFin).format(
                   'HH:mm'
                 );
                 return `${
-                  option.nombre
+                  actividad.nombre
                 } ${'\n'}${horaInicio} de ${minutosInicio} a ${minutosFinal}`; // No estaría andando el salto de linea
               }}
               id="actividadId"
               name="actividadId"
-              disableClearable
+              blurOnSelect
               renderInput={(params) => (
                 <TextField
                   {...params}

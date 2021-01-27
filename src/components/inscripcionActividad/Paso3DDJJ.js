@@ -1,8 +1,7 @@
 import { Box, Grid, Typography } from '@material-ui/core';
-import { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import moment from 'moment';
 
 export default function Paso3DDJJ({ informacionSeleccionada }) {
   const matches = useMediaQuery('(min-width:600px)');
@@ -21,37 +20,47 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
         style={{ marginTop: '8px' }}
       >
         <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Nombre y apellido:</Typography>
-        </Grid>
-
-        <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
-          <Typography variant="subtitle1">Florencia Massey</Typography>
-        </Grid>
-
-        <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Número de documento:</Typography>
-        </Grid>
-
-        <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
-          <Typography variant="subtitle1">12312332</Typography>
-        </Grid>
-
-        <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Actividad seleccionada:</Typography>
+          <Typography variant="h6">Nombre de la actividad:</Typography>
         </Grid>
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <Typography variant="subtitle1">
-            {informacionSeleccionada.actividadSeleccionada}
+            {informacionSeleccionada.actividad.nombre}
           </Typography>
         </Grid>
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Horario seleccionado:</Typography>
+          <Typography variant="h6">Fecha y hora de inicio:</Typography>
         </Grid>
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
-          <Typography variant="subtitle1">Medio de transporte</Typography>
+          <Typography variant="subtitle1">
+            {moment(informacionSeleccionada.actividad.fechaHoraInicio).format(
+              'DD/MM HH:mm'
+            )}
+          </Typography>
+        </Grid>
+
+        <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
+          <Typography variant="h6">Fecha y hora final:</Typography>
+        </Grid>
+
+        <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
+          <Typography variant="subtitle1">
+            {moment(informacionSeleccionada.actividad.fechaHoraFin).format(
+              'DD/MM HH:mm'
+            )}
+          </Typography>
+        </Grid>
+
+        <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
+          <Typography variant="h6">Nombre del espacio:</Typography>
+        </Grid>
+
+        <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
+          <Typography variant="subtitle1">
+            {informacionSeleccionada.actividad.Espacio.nombre}
+          </Typography>
         </Grid>
       </Grid>
     </>
