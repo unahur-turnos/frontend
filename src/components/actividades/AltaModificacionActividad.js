@@ -22,12 +22,14 @@ import { todosLosEspacios } from '../../state/espacios';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { usuarioState } from '../../state/usuario';
 
 export default function AltaActividad(props) {
   const { id } = useParams();
   const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
   const notificarActualizacion = useNotificarActualizacion('actividades');
+  const usuario = useRecoilValue(usuarioState);
   const history = useHistory();
 
   const [actividad, setActividad] = useState(actividadDB.data);
@@ -51,9 +53,9 @@ export default function AltaActividad(props) {
 
   const saveData = async () => {
     if (id !== undefined) {
-      await update(`actividades/${id}`, actividad);
+      await update(`actividades/${id}`, actividad, usuario);
     } else {
-      await create('actividades', actividad);
+      await create('actividades', actividad, usuario);
     }
 
     notificarActualizacion();
@@ -64,7 +66,7 @@ export default function AltaActividad(props) {
 
   return (
     <>
-      <Box mt={8}>
+      <Box mt={5}>
         <Typography variant="h4" color="primary">
           {titulo}
         </Typography>

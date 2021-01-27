@@ -3,12 +3,13 @@ import { DateTime } from 'luxon';
 import { getData } from '../helpers/fetchApi';
 import { dateFormatter } from '../utils/dateUtils';
 import { contadorActualizacionesState } from './actualizaciones';
+import { usuarioState } from './usuario';
 
 export const todasLasActividades = selectorFamily({
   key: 'todasLasActividades',
   get: (headers) => async ({ get }) => {
     get(contadorActualizacionesState('actividades'));
-    const { data } = await getData('actividades', headers);
+    const { data } = await getData('actividades', get(usuarioState));
     return data;
   },
 });
