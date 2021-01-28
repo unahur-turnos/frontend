@@ -1,78 +1,86 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
-import { Typography, Link, Button } from '@material-ui/core';
+import Grid from '@material-ui/core/Box';
+import { Typography, Button, useMediaQuery } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import PeopleIcon from '@material-ui/icons/People';
 import { makeStyles } from '@material-ui/core/styles';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import { Link } from 'react-router-dom';
 
 const defaultProps = {
-  bgcolor: 'background.paper',
-  borderColor: 'text.primary',
-  m: 1,
+  //borderColor:"#009688",
+  m: 2,
   border: 1,
   style: { width: '40rem', height: '9rem' },
 };
 
 const useStyles = makeStyles({
-  centrarTexto: {
-    marginTop: '60px',
+  colorTexto: {
     color: 'white',
-  },
-  fondoPrimerBox: {
-    backgroundColor: 'primary',
   },
 });
 
 export default function FinalDDJJ() {
   const classes = useStyles();
+  const matches = useMediaQuery('(min-width:600px)');
 
   return (
     <>
-      <Box display="flex" flexDirection="column">
-        <Box display="flex" justifyContent="center" mt={10}>
-          <Box
+      <Grid direction="column" justifyContent="center" alignItems="center">
+        <Grid mt={matches ? 10 : 4} display="flex" justifyContent="center">
+          <Grid
             borderRadius={16}
             {...defaultProps}
             bgcolor="#009688"
             borderColor="#009688"
-            className={classes.fondoPrimerBox}
           >
+            <Grid items xs={12} align="center" mt={matches ? 2 : 1}>
+              <EventAvailableIcon
+                fontSize="large"
+                align="center"
+                style={{ color: 'white' }}
+              />
+            </Grid>
             <Typography
               align="center"
               variant="h6"
-              className={classes.centrarTexto}
+              className={classes.colorTexto}
             >
-              Su solicitud se ha registrado con éxito. Número de solicitud: 9456
+              Su solicitud se ha registrado con éxito.
             </Typography>
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
 
-        <Box display="flex" justifyContent="center">
-          <Box borderRadius={16} {...defaultProps}>
-            <WarningIcon fontSize="large" align="center"></WarningIcon>
+        <Grid display="flex" justifyContent="center">
+          <Grid borderRadius={16} {...defaultProps}>
+            <Grid items xs={12} align="center" mt={matches ? 2 : 1}>
+              <WarningIcon fontSize="large" align="center"></WarningIcon>
+            </Grid>
             <Typography align="center" variant="h6">
-              Recuerde ingresar al establecimiento con cubrebocas y respetar el
+              Recordá ingresar al establecimiento con cubrebocas y respetar el
               distanciamiento social.
             </Typography>
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
 
-        <Box display="flex" justifyContent="center">
-          <Box borderRadius={16} {...defaultProps}>
-            <PeopleIcon fontSize="large"></PeopleIcon>
+        <Grid display="flex" justifyContent="center">
+          <Grid borderRadius={16} {...defaultProps}>
+            <Grid items xs={12} align="center" mt={matches ? 2 : 1}>
+              <PeopleIcon fontSize="large"></PeopleIcon>
+            </Grid>
             <Typography align="center" variant="h6">
               Lleve registro de las personas con las que estará los próximos 3
               días.
             </Typography>
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
 
-        <Box align="center">
+        <Grid align="center">
           <Button variant="contained" component={Link} to="/" color="primary">
             Volver al Inicio
           </Button>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
     </>
   );
 }

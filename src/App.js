@@ -22,19 +22,19 @@ export default function App() {
           <NavBar />
           <Switch>
             <Route exact path="/" component={Login} />
+            <Route exact path="/"></Route>
 
             <Route path="/login">
               <Login />
-            </Route>
-            <Route exact path="/"></Route>
-
-            <Route path="/inscripcion/final">
-              <FinalDDJJ />
             </Route>
 
             <Route path="/registro">
               <Registro />
             </Route>
+
+            <PrivateRoute path="/inscripcion/final">
+              <FinalDDJJ />
+            </PrivateRoute>
 
             <PrivateRoute exact path="/espacios">
               <ListadoEspacios />

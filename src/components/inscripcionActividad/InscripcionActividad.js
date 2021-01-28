@@ -62,7 +62,6 @@ export default function Actividad() {
       {numeroPaso === 1 && (
         <Paso1DDJJ
           handleChange={handleChange}
-          setInformacionSeleccionada={setInformacionSeleccionada}
           agregarUnValor={agregarUnValor}
         />
       )}
@@ -97,6 +96,7 @@ export default function Actividad() {
             variant="contained"
             color="primary"
             onClick={avanzarAlSiguiente}
+            disabled={informacionSeleccionada.actividad ? false : true}
           >
             Siguiente
           </Button>

@@ -113,6 +113,5 @@ const useStyles = makeStyles({
 
 Paso1DDJJ.propTypes = {
   handleChange: PropTypes.func,
-  setInformacionSeleccionada: PropTypes.func,
   agregarUnValor: PropTypes.func,
 };
