@@ -89,42 +89,6 @@ export default function AltaActividad(props) {
           />
         </Grid>
 
-        <Grid item xs={6} component={Box} align="right" alignSelf="center">
-          <Typography variant="h6">Para quién va dirigido:</Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl>
-            <RadioGroup
-              row
-              aria-label="paraQuienVaDirigido"
-              name="paraQuienVaDirigido"
-              value={true}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value={'Estudiantes'}
-                control={<Radio color="primary" />}
-                label="Estudiantes"
-              />
-              <FormControlLabel
-                value={'Invitados'}
-                control={<Radio color="primary" />}
-                label="Invitados"
-              />
-              <FormControlLabel
-                value={'Docentes'}
-                control={<Radio color="primary" />}
-                label="Docentes"
-              />
-              <FormControlLabel
-                value={'No Docentes'}
-                control={<Radio color="primary" />}
-                label="No Docentes"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-
         <Grid item xs={6} align="right">
           <Typography variant="h6">Espacio:</Typography>
         </Grid>
