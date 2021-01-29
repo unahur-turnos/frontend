@@ -8,6 +8,7 @@ import Paso3DDJJ from './Paso3DDJJ';
 import { useApi } from '../../utils/fetchApi';
 import { useRecoilValue } from 'recoil';
 import { usuarioState } from '../../state/usuario';
+import { DateTime } from 'luxon';
 
 export default function Actividad() {
   const history = useHistory();
@@ -47,12 +48,8 @@ export default function Actividad() {
         usuarioId: usuario.id,
       });
 
-      history.push('/inscripcion/final');
+      history.push('/solicitarAutorizacion/final');
     } catch (error) {
-      console.log(
-        'Hubo un error al crear la autorización. (Hay que ver de mandar un mensaje cuando falla: ' +
-          error
-      );
       return;
     }
   };

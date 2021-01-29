@@ -12,11 +12,11 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { PropTypes } from 'prop-types';
-import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { todasLasActividades } from '../../state/actividades';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import moment from 'moment';
+import { DateTime } from 'luxon';
+import capitalize from 'capitalize';
 
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   const matches = useMediaQuery('(min-width:600px)');
@@ -46,24 +46,26 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <FormControl style={{ minWidth: 250 }}>
-            <Autocomplete //NO SE NOS OCURRIÓ UNA FORMA MEJOR PARA ESTO
+            <Autocomplete
               options={actividades}
+              noOptionsText={'No se encuentra'}
               onChange={(event, newValue) => {
                 cambioDeActividad('actividad', newValue);
               }}
               getOptionLabel={(actividad) => {
-                const horaInicio = moment(actividad.fechaHoraInicio).format(
-                  'DD/MM'
+                const day = capitalize(
+                  DateTime.fromISO(actividad.fechaHoraInicio)
+                    .setLocale('es')
+                    .toFormat('cccc')
                 );
-                const minutosInicio = moment(actividad.fechaHoraInicio).format(
-                  'HH:mm'
-                );
-                const minutosFinal = moment(actividad.fechaHoraFin).format(
-                  'HH:mm'
-                );
-                return `${
-                  actividad.nombre
-                } ${'\n'}${horaInicio} de ${minutosInicio} a ${minutosFinal}`; // No estaría andando el salto de linea
+                const timeStart = DateTime.fromISO(actividad.fechaHoraInicio)
+                  .setLocale('es')
+                  .toFormat("dd 'de' T 'a'");
+                const timeFinal = DateTime.fromISO(actividad.fechaHoraFin)
+                  .setLocale('es')
+                  .toFormat('T');
+
+                return `${actividad.nombre} ${day} ${timeStart} ${timeFinal}`;
               }}
               id="actividadId"
               name="actividadId"

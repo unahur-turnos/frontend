@@ -1,9 +1,9 @@
 import { Box, Grid, Typography } from '@material-ui/core';
 import { PropTypes } from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import moment from 'moment';
 import { useRecoilValue } from 'recoil';
 import { espacioPorId } from '../../state/espacios';
+import { DateTime } from 'luxon';
 
 export default function Paso3DDJJ({ informacionSeleccionada }) {
   const matches = useMediaQuery('(min-width:600px)');
@@ -40,9 +40,9 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <Typography variant="subtitle1">
-            {moment(informacionSeleccionada.actividad.fechaHoraInicio).format(
-              'DD/MM HH:mm'
-            )}
+            {DateTime.fromISO(informacionSeleccionada.actividad.fechaHoraInicio)
+              .setLocale('es')
+              .toFormat('dd/MM HH:mm')}
           </Typography>
         </Grid>
 
@@ -52,9 +52,12 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <Typography variant="subtitle1">
-            {moment(informacionSeleccionada.actividad.fechaHoraFin).format(
+            {/* {moment(informacionSeleccionada.actividad.fechaHoraFin).format(
               'DD/MM HH:mm'
-            )}
+            )} */}
+            {DateTime.fromISO(informacionSeleccionada.actividad.fechaHoraFin)
+              .setLocale('es')
+              .toFormat('dd/MM HH:mm')}
           </Typography>
         </Grid>
 

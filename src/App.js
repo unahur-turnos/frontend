@@ -22,7 +22,6 @@ export default function App() {
           <NavBar />
           <Switch>
             <Route exact path="/" component={Login} />
-            <Route exact path="/"></Route>
 
             <Route path="/login">
               <Login />
@@ -32,7 +31,7 @@ export default function App() {
               <Registro />
             </Route>
 
-            <PrivateRoute path="/inscripcion/final">
+            <PrivateRoute path="/solicitarAutorizacion/final">
               <FinalDDJJ />
             </PrivateRoute>
 
@@ -59,9 +58,10 @@ export default function App() {
             <PrivateRoute path="/actividades/:id">
               <AltaModificacionActividad titulo={'Modificar actividad'} />
             </PrivateRoute>
-            <Route path="/inscripcion">
+
+            <PrivateRoute path="/solicitarAutorizacion">
               <InscripcionActividad />
-            </Route>
+            </PrivateRoute>
           </Switch>
         </Router>
       </Box>

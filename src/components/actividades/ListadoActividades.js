@@ -36,12 +36,7 @@ export default function ListadoActividades() {
 
   const classes = useStyles();
 
-  const actividades = useRecoilValue(todasLasActividades, {
-    headers: {
-      Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImRuaSI6MTExMTIyMjIsImlhdCI6MTYxMTY5Njk2NSwiZXhwIjoxNjI3MjQ4OTY1fQ.eEttlDmeTCybNuQqTLXUum_FsmGC_QmEXdSQj3wCaIU',
-    },
-  });
+  const actividades = useRecoilValue(todasLasActividades);
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();

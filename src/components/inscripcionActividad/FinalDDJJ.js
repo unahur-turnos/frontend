@@ -8,7 +8,6 @@ import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import { Link } from 'react-router-dom';
 
 const defaultProps = {
-  //borderColor:"#009688",
   m: 2,
   border: 1,
   style: { width: '40rem', height: '9rem' },
@@ -27,7 +26,7 @@ export default function FinalDDJJ() {
   return (
     <>
       <Grid direction="column" justifyContent="center" alignItems="center">
-        <Grid mt={matches ? 10 : 4} display="flex" justifyContent="center">
+        <Grid mt={matches ? 9 : 4} display="flex" justifyContent="center">
           <Grid
             borderRadius={16}
             {...defaultProps}
