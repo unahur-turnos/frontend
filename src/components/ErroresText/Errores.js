@@ -4,7 +4,7 @@ const ERRORES = {
   dni: 'Ingrese un DNI válido',
   email: 'Ingrese un email válido.',
   telefono: 'Ingrese un número válido',
-  contrasenia: 'Ingrese una contraseña válida',
+  contrasenia: 'Ingrese un formato válido',
   contraseniasNoCoinciden: 'Las contraseñas no coinciden.',
   mensajeDeError: 'Puede que los datos ingresados ya esten siendo ocupados.',
   requerido: 'Este campo es requerido',

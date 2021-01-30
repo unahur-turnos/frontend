@@ -5,6 +5,8 @@ import {
   InputAdornment,
   Box,
   CircularProgress,
+  IconButton,
+  Tooltip,
 } from '@material-ui/core';
 
 import { useState } from 'react';
@@ -20,14 +22,22 @@ import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import { rutaInicialUsuarioState, usuarioState } from '../../state/usuario';
 import ERRORES from '../ErroresText/Errores';
+import HelpIcon from '@material-ui/icons/Help';
 
 export default function Registro() {
   const history = useHistory();
   const classes = useStyles();
   const { create } = useApi('usuarios/registro');
+
   ValidatorForm.addValidationRule(
     'isPasswordMatch',
     (value) => value === informacionDelUsuario.contrasenia
+  );
+
+  ValidatorForm.addValidationRule(
+    'contraseñaValida',
+    //eslint-disable-next-line
+    (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(String(value))
   );
 
   const setUsuario = useSetRecoilState(usuarioState);
@@ -210,7 +220,7 @@ export default function Registro() {
             />
           </Grid>
 
-          <Grid item xs={6} align="right">
+          <Grid item xs={6} align="right" component={Box} alignSelf="center">
             <Typography variant="h6">Contraseña:</Typography>
           </Grid>
 
@@ -220,9 +230,10 @@ export default function Registro() {
               label="Ingrese una contraseña"
               name="contrasenia"
               type="password"
+              helperText="Mínimo 8 caracteres, con minúsculas, mayúsculas y números"
               onChange={handleChange}
               value={informacionDelUsuario.contrasenia}
-              validators={['required', 'minStringLength:6']}
+              validators={['required', 'contraseñaValida']}
               errorMessages={[ERRORES.requerido, ERRORES.contrasenia]}
               InputProps={{
                 endAdornment: (
@@ -231,7 +242,7 @@ export default function Registro() {
                   </InputAdornment>
                 ),
               }}
-              style={{ minWidth: 250 }}
+              style={{ maxWidth: 250, minWidth: 249 }}
             />
           </Grid>
 
