@@ -2,6 +2,8 @@ import { Box } from '@material-ui/core';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
+import InscripcionActividad from './components/inscripcionActividad/InscripcionActividad';
+import FinalDDJJ from './components/inscripcionActividad/FinalDDJJ';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Header from './components/ui/Header';
 import NavBar from './components/ui/NavBar';
@@ -51,6 +53,14 @@ export default function App() {
 
             <PrivateRoute path="/actividades/:id">
               <AltaModificacionActividad titulo={'Modificar actividad'} />
+            </PrivateRoute>
+
+            <PrivateRoute path="/autorizaciones/nueva">
+              <InscripcionActividad />
+            </PrivateRoute>
+
+            <PrivateRoute path="/autorizaciones/confirmacion">
+              <FinalDDJJ />
             </PrivateRoute>
           </Switch>
         </Router>
