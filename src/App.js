@@ -31,10 +31,6 @@ export default function App() {
               <Registro />
             </Route>
 
-            <PrivateRoute path="/autorizaciones/confirmación">
-              <FinalDDJJ />
-            </PrivateRoute>
-
             <PrivateRoute exact path="/espacios">
               <ListadoEspacios />
             </PrivateRoute>
@@ -61,6 +57,10 @@ export default function App() {
 
             <PrivateRoute path="/autorizaciones/nueva">
               <InscripcionActividad />
+            </PrivateRoute>
+
+            <PrivateRoute path="/autorizaciones/confirmacion">
+              <FinalDDJJ />
             </PrivateRoute>
           </Switch>
         </Router>

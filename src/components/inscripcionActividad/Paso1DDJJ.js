@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   FormControl,
   Grid,
   TextField,
@@ -9,14 +8,12 @@ import {
   Select,
   Typography,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { PropTypes } from 'prop-types';
 import { useRecoilValue } from 'recoil';
 import { todasLasActividades } from '../../state/actividades';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { DateTime } from 'luxon';
-import capitalize from 'capitalize';
 
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   const matches = useMediaQuery('(min-width:600px)');
@@ -101,12 +98,6 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
     </>
   );
 }
-
-const useStyles = makeStyles({
-  marginTopCampos: {
-    marginTop: '25px',
-  },
-});
 
 Paso1DDJJ.propTypes = {
   handleChange: PropTypes.func,
