@@ -18,5 +18,5 @@ export const estaAutorizadoState = selector({
 export const rutaInicialUsuarioState = selector({
   key: 'rutaInicialUsuario',
   get: ({ get }) =>
-    get(usuarioState).rol === 'admin' ? '/actividades' : '/actividades/nueva',
+    get(usuarioState).rol === 'admin' ? '/actividades' : '/autorizaciones/nueva',
 });
