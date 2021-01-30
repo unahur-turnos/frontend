@@ -1,9 +1,11 @@
 import { has } from 'ramda';
 import { atom, selector } from 'recoil';
+import { localStorageEffect } from './effect';
 
 export const usuarioState = atom({
   key: 'usuario',
-  default: { dni: '', contrasenia: '' },
+  default: {},
+  effects_UNSTABLE: [localStorageEffect('usuario_actual')],
 });
 
 // TODO: modificar este selector cuando la autorización dependa del rol
