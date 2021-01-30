@@ -53,19 +53,14 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
                 cambioDeActividad('actividad', newValue);
               }}
               getOptionLabel={(actividad) => {
-                const day = capitalize(
-                  DateTime.fromISO(actividad.fechaHoraInicio)
-                    .setLocale('es')
-                    .toFormat('cccc')
-                );
                 const timeStart = DateTime.fromISO(actividad.fechaHoraInicio)
                   .setLocale('es')
-                  .toFormat("dd 'de' T 'a'");
+                  .toFormat("cccc dd 'de' T 'a'");
                 const timeFinal = DateTime.fromISO(actividad.fechaHoraFin)
                   .setLocale('es')
                   .toFormat('T');
 
-                return `${actividad.nombre} ${day} ${timeStart} ${timeFinal}`;
+                return `${actividad.nombre} ${timeStart} ${timeFinal}`;
               }}
               id="actividadId"
               name="actividadId"

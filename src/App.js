@@ -31,7 +31,7 @@ export default function App() {
               <Registro />
             </Route>
 
-            <PrivateRoute path="/solicitarAutorizacion/final">
+            <PrivateRoute path="/autorizaciones/confirmación">
               <FinalDDJJ />
             </PrivateRoute>
 
@@ -59,7 +59,7 @@ export default function App() {
               <AltaModificacionActividad titulo={'Modificar actividad'} />
             </PrivateRoute>
 
-            <PrivateRoute path="/solicitarAutorizacion">
+            <PrivateRoute path="/autorizaciones/nueva">
               <InscripcionActividad />
             </PrivateRoute>
           </Switch>

@@ -41,17 +41,13 @@ export default function Actividad() {
   };
 
   const guardarInscripcion = async () => {
-    try {
-      await create({
-        actividadId: informacionSeleccionada.actividad.id,
-        estuvoEnContacto: informacionSeleccionada.estuvoEnContacto,
-        usuarioId: usuario.id,
-      });
+    await create({
+      actividadId: informacionSeleccionada.actividad.id,
+      estuvoEnContacto: informacionSeleccionada.estuvoEnContacto,
+      usuarioId: usuario.id,
+    });
 
-      history.push('/solicitarAutorizacion/final');
-    } catch (error) {
-      return;
-    }
+    history.push('/autorizaciones/confirmación');
   };
 
   return (

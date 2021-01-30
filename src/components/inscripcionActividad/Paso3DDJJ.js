@@ -52,9 +52,6 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <Typography variant="subtitle1">
-            {/* {moment(informacionSeleccionada.actividad.fechaHoraFin).format(
-              'DD/MM HH:mm'
-            )} */}
             {DateTime.fromISO(informacionSeleccionada.actividad.fechaHoraFin)
               .setLocale('es')
               .toFormat('dd/MM HH:mm')}
