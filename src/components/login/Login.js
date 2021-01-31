@@ -5,6 +5,7 @@ import {
   InputAdornment,
   Typography,
   CircularProgress,
+  useMediaQuery,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
@@ -20,19 +21,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import ERRORES from '../ErroresText/Errores';
 
 export default function Login() {
+  const matches = useMediaQuery('(min-width:600px)');
   const history = useHistory();
-  const classes = useStyles();
   const { create } = useApi('usuarios/login');
 
   const [showPassword, setshowPassword] = useState(false);
-  const [iconoCargando, setIconoCargando] = useState(false);
   const [tengoErrorEn, setTengoErrorEn] = useState({
     dni: false,
     contrasenia: false,
     mandarError: false,
   });
 
-  const [valoresEntrantes, setValoresEntrantes] = useState({
+  const [valoresUsuario, setValoresUsuario] = useState({
     dni: '',
     contrasenia: '',
   });
@@ -41,8 +41,8 @@ export default function Login() {
   const rutaInicialUsuario = useRecoilValue(rutaInicialUsuarioState);
 
   const handleChange = (e) => {
-    setValoresEntrantes({
-      ...valoresEntrantes,
+    setValoresUsuario({
+      ...valoresUsuario,
       [e.target.name]: e.target.value,
     });
   };
@@ -57,11 +57,9 @@ export default function Login() {
 
   //VALIDAR LOGIN.
   const validarLogin = async () => {
-    setIconoCargando(true);
     setTengoErrorEn({ ...tengoErrorEn, mandarError: false });
-    setIconoCargando(false);
 
-    create(valoresEntrantes)
+    create(valoresUsuario)
       .then((usuario) => {
         setUsuario(usuario);
         history.push(rutaInicialUsuario);
@@ -74,7 +72,7 @@ export default function Login() {
 
   return (
     <ValidatorForm onSubmit={validarLogin} instantValidate={false}>
-      <Box mt={8} display="flex" justifyContent="center">
+      <Box mt={5} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
           Iniciar sesión
         </Typography>
@@ -83,21 +81,21 @@ export default function Login() {
       <Grid
         container
         alignItems="flex-end"
-        spacing={4}
+        spacing={matches ? 4 : 2}
         style={{ marginTop: '8px' }}
       >
-        <Grid item xs={6} align="right">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Número de documento:</Typography>
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextValidator
             id="dni"
             label="Ingrese su documento"
             onChange={handleChange}
             name="dni"
             type="number"
-            value={valoresEntrantes.dni}
+            value={valoresUsuario.dni}
             validators={['required', 'minNumber:1000000', 'maxNumber:99999999']}
             errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
             style={{ minWidth: 250 }}
@@ -111,11 +109,11 @@ export default function Login() {
           />
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Contraseña:</Typography>
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextValidator
             id="contrasenia"
             label="Ingrese una contraseña"
@@ -123,7 +121,7 @@ export default function Login() {
             type={showPassword ? 'text' : 'password'}
             onChange={handleChange}
             style={{ minWidth: 250 }}
-            value={valoresEntrantes.contrasenia}
+            value={valoresUsuario.contrasenia}
             validators={['required', 'minStringLength:6']}
             errorMessages={[ERRORES.requerido, ERRORES.contrasenia]}
             InputProps={{
@@ -132,6 +130,7 @@ export default function Login() {
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
+                    style={{ color: 'black' }}
                   >
                     {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
@@ -142,7 +141,7 @@ export default function Login() {
         </Grid>
 
         {tengoErrorEn.mandarError && (
-          <Grid item xs={12} align="center">
+          <Grid item xs={12} sm={6} align="center">
             <Typography color="secondary">
               El DNI y/o contraseña ingresados son inválidos, por favor vuelva a
               intentar.
@@ -152,19 +151,7 @@ export default function Login() {
 
         <Grid container item xs={12} spacing={1}>
           <Grid item xs={6} align="right">
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              disabled={iconoCargando}
-            >
-              {iconoCargando && (
-                <CircularProgress
-                  color="white"
-                  className={classes.loading}
-                  size={25}
-                />
-              )}
+            <Button variant="contained" color="primary" type="submit">
               Iniciar sesión
             </Button>
           </Grid>

@@ -26,7 +26,7 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
 
   return (
     <>
-      <Box mt={8} display="flex" justifyContent="center">
+      <Box mt={5} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
           Solicitud de una actividad
         </Typography>
@@ -37,11 +37,11 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
         spacing={4}
         style={{ marginTop: '8px' }}
       >
-        <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Seleccione actividad:</Typography>
         </Grid>
 
-        <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <FormControl style={{ minWidth: 250 }}>
             <Autocomplete
               options={actividades}
@@ -73,11 +73,11 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
           </FormControl>
         </Grid>
 
-        <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Medio de transporte</Typography>
         </Grid>
 
-        <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <FormControl style={{ minWidth: 250 }}>
             <InputLabel id="medioDeTransporte">Elija un transporte</InputLabel>
             <Select

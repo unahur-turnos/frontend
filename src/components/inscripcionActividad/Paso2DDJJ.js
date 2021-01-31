@@ -15,7 +15,7 @@ export default function Paso2DDJJ({ handleChange }) {
 
   return (
     <>
-      <Box mt={12} align="center">
+      <Box mt={5} align="center">
         <Typography variant="h4" color="primary">
           Declaración jurada
         </Typography>
