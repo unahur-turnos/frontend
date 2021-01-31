@@ -91,7 +91,7 @@ export default function App() {
           </Switch>
         </Router>
       </Box>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

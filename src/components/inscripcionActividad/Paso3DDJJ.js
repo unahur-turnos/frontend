@@ -1,15 +1,10 @@
 import { Box, Grid, Typography } from '@material-ui/core';
 import { PropTypes } from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useRecoilValue } from 'recoil';
-import { espacioPorId } from '../../state/espacios';
 import { DateTime } from 'luxon';
 
 export default function Paso3DDJJ({ informacionSeleccionada }) {
   const matches = useMediaQuery('(min-width:600px)');
-  const espacio = useRecoilValue(
-    espacioPorId(informacionSeleccionada.actividad.Espacio.id)
-  ).data;
 
   return (
     <>
@@ -73,7 +68,9 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
         </Grid>
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
-          <Typography variant="subtitle1">{espacio.Edificio.nombre}</Typography>
+          <Typography variant="subtitle1">
+            {informacionSeleccionada.actividad.Espacio.Edificio.nombre}
+          </Typography>
         </Grid>
       </Grid>
     </>
