@@ -23,5 +23,5 @@ export default function PrivateRoute({ children, rolesPermitidos, ...rest }) {
 
 PrivateRoute.propTypes = {
   children: PropTypes.object,
-  rolesPermitidos: PropTypes.object,
+  rolesPermitidos: PropTypes.arrayOf(PropTypes.string)
 };
