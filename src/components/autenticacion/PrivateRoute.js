@@ -9,7 +9,6 @@ export default function PrivateRoute({ children, ...rest }) {
   const validarRutaConRol = () => {
     const ruta = rutas.find((rutaJSON) => rutaJSON.ruta == rest.path);
 
-    console.log(rutas);
     return ruta.roles.some((rol) => rol == estadoUsuario?.rol) ? (
       children
     ) : (
@@ -19,7 +18,6 @@ export default function PrivateRoute({ children, ...rest }) {
 
   return (
     <>
-      {console.log(rest.path)}
       <Route {...rest} render={validarRutaConRol} />
     </>
   );
