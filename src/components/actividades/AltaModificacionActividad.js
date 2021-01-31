@@ -11,6 +11,7 @@ import {
   Select,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 import { useApi } from '../../utils/fetchApi';
 import { PropTypes } from 'prop-types';
@@ -23,6 +24,7 @@ import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
 export default function AltaActividad(props) {
+  const matches = useMediaQuery('(min-width:600px)');
   const { id } = useParams();
   const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
@@ -38,8 +40,6 @@ export default function AltaActividad(props) {
     fechaHoraFin,
     responsable,
     dniResponsable,
-    tipoResponsable,
-    estado,
   } = actividad;
 
   const handleChange = (e) => {
@@ -64,7 +64,7 @@ export default function AltaActividad(props) {
 
   return (
     <>
-      <Box mt={5}>
+      <Box mt={5} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
           {titulo}
         </Typography>
@@ -73,13 +73,14 @@ export default function AltaActividad(props) {
       <Grid
         container
         alignItems="flex-end"
-        spacing={3}
+        spacing={matches ? 4 : 2}
         style={{ marginTop: '8px' }}
       >
-        <Grid item xs={6} align="right">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Nombre de la actividad:</Typography>
         </Grid>
-        <Grid item xs={6}>
+
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextField
             label="Ingrese nombre"
             style={{ minWidth: 250 }}
@@ -89,10 +90,11 @@ export default function AltaActividad(props) {
           />
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Espacio:</Typography>
         </Grid>
-        <Grid item xs={6}>
+
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <FormControl style={{ minWidth: 250 }}>
             <InputLabel id="labelEspacios">Elija un espacio</InputLabel>
             <Select
@@ -110,10 +112,11 @@ export default function AltaActividad(props) {
           </FormControl>
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Fecha/Hora de inicio:</Typography>
         </Grid>
-        <Grid item xs={6}>
+
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextField
             type="datetime-local"
             name="fechaHoraInicio"
@@ -122,10 +125,11 @@ export default function AltaActividad(props) {
           />
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Fecha/Hora de cierre:</Typography>
         </Grid>
-        <Grid item xs={6}>
+
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextField
             type="datetime-local"
             name="fechaHoraFin"
@@ -134,12 +138,13 @@ export default function AltaActividad(props) {
           />
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">
             Nombre y apellido del responsable:
           </Typography>
         </Grid>
-        <Grid item xs={6}>
+
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextField
             label="Ingrese el nombre del responsable"
             style={{ minWidth: 250 }}
@@ -149,10 +154,11 @@ export default function AltaActividad(props) {
           />
         </Grid>
 
-        <Grid item xs={6} align="right">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">DNI del responsable:</Typography>
         </Grid>
-        <Grid item xs={6}>
+
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextField
             label="Ingrese DNI del responsable"
             style={{ minWidth: 250 }}
@@ -162,16 +168,17 @@ export default function AltaActividad(props) {
           />
         </Grid>
 
-        <Grid item xs={6} component={Box} align="right" alignSelf="center">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">En calidad de:</Typography>
         </Grid>
-        <Grid item xs={6}>
+
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <FormControl>
             <RadioGroup
               row
               aria-label="tipoResponsable"
               name="tipoResponsable"
-              value={tipoResponsable}
+              defaultValue={'Docente'}
               onChange={handleChange}
             >
               <FormControlLabel
@@ -193,16 +200,17 @@ export default function AltaActividad(props) {
           </FormControl>
         </Grid>
 
-        <Grid item xs={6} component={Box} align="right" alignSelf="center">
+        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Estado:</Typography>
         </Grid>
-        <Grid item xs={6}>
+
+        <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <FormControl>
             <RadioGroup
               row
               aria-label="estado"
               name="estado"
-              value={estado.toString()}
+              defaultValue={'true'}
               onChange={handleChange}
             >
               <FormControlLabel
@@ -219,19 +227,14 @@ export default function AltaActividad(props) {
           </FormControl>
         </Grid>
 
-        <Grid container item xs={12} align="center" spacing={3}>
+        <Grid container item xs={12} align="center" spacing={1}>
           <Grid item xs={6} align="right">
             <Button variant="contained" color="primary" onClick={saveData}>
-              {!id ? 'Guardar' : 'Actualizar'}
+              Guardar
             </Button>
           </Grid>
           <Grid item xs={6} align="left">
-            <Button
-              variant="contained"
-              color="secondary"
-              component={Link}
-              to="/actividades"
-            >
+            <Button component={Link} to="/actividades">
               Cancelar
             </Button>
           </Grid>

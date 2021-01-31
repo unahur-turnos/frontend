@@ -7,15 +7,12 @@ import {
   RadioGroup,
   Typography,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { PropTypes } from 'prop-types';
 
 export default function Paso2DDJJ({ handleChange }) {
-  const classes = useStyles();
-
   return (
     <>
-      <Box mt={12} align="center">
+      <Box mt={5} align="center">
         <Typography variant="h4" color="primary">
           Declaración jurada
         </Typography>
@@ -152,9 +149,3 @@ export default function Paso2DDJJ({ handleChange }) {
 Paso2DDJJ.propTypes = {
   handleChange: PropTypes.func,
 };
-
-const useStyles = makeStyles({
-  marginBotonYTexto: {
-    marginTop: '25px',
-  },
-});
