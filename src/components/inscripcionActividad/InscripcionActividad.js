@@ -109,7 +109,6 @@ export default function Actividad() {
         <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
           Volver
         </Button>
-        {console.log(numeroPaso === pasos.length - 1)}
         {numeroPaso === 2 ? (
           <Button
             variant="contained"
