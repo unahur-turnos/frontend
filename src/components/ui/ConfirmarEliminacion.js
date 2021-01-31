@@ -37,9 +37,7 @@ export default function ConfirmarEliminacion({
         ?
       </DialogTitle>
       <DialogActions>
-        <Button variant="contained" onClick={cerrarModal}>
-          Cancelar
-        </Button>
+        <Button onClick={cerrarModal}>Cancelar</Button>
         <Button variant="contained" color="secondary" onClick={eliminar}>
           Borrar
         </Button>

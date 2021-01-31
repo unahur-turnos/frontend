@@ -13,7 +13,7 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
 
   return (
     <>
-      <Box mt={12} align="center">
+      <Box mt={5} align="center">
         <Typography variant="h4" color="primary">
           Confirmación
         </Typography>

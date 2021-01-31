@@ -33,23 +33,40 @@ export default function App() {
               <Registro />
             </Route>
 
-            <PrivateRoute exact path="/espacios">
+            <PrivateRoute
+              exact
+              path="/espacios"
+              rolesPermitidos={['bedel', 'admin']}
+            >
               <ListadoEspacios />
             </PrivateRoute>
 
-            <PrivateRoute path="/espacios/nuevo">
+            <PrivateRoute
+              path="/espacios/nuevo"
+              rolesPermitidos={['bedel', 'admin']}
+            >
               <AltaModificacionEspacio titulo={'Carga de espacios'} />
             </PrivateRoute>
 
-            <PrivateRoute path="/espacios/:id">
+            <PrivateRoute
+              path="/espacios/:id"
+              rolesPermitidos={['bedel', 'admin']}
+            >
               <AltaModificacionEspacio titulo={'Modificar espacio'} />
             </PrivateRoute>
 
-            <PrivateRoute exact path="/actividades">
+            <PrivateRoute
+              exact
+              path="/actividades"
+              rolesPermitidos={['bedel', 'admin']}
+            >
               <ListadoActividades />
             </PrivateRoute>
 
-            <PrivateRoute path="/actividades/nueva">
+            <PrivateRoute
+              path="/actividades/nueva"
+              rolesPermitidos={['bedel', 'admin']}
+            >
               <AltaModificacionActividad titulo={'Carga de actividades'} />
             </PrivateRoute>
 
@@ -57,15 +74,24 @@ export default function App() {
               <ControlAcceso />
             </PrivateRoute>
 
-            <PrivateRoute path="/actividades/:id">
+            <PrivateRoute
+              path="/actividades/:id"
+              rolesPermitidos={['bedel', 'admin']}
+            >
               <AltaModificacionActividad titulo={'Modificar actividad'} />
             </PrivateRoute>
 
-            <PrivateRoute path="/autorizaciones/nueva">
+            <PrivateRoute
+              path="/autorizaciones/nueva"
+              rolesPermitidos={['asistente', 'admin']}
+            >
               <InscripcionActividad />
             </PrivateRoute>
 
-            <PrivateRoute path="/autorizaciones/confirmacion">
+            <PrivateRoute
+              path="/autorizaciones/confirmacion"
+              rolesPermitidos={['asistente', 'admin']}
+            >
               <FinalDDJJ />
             </PrivateRoute>
           </Switch>

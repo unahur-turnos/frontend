@@ -5,8 +5,7 @@ import {
   InputAdornment,
   Box,
   CircularProgress,
-  IconButton,
-  Tooltip,
+  useMediaQuery,
 } from '@material-ui/core';
 
 import { useState } from 'react';
@@ -22,9 +21,9 @@ import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import { rutaInicialUsuarioState, usuarioState } from '../../state/usuario';
 import ERRORES from '../ErroresText/Errores';
-import HelpIcon from '@material-ui/icons/Help';
 
 export default function Registro() {
+  const matches = useMediaQuery('(min-width:600px)');
   const history = useHistory();
   const classes = useStyles();
   const { create } = useApi('usuarios/registro');
@@ -84,7 +83,7 @@ export default function Registro() {
   return (
     <>
       <ValidatorForm onSubmit={validarRegistro} instantValidate={false}>
-        <Box mt={8} display="flex" justifyContent="center">
+        <Box mt={5} display="flex" justifyContent="center">
           <Typography variant="h4" color="primary">
             Registrarse
           </Typography>
@@ -93,14 +92,14 @@ export default function Registro() {
         <Grid
           container
           alignItems="flex-end"
-          spacing={4}
+          spacing={matches ? 4 : 2}
           style={{ marginTop: '8px' }}
         >
-          <Grid item xs={6} align="right">
+          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
             <Typography variant="h6">Nombre/s:</Typography>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="nombreUsuario"
               label="Ingrese su nombre/s"
@@ -120,11 +119,11 @@ export default function Registro() {
             />
           </Grid>
 
-          <Grid item xs={6} align="right">
+          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
             <Typography variant="h6">Apellido/s:</Typography>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="apellidoUsuario"
               label="Ingrese su apellido/s"
@@ -144,11 +143,11 @@ export default function Registro() {
             />
           </Grid>
 
-          <Grid item xs={6} align="right">
+          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
             <Typography variant="h6">DNI:</Typography>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="dniUsuario"
               label="Ingrese su DNI"
@@ -172,11 +171,11 @@ export default function Registro() {
             />
           </Grid>
 
-          <Grid item xs={6} align="right">
+          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
             <Typography variant="h6">Correo electrónico:</Typography>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="emailUsuario"
               label="Ingrese una correo electrónico"
@@ -196,11 +195,11 @@ export default function Registro() {
             />
           </Grid>
 
-          <Grid item xs={6} align="right">
+          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
             <Typography variant="h6">Número de celular:</Typography>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="telefono"
               label="Número de celular"
@@ -220,11 +219,18 @@ export default function Registro() {
             />
           </Grid>
 
-          <Grid item xs={6} align="right" component={Box} alignSelf="center">
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            align={matches ? 'right' : 'center'}
+            component={Box}
+            alignSelf="center"
+          >
             <Typography variant="h6">Contraseña:</Typography>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="contraseniaUsuario"
               label="Ingrese una contraseña"
@@ -246,11 +252,11 @@ export default function Registro() {
             />
           </Grid>
 
-          <Grid item xs={6} align="right">
+          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
             <Typography variant="h6">Confirmar contraseña:</Typography>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="confirmarContraseña"
               label="Confirme la contraseña"
