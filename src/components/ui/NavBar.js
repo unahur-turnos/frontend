@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Toolbar, Button } from '@material-ui/core/';
 import { Link } from 'react-router-dom';
+import { tieneRolState } from '../../state/validacionRutaConRol';
+import { useRecoilValue } from 'recoil';
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -15,18 +17,21 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function NavBar() {
+  const tieneRol = useRecoilValue(tieneRolState(['admin', 'bedel']));
   const classes = useStyles();
-  const [screen, setScreen] = useState('inicio');
+  const [screenSelected, setScreenSelected] = useState('inicio');
 
   return (
     <Box display="flex">
       <Toolbar className={classes.appBar}>
         <Button
-          onClick={() => setScreen('inicio')}
+          onClick={() => setScreenSelected('inicio')}
           className={classes.button}
           color="inherit"
           style={{
-            backgroundColor: screen.includes('inicio') ? '#009688' : '#4DB6AD',
+            backgroundColor: screenSelected.includes('inicio')
+              ? '#009688'
+              : '#4DB6AD',
           }}
           component={Link}
           to={`/`}
@@ -34,35 +39,39 @@ export default function NavBar() {
           Inicio
         </Button>
 
-        <Button
-          onClick={() => setScreen('actividades')}
-          className={classes.button}
-          color="inherit"
-          style={{
-            backgroundColor: screen.includes('actividades')
-              ? '#009688'
-              : '#4DB6AD',
-          }}
-          component={Link}
-          to={`/actividades`}
-        >
-          Actividades
-        </Button>
+        {tieneRol && (
+          <Button
+            onClick={() => setScreenSelected('actividades')}
+            className={classes.button}
+            color="inherit"
+            style={{
+              backgroundColor: screenSelected.includes('actividades')
+                ? '#009688'
+                : '#4DB6AD',
+            }}
+            component={Link}
+            to={`/actividades`}
+          >
+            Actividades
+          </Button>
+        )}
 
-        <Button
-          onClick={() => setScreen('espacios')}
-          className={classes.button}
-          color="inherit"
-          style={{
-            backgroundColor: screen.includes('espacios')
-              ? '#009688'
-              : '#4DB6AD',
-          }}
-          component={Link}
-          to={`/espacios`}
-        >
-          Espacios
-        </Button>
+        {tieneRol && (
+          <Button
+            onClick={() => setScreenSelected('espacios')}
+            className={classes.button}
+            color="inherit"
+            style={{
+              backgroundColor: screenSelected.includes('espacios')
+                ? '#009688'
+                : '#4DB6AD',
+            }}
+            component={Link}
+            to={`/espacios`}
+          >
+            Espacios
+          </Button>
+        )}
       </Toolbar>
     </Box>
   );
