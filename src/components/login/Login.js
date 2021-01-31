@@ -4,7 +4,6 @@ import {
   Grid,
   InputAdornment,
   Typography,
-  CircularProgress,
   useMediaQuery,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
@@ -17,7 +16,6 @@ import { useApi } from '../../utils/fetchApi';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { rutaInicialUsuarioState, usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { makeStyles } from '@material-ui/core/styles';
 import ERRORES from '../ErroresText/Errores';
 
 export default function Login() {
@@ -170,9 +168,3 @@ export default function Login() {
     </ValidatorForm>
   );
 }
-
-const useStyles = makeStyles(() => ({
-  loading: {
-    marginRight: '10px',
-  },
-}));

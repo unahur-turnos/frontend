@@ -40,8 +40,6 @@ export default function AltaActividad(props) {
     fechaHoraFin,
     responsable,
     dniResponsable,
-    tipoResponsable,
-    estado,
   } = actividad;
 
   const handleChange = (e) => {
@@ -232,7 +230,7 @@ export default function AltaActividad(props) {
         <Grid container item xs={12} align="center" spacing={1}>
           <Grid item xs={6} align="right">
             <Button variant="contained" color="primary" onClick={saveData}>
-              {!id ? 'Guardar' : 'Actualizar'}
+              Guardar
             </Button>
           </Grid>
           <Grid item xs={6} align="left">
