@@ -1,16 +1,18 @@
-import { Box } from '@material-ui/core';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
-import InscripcionActividad from './components/inscripcionActividad/InscripcionActividad';
+import { Box } from '@material-ui/core';
+import ControlAcceso from './components/actividades/ControlAcceso';
 import FinalDDJJ from './components/inscripcionActividad/FinalDDJJ';
-import PrivateRoute from './components/autenticacion/PrivateRoute';
-import Header from './components/ui/Header';
-import NavBar from './components/ui/NavBar';
 import Footer from './components/ui/Footer';
+import Header from './components/ui/Header';
+import InscripcionActividad from './components/inscripcionActividad/InscripcionActividad';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
+import NavBar from './components/ui/NavBar';
+import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Registro from './components/registro/Registro';
 
 export default function App() {
@@ -49,6 +51,10 @@ export default function App() {
 
             <PrivateRoute path="/actividades/nueva">
               <AltaModificacionActividad titulo={'Carga de actividades'} />
+            </PrivateRoute>
+
+            <PrivateRoute path="/actividades/hoy">
+              <ControlAcceso />
             </PrivateRoute>
 
             <PrivateRoute path="/actividades/:id">
