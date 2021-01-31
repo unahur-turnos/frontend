@@ -1,4 +1,11 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography,
+} from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
@@ -9,17 +16,41 @@ import { useApi } from '../../utils/fetchApi';
 import { useRecoilValue } from 'recoil';
 import { usuarioState } from '../../state/usuario';
 
+const pasos = [
+  'Solicitar una actividad',
+  'Declaración jurada',
+  'Confirmar datos',
+];
+
 export default function Actividad() {
   const history = useHistory();
   const classes = useStyles();
   const { create } = useApi('autorizaciones');
   const usuario = useRecoilValue(usuarioState);
 
-  const [numeroPaso, setNumeroPaso] = useState(1);
+  const [numeroPaso, setNumeroPaso] = useState(0);
 
   const [informacionSeleccionada, setInformacionSeleccionada] = useState(
     ESTADOINICIAL
   );
+
+  function getComponenteDelPaso(stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return (
+          <Paso1DDJJ
+            handleChange={handleChange}
+            agregarUnValor={agregarUnValor}
+          />
+        );
+      case 1:
+        return <Paso2DDJJ handleChange={handleChange} />;
+      case 2:
+        return <Paso3DDJJ informacionSeleccionada={informacionSeleccionada} />;
+      default:
+        return 'Paso desconocido';
+    }
+  }
 
   const handleChange = (e) => {
     setInformacionSeleccionada({
@@ -35,8 +66,12 @@ export default function Actividad() {
     });
   };
 
-  const avanzarAlSiguiente = () => {
+  const siguientePaso = () => {
     setNumeroPaso(numeroPaso + 1);
+  };
+
+  const pasoAnterior = () => {
+    setNumeroPaso(numeroPaso - 1);
   };
 
   const guardarInscripcion = async () => {
@@ -51,29 +86,31 @@ export default function Actividad() {
 
   return (
     <>
-      {numeroPaso === 1 && (
-        <Paso1DDJJ
-          handleChange={handleChange}
-          agregarUnValor={agregarUnValor}
-        />
-      )}
-      {numeroPaso === 2 && <Paso2DDJJ handleChange={handleChange} />}
-      {numeroPaso === 3 && (
-        <Paso3DDJJ informacionSeleccionada={informacionSeleccionada} />
-      )}
-
-      <Grid item xs={12}>
-        <Typography
-          color="primary"
-          align="center"
-          className={classes.marginBotonYTexto}
+      {getComponenteDelPaso(numeroPaso)}
+      <Grid item xs={12} sm={12} align="center">
+        <Stepper
+          activeStep={numeroPaso}
+          alternativeLabel
+          style={{
+            backgroundColor: '#fafafa',
+            maxWidth: '400px',
+            marginTop: '40px',
+          }}
         >
-          Paso {numeroPaso} de 3
-        </Typography>
+          {pasos.map((paso) => (
+            <Step key={paso}>
+              <StepLabel>{paso}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
       </Grid>
 
       <Grid align="center" className={classes.marginBotonYTexto}>
-        {numeroPaso === 3 && (
+        <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
+          Volver
+        </Button>
+        {console.log(numeroPaso === pasos.length - 1)}
+        {numeroPaso === 2 ? (
           <Button
             variant="contained"
             color="primary"
@@ -81,22 +118,16 @@ export default function Actividad() {
           >
             Guardar
           </Button>
-        )}
-
-        {numeroPaso != 3 && (
+        ) : (
           <Button
             variant="contained"
             color="primary"
-            onClick={avanzarAlSiguiente}
+            onClick={siguientePaso}
             disabled={informacionSeleccionada.actividad ? false : true}
           >
             Siguiente
           </Button>
         )}
-
-        <Button component={Link} to="/">
-          Cancelar
-        </Button>
       </Grid>
     </>
   );
@@ -104,7 +135,7 @@ export default function Actividad() {
 
 const useStyles = makeStyles({
   marginBotonYTexto: {
-    marginTop: '25px',
+    marginTop: '10px',
   },
 });
 
