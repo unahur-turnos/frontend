@@ -18,9 +18,9 @@ import { useRecoilValue } from 'recoil';
 import { usuarioState } from '../../state/usuario';
 
 const pasos = [
-  'Solicitar una actividad',
-  'Declaración jurada',
-  'Confirmar datos',
+  'Seleccioná la actividad',
+  'Completá la declaración jurada',
+  'Confirmá tus datos',
 ];
 
 export default function Actividad() {
