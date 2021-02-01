@@ -1,5 +1,5 @@
 import { has } from 'ramda';
-import { atom, selector } from 'recoil';
+import { atom, selector, selectorFamily } from 'recoil';
 import { localStorageEffect } from './effect';
 
 export const usuarioState = atom({
@@ -18,5 +18,23 @@ export const estaAutorizadoState = selector({
 export const rutaInicialUsuarioState = selector({
   key: 'rutaInicialUsuario',
   get: ({ get }) =>
-    get(usuarioState).rol === 'admin' ? '/actividades' : '/autorizaciones/nueva',
+    get(usuarioState).rol === 'admin'
+      ? '/actividades'
+      : '/autorizaciones/nueva',
+});
+
+export const tieneRolState = selectorFamily({
+  key: 'tieneRol',
+  get: (rolesPermitidos) => ({ get }) => {
+    return rolesPermitidos.includes(get(usuarioState)?.rol);
+  },
+});
+
+export const listaRutasQueCumpleState = selectorFamily({
+  key: 'listaRutasQueCumple',
+  get: (listaRutas) => ({ get }) => {
+    return listaRutas.filter((ruta) =>
+      get(tieneRolState(ruta.rolesPermitidos))
+    );
+  },
 });

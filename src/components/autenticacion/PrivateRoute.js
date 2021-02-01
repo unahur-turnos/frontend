@@ -1,7 +1,6 @@
 import { Redirect, Route } from 'react-router-dom';
-import react from 'react';
 import PropTypes from 'prop-types';
-import { tieneRolState } from '../../state/validacionRutaConRol';
+import { tieneRolState } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
 
 export default function PrivateRoute({ children, rolesPermitidos, ...rest }) {
