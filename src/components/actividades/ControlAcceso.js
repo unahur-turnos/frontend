@@ -117,7 +117,7 @@ function SeleccionDeActividad({ actividades, setActividadSeleccionada }) {
                 {actividad.nombre}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                {`${actividad.Espacio.Edificio.nombre} - ${actividad.Espacio.nombre}`}
+                {`${actividad.Espacio.nombre} - ${actividad.Espacio.Edificio.nombre}`}
               </Typography>
             </Grid>
           </Grid>
@@ -141,10 +141,10 @@ function DatosActividad({ actividad }) {
     <Card className={classes.card} variant="outlined">
       <CardContent>
         <Typography variant="h6">{nombre}</Typography>
+        <Typography variant="body1">{`Espacio: ${Espacio.nombre}`}</Typography>
         <Typography variant="body1">
           {`Edificio: ${Espacio.Edificio.nombre}`}
         </Typography>
-        <Typography variant="body1">{`Espacio: ${Espacio.nombre}`}</Typography>
         <Typography variant="body1">
           {`Horario: ${hourFormatter(fechaHoraInicio)} a ${hourFormatter(
             fechaHoraFin

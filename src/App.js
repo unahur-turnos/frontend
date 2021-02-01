@@ -70,7 +70,10 @@ export default function App() {
               <AltaModificacionActividad titulo={'Carga de actividades'} />
             </PrivateRoute>
 
-            <PrivateRoute path="/actividades/hoy">
+            <PrivateRoute
+              path="/actividades/hoy"
+              rolesPermitidos={['bedel', 'admin']}
+            >
               <ControlAcceso />
             </PrivateRoute>
 
