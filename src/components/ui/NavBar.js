@@ -29,7 +29,7 @@ export default function NavBar() {
             backgroundColor: screen.includes('inicio') ? '#009688' : '#4DB6AD',
           }}
           component={Link}
-          to={`/`}
+          to={`/autorizaciones/nueva`}
         >
           Inicio
         </Button>
