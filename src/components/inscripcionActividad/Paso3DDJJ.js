@@ -8,17 +8,7 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
 
   return (
     <>
-      <Box mt={5} align="center">
-        <Typography variant="h4" color="primary">
-          Confirmación
-        </Typography>
-      </Box>
-      <Grid
-        container
-        alignItems="flex-end"
-        spacing={4}
-        style={{ marginTop: '8px' }}
-      >
+      <Grid container alignItems="flex-end" spacing={4}>
         <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Nombre de la actividad:</Typography>
         </Grid>

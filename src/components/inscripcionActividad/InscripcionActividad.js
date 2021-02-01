@@ -5,6 +5,7 @@ import {
   StepLabel,
   Stepper,
   Typography,
+  Box,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -86,15 +87,20 @@ export default function Actividad() {
 
   return (
     <>
-      {getComponenteDelPaso(numeroPaso)}
+      <Box mt={5} display="flex" justifyContent="center">
+        <Typography variant="h4" color="primary">
+          Solicitar autorización
+        </Typography>
+      </Box>
+
       <Grid item xs={12} sm={12} align="center">
         <Stepper
           activeStep={numeroPaso}
           alternativeLabel
           style={{
             backgroundColor: '#fafafa',
-            maxWidth: '400px',
-            marginTop: '40px',
+            maxWidth: '600px',
+            marginTop: '20px',
           }}
         >
           {pasos.map((paso) => (
@@ -104,6 +110,7 @@ export default function Actividad() {
           ))}
         </Stepper>
       </Grid>
+      {getComponenteDelPaso(numeroPaso)}
 
       <Grid align="center" className={classes.marginBotonYTexto}>
         <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
@@ -134,7 +141,7 @@ export default function Actividad() {
 
 const useStyles = makeStyles({
   marginBotonYTexto: {
-    marginTop: '10px',
+    marginTop: '50px',
   },
 });
 
