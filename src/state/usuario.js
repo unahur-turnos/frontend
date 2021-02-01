@@ -32,9 +32,24 @@ export const tieneRolState = selectorFamily({
 
 export const listaRutasQueCumpleState = selectorFamily({
   key: 'listaRutasQueCumple',
-  get: (listaRutas) => ({ get }) => {
+  get: () => ({ get }) => {
     return listaRutas.filter((ruta) =>
       get(tieneRolState(ruta.rolesPermitidos))
     );
   },
 });
+
+const listaRutas = [
+  { nombre: 'Actividades', ruta: '/actividades', rolesPermitidos: ['admin'] },
+  { nombre: 'Espacios', ruta: '/espacios', rolesPermitidos: ['admin'] },
+  {
+    nombre: 'Autorización',
+    ruta: '/autorizacion/nueva',
+    rolesPermitidos: ['asistente'],
+  },
+  {
+    nombre: 'Control de acceso',
+    ruta: '/actividades/hoy',
+    rolesPermitidos: ['bedel'],
+  },
+];

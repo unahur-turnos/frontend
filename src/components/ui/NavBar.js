@@ -5,17 +5,12 @@ import { Link } from 'react-router-dom';
 import { listaRutasQueCumpleState } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
 
-const listaRutas = [
-  { nombre: 'Actividades', ruta: '/actividades', rolesPermitidos: ['admin'] },
-  { nombre: 'Espacios', ruta: '/espacios', rolesPermitidos: ['admin'] },
-];
-
 export default function NavBar() {
-  const rutasQueCumplenConRol = useRecoilValue(
-    listaRutasQueCumpleState(listaRutas)
-  );
+  const rutasQueCumplenConRol = useRecoilValue(listaRutasQueCumpleState());
   const classes = useStyles();
-  const [screenSelected, setScreenSelected] = useState('/actividades');
+  const [screenSelected, setScreenSelected] = useState(
+    rutasQueCumplenConRol[0].ruta
+  );
 
   return (
     <Box display="flex">
