@@ -17,9 +17,9 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Autocomplete } from '@material-ui/lab';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
-import { actividadesDelDia } from '../../state/actividades';
 import { autorizacionesPorActividad } from '../../state/autorizaciones';
 import { hourFormatter } from '../../utils/dateUtils';
+import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
@@ -50,7 +50,9 @@ export default function ControlAcceso() {
   const classes = useStyles();
 
   const fechaActual = DateTime.local().toISODate();
-  const actividades = useRecoilValue(actividadesDelDia(fechaActual));
+  const actividades = useRecoilValue(
+    todasLasActividades({ desde: fechaActual, hasta: fechaActual })
+  );
 
   const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
 

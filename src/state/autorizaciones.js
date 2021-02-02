@@ -1,14 +1,10 @@
-import { getData } from '../utils/fetchApi';
+import { apiIndex } from './api';
 import { selectorFamily } from 'recoil';
-import { usuarioState } from './usuario';
 
 export const autorizacionesPorActividad = selectorFamily({
   key: 'autorizacionesPorActividad',
   get: (id) => async ({ get }) => {
-    const { data } = await getData(
-      `actividades/${id}/autorizaciones`,
-      get(usuarioState)
-    );
+    const { data } = get(apiIndex(`actividades/${id}/autorizaciones`));
     return data;
   },
 });

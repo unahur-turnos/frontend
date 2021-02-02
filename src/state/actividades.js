@@ -1,19 +1,32 @@
 import { apiById, apiIndex } from './api';
-import { selector, selectorFamily } from 'recoil';
 
 import { DateTime } from 'luxon';
-import { contadorActualizacionesState } from './actualizaciones';
 import { dateFormatter } from '../utils/dateUtils';
-import { getData } from '../utils/fetchApi';
-import { usuarioState } from './usuario';
+import queryString from 'query-string';
+import { selectorFamily } from 'recoil';
 
-export const todasLasActividades = selector({
+export const todasLasActividades = selectorFamily({
   key: 'todasLasActividades',
-  get: async ({ get }) => {
-    const { data } = get(apiIndex('actividades'));
+  get: (fecha) => async ({ get }) => {
+    const { data } = get(apiIndex(buildPath(fecha)));
     return data;
   },
 });
+
+const buildPath = (fecha) => {
+  const path = 'actividades';
+  if (fecha !== null) {
+    const query = queryString.stringify(
+      {
+        desde: fecha.desde,
+        hasta: fecha.hasta,
+      },
+      { skipNull: true }
+    );
+    return `${path}/?${query}`;
+  }
+  return path;
+};
 
 export const actividadPorId = selectorFamily({
   key: 'actividadPorId',
@@ -32,16 +45,4 @@ export const actividadPorId = selectorFamily({
             estado: false,
           },
         },
-});
-
-export const actividadesDelDia = selectorFamily({
-  key: 'actividadesDelDía',
-  get: (fechaActual) => async ({ get }) => {
-    get(contadorActualizacionesState('actividades'));
-    const { data } = await getData(
-      `actividades/?desde=${fechaActual}&hasta=${fechaActual}`,
-      get(usuarioState)
-    );
-    return data;
-  },
 });

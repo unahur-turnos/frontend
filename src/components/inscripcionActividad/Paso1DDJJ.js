@@ -2,23 +2,24 @@ import {
   Box,
   FormControl,
   Grid,
-  TextField,
   InputLabel,
   MenuItem,
   Select,
+  TextField,
   Typography,
 } from '@material-ui/core';
+
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
-import { useRecoilValue } from 'recoil';
 import { todasLasActividades } from '../../state/actividades';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { DateTime } from 'luxon';
+import { useRecoilValue } from 'recoil';
 
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   const matches = useMediaQuery('(min-width:600px)');
 
-  const actividades = useRecoilValue(todasLasActividades);
+  const actividades = useRecoilValue(todasLasActividades(null));
 
   const cambioDeActividad = (nombre, actividad) => {
     agregarUnValor(nombre, actividad);
