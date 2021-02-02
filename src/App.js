@@ -11,14 +11,17 @@ import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import Registro from './components/registro/Registro';
+import { useRecoilValue } from 'recoil';
+import { hayUsuarioLogueadoState } from './state/usuario';
 
 export default function App() {
+  const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
   return (
     <>
       <Header />
       <Box>
         <Router>
-          <NavBar />
+          {hayUsuarioLogueado && <NavBar />}
           <Switch>
             <Route exact path="/" component={Login} />
 

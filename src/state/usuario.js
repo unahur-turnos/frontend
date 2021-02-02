@@ -8,9 +8,8 @@ export const usuarioState = atom({
   effects_UNSTABLE: [localStorageEffect('usuario_actual')],
 });
 
-// TODO: modificar este selector cuando la autorización dependa del rol
-export const estaAutorizadoState = selector({
-  key: 'estaAutorizado',
+export const hayUsuarioLogueadoState = selector({
+  key: 'hayUsuarioLogueado',
   get: ({ get }) => has('token', get(usuarioState)),
 });
 
@@ -30,9 +29,9 @@ export const tieneRolState = selectorFamily({
   },
 });
 
-export const listaRutasQueCumpleState = selectorFamily({
-  key: 'listaRutasQueCumple',
-  get: () => ({ get }) => {
+export const menuNavegacionState = selector({
+  key: 'menuNavegacion',
+  get: ({ get }) => {
     return listaRutas.filter((ruta) =>
       get(tieneRolState(ruta.rolesPermitidos))
     );
