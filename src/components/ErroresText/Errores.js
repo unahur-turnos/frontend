@@ -8,6 +8,8 @@ const ERRORES = {
   contraseniasNoCoinciden: 'Las contraseñas no coinciden.',
   mensajeDeError: 'Puede que los datos ingresados ya esten siendo ocupados.',
   requerido: 'Este campo es requerido',
+  fechaInicio: 'Debe ser posterior a la fecha y hora actual',
+  fechaFin: 'No puede ser anterior al inicio de la actividad',
 };
 
 export default ERRORES;
