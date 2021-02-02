@@ -36,7 +36,7 @@ export default function ListadoActividades() {
 
   const classes = useStyles();
 
-  const actividades = useRecoilValue(todasLasActividades(null));
+  const actividades = useRecoilValue(todasLasActividades());
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();

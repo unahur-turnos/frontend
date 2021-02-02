@@ -1,5 +1,4 @@
 import {
-  Box,
   FormControl,
   Grid,
   InputLabel,
@@ -19,7 +18,7 @@ import { useRecoilValue } from 'recoil';
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   const matches = useMediaQuery('(min-width:600px)');
 
-  const actividades = useRecoilValue(todasLasActividades(null));
+  const actividades = useRecoilValue(todasLasActividades());
 
   const cambioDeActividad = (nombre, actividad) => {
     agregarUnValor(nombre, actividad);

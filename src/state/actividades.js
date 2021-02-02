@@ -7,25 +7,21 @@ import { selectorFamily } from 'recoil';
 
 export const todasLasActividades = selectorFamily({
   key: 'todasLasActividades',
-  get: (fecha) => async ({ get }) => {
-    const { data } = get(apiIndex(buildPath(fecha)));
+  get: (filtro) => async ({ get }) => {
+    const { data } = get(apiIndex(buildPath(filtro)));
     return data;
   },
 });
 
-const buildPath = (fecha) => {
-  const path = 'actividades';
-  if (fecha !== null) {
-    const query = queryString.stringify(
-      {
-        desde: fecha.desde,
-        hasta: fecha.hasta,
-      },
-      { skipNull: true }
-    );
-    return `${path}/?${query}`;
-  }
-  return path;
+const buildPath = ({ desde, hasta } = {}) => {
+  const query = queryString.stringify(
+    {
+      desde,
+      hasta,
+    },
+    { skipNull: true }
+  );
+  return query ? `actividades/?${query}` : 'actividades';
 };
 
 export const actividadPorId = selectorFamily({

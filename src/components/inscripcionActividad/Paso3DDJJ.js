@@ -1,7 +1,8 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
+
+import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { DateTime } from 'luxon';
 
 export default function Paso3DDJJ({ informacionSeleccionada }) {
   const matches = useMediaQuery('(min-width:600px)');
