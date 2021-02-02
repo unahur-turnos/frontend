@@ -21,7 +21,6 @@ import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { dateFormatter } from '../../utils/dateUtils';
 import { todosLosEspacios } from '../../state/espacios';
 import { DateTime } from 'luxon';
-//import * as moment from 'moment';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
