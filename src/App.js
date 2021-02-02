@@ -7,7 +7,6 @@ import FinalDDJJ from './components/inscripcionActividad/FinalDDJJ';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Header from './components/ui/Header';
 import NavBar from './components/ui/NavBar';
-import Footer from './components/ui/Footer';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
