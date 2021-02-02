@@ -20,6 +20,8 @@ import { actividadPorId } from '../../state/actividades';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { dateFormatter } from '../../utils/dateUtils';
 import { todosLosEspacios } from '../../state/espacios';
+import { DateTime } from 'luxon';
+//import * as moment from 'moment';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
@@ -34,14 +36,11 @@ export default function AltaActividad(props) {
   const history = useHistory();
   const { create, update } = useApi('actividades');
 
-  /* ValidatorForm.addValidationRule(
+  ValidatorForm.addValidationRule(
     'fechaInicioValida',
-    (value) => {value >= new Date(),
-    console.log(value),
-    console.log(new Date())}
-  );  
-  FALTA CASTEAR EL NEWW DATE, SE VA A PROBAR CON LIBRERIA 'MOMENT'
-*/
+    (value) => DateTime.fromISO(value) > DateTime.local()
+  );
+
   ValidatorForm.addValidationRule(
     'fechaFinValida',
     (value) => value > actividad.fechaHoraInicio
@@ -120,6 +119,7 @@ export default function AltaActividad(props) {
                 name="espacioId"
                 value={espacioId}
                 onChange={handleChange}
+                required
               >
                 {espacios.map((espacio) => (
                   <MenuItem value={espacio.id} key={espacio.id}>
@@ -140,9 +140,8 @@ export default function AltaActividad(props) {
               name="fechaHoraInicio"
               value={dateFormatter(fechaHoraInicio)}
               onChange={handleChange}
-              // validators={['fechaInicioValida']}
-              // errorMessages={[ERRORES.fechaInicio]}
-              // UNA VEZ CASTEADA LA FECHA DESCOMENTAR ESTO
+              validators={['fechaInicioValida']}
+              errorMessages={[ERRORES.fechaInicio]}
             />
           </Grid>
 
