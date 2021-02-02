@@ -1,5 +1,4 @@
 import {
-  Box,
   FormControl,
   FormControlLabel,
   Grid,
@@ -12,18 +11,7 @@ import { PropTypes } from 'prop-types';
 export default function Paso2DDJJ({ handleChange }) {
   return (
     <>
-      <Box mt={5} align="center">
-        <Typography variant="h4" color="primary">
-          Declaración jurada
-        </Typography>
-      </Box>
-
-      <Grid
-        container
-        alignItems="flex-end"
-        spacing={4}
-        style={{ marginTop: '8px' }}
-      >
+      <Grid container alignItems="flex-end" spacing={4}>
         <Grid item xs={12} align="center">
           <Typography variant="h6">
             ¿Es persona de riesgo? (Padece una enfermedad respiratoria o es

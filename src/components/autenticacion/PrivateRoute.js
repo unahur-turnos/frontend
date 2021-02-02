@@ -1,22 +1,18 @@
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { usuarioState } from '../../state/usuario';
+import { tieneRolState } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
 
 export default function PrivateRoute({ children, rolesPermitidos, ...rest }) {
-  const estadoUsuario = useRecoilValue(usuarioState);
+  const tieneRol = useRecoilValue(tieneRolState(rolesPermitidos));
 
-  const validarRutaConRol = () => {
-    return rolesPermitidos.some((rol) => rol == estadoUsuario?.rol) ? (
-      children
-    ) : (
-      <Redirect to={'/login'} />
-    );
+  const validacionRuta = () => {
+    return tieneRol ? children : <Redirect to={'/login'} />;
   };
 
   return (
     <>
-      <Route {...rest} render={validarRutaConRol} />
+      <Route {...rest} render={validacionRuta} />
     </>
   );
 }

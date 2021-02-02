@@ -33,10 +33,8 @@ export default function Registro() {
     (value) => value === informacionDelUsuario.contrasenia
   );
 
-  ValidatorForm.addValidationRule(
-    'contraseñaValida',
-    //eslint-disable-next-line
-    (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(String(value))
+  ValidatorForm.addValidationRule('contraseñaValida', (value) =>
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(String(value))
   );
 
   const setUsuario = useSetRecoilState(usuarioState);

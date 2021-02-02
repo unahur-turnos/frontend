@@ -27,17 +27,7 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
 
   return (
     <>
-      <Box mt={5} display="flex" justifyContent="center">
-        <Typography variant="h4" color="primary">
-          Solicitud de una actividad
-        </Typography>
-      </Box>
-      <Grid
-        container
-        alignItems="flex-end"
-        spacing={4}
-        style={{ marginTop: '8px' }}
-      >
+      <Grid container alignItems="flex-end" spacing={4}>
         <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Seleccione actividad:</Typography>
         </Grid>
