@@ -8,6 +8,7 @@ import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Header from './components/ui/Header';
 import NavBar from './components/ui/NavBar';
 import Footer from './components/ui/Footer';
+import ResponsiveDrawer from './components/ui/Drawer';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
@@ -19,7 +20,7 @@ export default function App() {
       <Header />
       <Box>
         <Router>
-          <NavBar />
+          <ResponsiveDrawer />
           <Switch>
             <Route exact path="/" component={Login} />
 
