@@ -1,20 +1,21 @@
 import {
+  Box,
   Button,
   Grid,
   Step,
   StepLabel,
   Stepper,
   Typography,
-  Box,
 } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import { useState } from 'react';
+
 import Paso1DDJJ from './Paso1DDJJ';
 import Paso2DDJJ from './Paso2DDJJ';
 import Paso3DDJJ from './Paso3DDJJ';
+import { makeStyles } from '@material-ui/core/styles';
 import { useApi } from '../../utils/fetchApi';
+import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
 
 const pasos = [

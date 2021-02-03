@@ -9,3 +9,7 @@ export const toString = (fecha) => {
 export const dateFormatter = (fecha) => {
   return DateTime.fromISO(fecha).setLocale('es').toFormat("yyyy-MM-dd'T'HH:mm");
 };
+
+export const hourFormatter = (fecha) => {
+  return DateTime.fromISO(fecha).setLocale('es').toFormat('T');
+};
