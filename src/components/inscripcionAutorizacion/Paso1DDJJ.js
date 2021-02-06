@@ -14,54 +14,6 @@ import { PropTypes } from 'prop-types';
 import { todasLasActividades } from '../../state/actividades';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRecoilValue } from 'recoil';
-// const actividades = [
-//   {
-//     id: 1,
-//     nombre: 'Clase de laboratorio',
-//     fechaHoraInicio: '2021-01-24T16:41:32.892Z',
-//     fechaHoraFin: '2021-01-24T16:41:32.892Z',
-//     responsable: 'Pablito Gerez',
-//     dniResponsable: 18765234,
-//     tipoResponsable: 'Docente',
-//     estado: true,
-//     requiereControl: false,
-//     createdAt: '2021-01-26T21:37:26.604Z',
-//     updatedAt: '2021-01-26T21:37:26.604Z',
-//     espacioId: 1,
-//     cuposDisponibles: 10,
-//     Espacio: {
-//       id: 1,
-//       nombre: 'Playon',
-//       Edificio: {
-//         id: 1,
-//         nombre: 'Origone B',
-//       },
-//     },
-//   },
-//   {
-//     id: 2,
-//     nombre: 'Clase de matematica',
-//     fechaHoraInicio: '2020-11-24T16:41:32.892Z',
-//     fechaHoraFin: '2022-12-24T16:41:32.892Z',
-//     responsable: 'Ashe asheeeee',
-//     dniResponsable: 1231432,
-//     tipoResponsable: 'Docente',
-//     estado: true,
-//     requiereControl: false,
-//     createdAt: '2021-01-26T21:38:13.719Z',
-//     updatedAt: '2021-01-26T21:38:13.719Z',
-//     espacioId: 2,
-//     cuposDisponibles: 2,
-//     Espacio: {
-//       id: 2,
-//       nombre: 'Biblioteca',
-//       Edificio: {
-//         id: 2,
-//         nombre: 'Origone A',
-//       },
-//     },
-//   },
-// ];
 
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   const matches = useMediaQuery('(min-width:600px)');
@@ -87,9 +39,6 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
               onChange={(event, newValue) => {
                 cambioDeActividad('actividad', newValue);
               }}
-              getOptionDisabled={(actividad) =>
-                actividad.cuposDisponibles === 0
-              }
               getOptionLabel={(actividad) => {
                 const timeStart = DateTime.fromISO(actividad.fechaHoraInicio)
                   .setLocale('es')
