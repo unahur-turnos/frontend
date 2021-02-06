@@ -43,7 +43,7 @@ const listaRutas = [
   { nombre: 'Espacios', ruta: '/espacios', rolesPermitidos: ['admin'] },
   {
     nombre: 'Autorización',
-    ruta: '/autorizacion/nueva',
+    ruta: '/autorizaciones/nueva',
     rolesPermitidos: ['asistente'],
   },
   {

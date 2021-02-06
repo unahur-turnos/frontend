@@ -1,4 +1,4 @@
-import { Grid, makeStyles, Toolbar } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import logoCovid from '../../assets/logoCovid.png';
 import unahur from '../../assets/unahur.png';
 import { Link } from 'react-router-dom';
@@ -6,37 +6,21 @@ import NavBar from './NavBar';
 import PropTypes from 'prop-types';
 
 export default function PantallaDesktop({ hayUsuarioLogueado }) {
-  const { tamanioImagen, tamanioUnahur } = useStyles();
-
   return (
     <>
-      <Grid item xs={2}>
+      {/* <Grid item lg={3} md={4} sm={5} xs={6}> */}
+      <Grid item align="left">
         <Link to="/">
-          <img src={logoCovid} className={tamanioImagen} alt="" />
-          <img src={unahur} className={tamanioUnahur} alt="" />
+          <img src={logoCovid} alt="" />
+          <img src={unahur} alt="" />
         </Link>
       </Grid>
-      <Grid item xs={8}>
+      <Grid item align="left">
         {hayUsuarioLogueado && <NavBar />}
       </Grid>
     </>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  header: {
-    backgroundColor: '#C4C4C4',
-  },
-}));
 
 PantallaDesktop.propTypes = {
   hayUsuarioLogueado: PropTypes.bool,

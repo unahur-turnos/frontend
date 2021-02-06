@@ -40,7 +40,7 @@ export default function Header(props) {
 
   useEffect(() => {
     const setResponsiveness = () => {
-      return window.innerWidth < 900
+      return window.innerWidth < 800
         ? setEstadosPantalla((prevState) => ({
             ...prevState,
             mobileView: true,
@@ -60,12 +60,16 @@ export default function Header(props) {
       <AppBar position="static" className={classes.header}>
         <Toolbar>
           {mobileView ? (
-            <PantallaMobile />
+            <PantallaMobile
+              estadosPantalla={estadosPantalla}
+              setEstadosPantalla={setEstadosPantalla}
+              hayUsuarioLogueado={hayUsuarioLogueado}
+            />
           ) : (
             <PantallaDesktop hayUsuarioLogueado={hayUsuarioLogueado} />
           )}
-          <Grid item xs={2}>
-            {hayUsuarioLogueado && <BotonCerrarSesion />}
+          <Grid item xs={4} sm={6} md={6}>
+            <BotonCerrarSesion />
           </Grid>
         </Toolbar>
       </AppBar>
