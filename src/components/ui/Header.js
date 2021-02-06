@@ -1,21 +1,22 @@
 import {
-  Box,
-  Fab,
+  AppBar,
+  Grid,
+  Toolbar,
   Zoom,
   makeStyles,
-  Toolbar,
   useScrollTrigger,
 } from '@material-ui/core';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import BotonCerrarSesion from './BotonCerrarSesion';
+import NavBar from './NavBar';
 import PropTypes from 'prop-types';
+import { hayUsuarioLogueadoState } from '../../state/usuario';
 import logoCovid from '../../assets/logoCovid.png';
 import unahur from '../../assets/unahur.png';
-
+import { useRecoilValue } from 'recoil';
+import { Link } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: 'fixed',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
+    flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -24,21 +25,40 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   header: {
-    backgroundColor: '#C4C4C4',
-    color: '#4DB6AD',
-    height: '5vw',
-    minWidth: '100vw',
-  },
-  tamanioImagen: {
-    width: '60px',
-    height: '56px',
-  },
-  tamanioUnahur: {
-    width: '180px',
-    height: '45px',
-    marginTop: '1px',
+    backgroundColor: '#4DB6AD',
   },
 }));
+
+export default function Header(props) {
+  const classes = useStyles();
+  const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
+
+  return (
+    <Grid container>
+      <AppBar position="static" className={classes.header}>
+        <Toolbar>
+          <Grid item xs={2}>
+            <Link to="/">
+              <img src={logoCovid} className={classes.tamanioImagen} alt="" />
+              <img src={unahur} className={classes.tamanioUnahur} alt="" />
+            </Link>
+          </Grid>
+          <Grid item xs={8}>
+            {hayUsuarioLogueado && <NavBar />}
+          </Grid>
+          <Grid item xs={2}>
+            {hayUsuarioLogueado && <BotonCerrarSesion />}
+          </Grid>
+        </Toolbar>
+      </AppBar>
+    </Grid>
+  );
+}
+
+ScrollTop.propTypes = {
+  children: PropTypes.element.isRequired,
+  window: PropTypes.func,
+};
 
 function ScrollTop(props) {
   const { children, window } = props;
@@ -65,27 +85,5 @@ function ScrollTop(props) {
         {children}
       </div>
     </Zoom>
-  );
-}
-
-ScrollTop.propTypes = {
-  children: PropTypes.element.isRequired,
-  window: PropTypes.func,
-};
-
-export default function Header(props) {
-  const classes = useStyles();
-  return (
-    <Box display="flex">
-      <Toolbar className={classes.header} id="back-to-top-anchor">
-        <img src={logoCovid} className={classes.tamanioImagen} alt="" />
-        <img src={unahur} className={classes.tamanioUnahur} alt="" />
-        <ScrollTop {...props}>
-          <Fab color="primary" size="small" aria-label="scroll back to top">
-            <KeyboardArrowUpIcon />
-          </Fab>
-        </ScrollTop>
-      </Toolbar>
-    </Box>
   );
 }

@@ -11,20 +11,18 @@ import InscripcionActividad from './components/inscripcionActividad/InscripcionA
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
-import NavBar from './components/ui/NavBar';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Registro from './components/registro/Registro';
-import { useRecoilValue } from 'recoil';
 import { hayUsuarioLogueadoState } from './state/usuario';
+import { useRecoilValue } from 'recoil';
 
 export default function App() {
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
   return (
     <>
-      <Header />
       <Box>
         <Router>
-          {hayUsuarioLogueado && <NavBar />}
+          <Header />
           <Switch>
             <Route exact path="/" component={Login} />
 
