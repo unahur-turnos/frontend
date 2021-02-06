@@ -13,24 +13,6 @@ export const hayUsuarioLogueadoState = selector({
   get: ({ get }) => has('token', get(usuarioState)),
 });
 
-// TODO: modificar este selector cuando la ruta dependa del rol
-export const rutaInicialUsuarioState = selector({
-  key: 'rutaInicialUsuario',
-  get: ({ get }) => {
-    switch (get(usuarioState).rol) {
-      case 'asistente':
-        console.log('soy un asistente');
-        return '/autorizaciones/nueva';
-      case 'bedel':
-        console.log('soy un bedel');
-        return '/actividades/hoy';
-      case 'admin':
-        console.log('soy un admin');
-        return '/actividades';
-    }
-  },
-});
-
 export const tieneRolState = selectorFamily({
   key: 'tieneRol',
   get: (rolesPermitidos) => ({ get }) => {

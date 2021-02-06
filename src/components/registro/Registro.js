@@ -19,7 +19,7 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
-import { rutaInicialUsuarioState, usuarioState } from '../../state/usuario';
+import { usuarioState } from '../../state/usuario';
 import ERRORES from '../ErroresText/Errores';
 import enrutador from '../autenticacion/enrutador';
 
@@ -39,7 +39,6 @@ export default function Registro() {
   );
 
   const setUsuario = useSetRecoilState(usuarioState);
-  const rutaInicialUsuario = useRecoilValue(rutaInicialUsuarioState);
 
   const [informacionDelUsuario, setInformacionDelUsuario] = useState({
     contrasenia: '',
