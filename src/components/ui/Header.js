@@ -7,13 +7,13 @@ import {
   useScrollTrigger,
 } from '@material-ui/core';
 import BotonCerrarSesion from './BotonCerrarSesion';
-import NavBar from './NavBar';
 import PropTypes from 'prop-types';
 import { hayUsuarioLogueadoState } from '../../state/usuario';
-import logoCovid from '../../assets/logoCovid.png';
-import unahur from '../../assets/unahur.png';
 import { useRecoilValue } from 'recoil';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import PantallaDesktop from './PantallaDesktop';
+import PantallaMobile from './PantallaMobile';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -32,20 +32,38 @@ const useStyles = makeStyles((theme) => ({
 export default function Header(props) {
   const classes = useStyles();
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
+  const [estadosPantalla, setEstadosPantalla] = useState({
+    mobileView: false,
+    drawerOpen: false,
+  });
+  const { mobileView, drawerOpen } = estadosPantalla;
+
+  useEffect(() => {
+    const setResponsiveness = () => {
+      return window.innerWidth < 900
+        ? setEstadosPantalla((prevState) => ({
+            ...prevState,
+            mobileView: true,
+          }))
+        : setEstadosPantalla((prevState) => ({
+            ...prevState,
+            mobileView: false,
+          }));
+    };
+
+    setResponsiveness();
+    window.addEventListener('resize', () => setResponsiveness());
+  }, []);
 
   return (
     <Grid container>
       <AppBar position="static" className={classes.header}>
         <Toolbar>
-          <Grid item xs={2}>
-            <Link to="/">
-              <img src={logoCovid} className={classes.tamanioImagen} alt="" />
-              <img src={unahur} className={classes.tamanioUnahur} alt="" />
-            </Link>
-          </Grid>
-          <Grid item xs={8}>
-            {hayUsuarioLogueado && <NavBar />}
-          </Grid>
+          {mobileView ? (
+            <PantallaMobile />
+          ) : (
+            <PantallaDesktop hayUsuarioLogueado={hayUsuarioLogueado} />
+          )}
           <Grid item xs={2}>
             {hayUsuarioLogueado && <BotonCerrarSesion />}
           </Grid>
