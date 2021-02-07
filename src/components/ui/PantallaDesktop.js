@@ -8,14 +8,13 @@ import PropTypes from 'prop-types';
 export default function PantallaDesktop({ hayUsuarioLogueado }) {
   return (
     <>
-      {/* <Grid item lg={3} md={4} sm={5} xs={6}> */}
-      <Grid item align="left">
+      <Grid item xs={5} md={4} lg={3}>
         <Link to="/">
           <img src={logoCovid} alt="" />
           <img src={unahur} alt="" />
         </Link>
       </Grid>
-      <Grid item align="left">
+      <Grid item xs={6} sm={6} md={7}>
         {hayUsuarioLogueado && <NavBar />}
       </Grid>
     </>

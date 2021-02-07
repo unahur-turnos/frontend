@@ -68,7 +68,7 @@ export default function Header(props) {
           ) : (
             <PantallaDesktop hayUsuarioLogueado={hayUsuarioLogueado} />
           )}
-          <Grid item xs={4} sm={6} md={6}>
+          <Grid item xs={2} sm={2} md={2}>
             <BotonCerrarSesion />
           </Grid>
         </Toolbar>
