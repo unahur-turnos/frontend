@@ -14,11 +14,10 @@ import { useRecoilValue } from 'recoil';
 import { menuNavegacionState } from '../../state/usuario';
 import { Link } from 'react-router-dom';
 import logoCovid from '../../assets/logoCovid.png';
-import { useState } from 'react';
 
 export default function PantallaMobile(props) {
   const { estadosPantalla, setEstadosPantalla, hayUsuarioLogueado } = props;
-  const { drawerContainer } = useStyles();
+  const classes = useStyles();
   const menuNavegacion = useRecoilValue(menuNavegacionState);
   //const [screenSelected, setScreenSelected] = useState(menuNavegacion[0].ruta);
 
@@ -62,7 +61,7 @@ export default function PantallaMobile(props) {
           onClose: handleDrawerClose,
         }}
       >
-        <div className={drawerContainer}>
+        <div className={classes.drawerContainer}>
           <MenuItem
             component={Link}
             to="/"
@@ -97,21 +96,22 @@ export default function PantallaMobile(props) {
 
       <Grid item xs={8} align="center">
         <Link to="/">
-          <img src={logoCovid} alt="" />
+          <img src={logoCovid} alt="" className={classes.tamanioLogo} />
         </Link>
       </Grid>
     </>
   );
 }
 
+const useStyles = makeStyles((theme) => ({
+  tamanioLogo: {
+    width: '55px',
+    height: '46px',
+  },
+}));
+
 PantallaMobile.propTypes = {
   estadosPantalla: PropTypes.object,
   setEstadosPantalla: PropTypes.func,
   hayUsuarioLogueado: PropTypes.bool,
 };
-
-const useStyles = makeStyles((them) => ({
-  drawerContainer: {
-    padding: '20px 30px',
-  },
-}));

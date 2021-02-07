@@ -41,7 +41,7 @@ export default function BotonCerrarSesion() {
         onClick={handleMenu}
         color="inherit"
       >
-        <AccountCircle />
+        <AccountCircle fontSize="large" />
       </IconButton>
       <Menu
         id="menu-appbar"

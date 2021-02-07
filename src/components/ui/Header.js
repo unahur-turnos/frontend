@@ -14,21 +14,6 @@ import { useEffect, useState } from 'react';
 import PantallaDesktop from './PantallaDesktop';
 import PantallaMobile from './PantallaMobile';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  header: {
-    backgroundColor: '#4DB6AD',
-  },
-}));
-
 export default function Header(props) {
   const classes = useStyles();
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
@@ -109,3 +94,18 @@ function ScrollTop(props) {
     </Zoom>
   );
 }
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  header: {
+    backgroundColor: '#4DB6AD',
+  },
+}));
