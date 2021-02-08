@@ -19,7 +19,6 @@ export default function PantallaMobile(props) {
   const { estadosPantalla, setEstadosPantalla, hayUsuarioLogueado } = props;
   const classes = useStyles();
   const menuNavegacion = useRecoilValue(menuNavegacionState);
-  //const [screenSelected, setScreenSelected] = useState(menuNavegacion[0].ruta);
 
   const handleDrawerOpen = () =>
     setEstadosPantalla((prevState) => ({ ...prevState, drawerOpen: true }));
@@ -37,14 +36,8 @@ export default function PantallaMobile(props) {
           color="inherit"
           style={{
             textDecoration: 'none',
-            // backgroundColor: screenSelected.includes(ruta)
-            //   ? '#4DB6AD'
-            //   : 'white',
           }}
-          onClick={() => {
-            //setScreenSelected(ruta);
-            handleDrawerClose();
-          }}
+          onClick={() => handleDrawerClose()}
         >
           {nombre}
         </MenuItem>
@@ -81,17 +74,19 @@ export default function PantallaMobile(props) {
     <>
       <Grid item xs={2}>
         {opcionesDelMenu()}
-        <IconButton
-          {...{
-            edge: 'start',
-            color: 'inherit',
-            'aria-label': 'menu',
-            'aria-haspopup': 'true',
-            onClick: handleDrawerOpen,
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
+        {hayUsuarioLogueado && (
+          <IconButton
+            {...{
+              edge: 'start',
+              color: 'inherit',
+              'aria-label': 'menu',
+              'aria-haspopup': 'true',
+              onClick: handleDrawerOpen,
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
       </Grid>
 
       <Grid item xs={8} align="center">
