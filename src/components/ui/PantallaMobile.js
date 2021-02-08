@@ -14,11 +14,13 @@ import { useRecoilValue } from 'recoil';
 import { menuNavegacionState } from '../../state/usuario';
 import { Link } from 'react-router-dom';
 import logoCovid from '../../assets/logoCovid.png';
+import { createBrowserHistory } from 'history';
 
 export default function PantallaMobile(props) {
   const { estadosPantalla, setEstadosPantalla, hayUsuarioLogueado } = props;
   const classes = useStyles();
   const menuNavegacion = useRecoilValue(menuNavegacionState);
+  const history = createBrowserHistory();
 
   const handleDrawerOpen = () =>
     setEstadosPantalla((prevState) => ({ ...prevState, drawerOpen: true }));
@@ -91,7 +93,9 @@ export default function PantallaMobile(props) {
 
       <Grid item xs={8} align="center">
         <Link to="/">
-          <img src={logoCovid} alt="" className={classes.tamanioLogo} />
+          {history.location.pathname !== '/' && (
+            <img src={logoCovid} alt="" className={classes.tamanioLogo} />
+          )}
         </Link>
       </Grid>
     </>
