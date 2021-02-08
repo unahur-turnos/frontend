@@ -17,7 +17,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import ERRORES from '../ErroresText/Errores';
-import enrutador from '../autenticacion/enrutador';
+import rutaInicialusuario from '../autenticacion/rutaInicialusuario';
 
 export default function Login() {
   const matches = useMediaQuery('(min-width:600px)');
@@ -60,7 +60,7 @@ export default function Login() {
     create(valoresUsuario)
       .then((usuario) => {
         setUsuario(usuario);
-        history.push(enrutador(usuario));
+        history.push(rutaInicialusuario(usuario));
       })
 
       .catch(() => {
