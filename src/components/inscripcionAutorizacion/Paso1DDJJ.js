@@ -39,6 +39,9 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
               onChange={(event, newValue) => {
                 cambioDeActividad('actividad', newValue);
               }}
+              getOptionDisabled={(actividad) =>
+                actividad.Espacio.aforo - actividad.autorizaciones === 0
+              }
               getOptionLabel={(actividad) => {
                 const timeStart = DateTime.fromISO(actividad.fechaHoraInicio)
                   .setLocale('es')

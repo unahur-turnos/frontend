@@ -13,15 +13,6 @@ export const hayUsuarioLogueadoState = selector({
   get: ({ get }) => has('token', get(usuarioState)),
 });
 
-// TODO: modificar este selector cuando la ruta dependa del rol
-export const rutaInicialUsuarioState = selector({
-  key: 'rutaInicialUsuario',
-  get: ({ get }) =>
-    get(usuarioState).rol === 'admin'
-      ? '/actividades'
-      : '/autorizaciones/nueva',
-});
-
 export const tieneRolState = selectorFamily({
   key: 'tieneRol',
   get: (rolesPermitidos) => ({ get }) => {
@@ -39,8 +30,16 @@ export const menuNavegacionState = selector({
 });
 
 const listaRutas = [
-  { nombre: 'Actividades', ruta: '/actividades', rolesPermitidos: ['admin'] },
-  { nombre: 'Espacios', ruta: '/espacios', rolesPermitidos: ['admin'] },
+  {
+    nombre: 'Actividades',
+    ruta: '/actividades',
+    rolesPermitidos: ['admin'],
+  },
+  {
+    nombre: 'Espacios',
+    ruta: '/espacios',
+    rolesPermitidos: ['admin'],
+  },
   {
     nombre: 'Autorización',
     ruta: '/autorizaciones/nueva',

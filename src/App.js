@@ -4,10 +4,10 @@ import AltaModificacionActividad from './components/actividades/AltaModificacion
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import { Box } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
-import FinalDDJJ from './components/inscripcionActividad/FinalDDJJ';
+import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
 import Footer from './components/ui/Footer';
 import Header from './components/ui/Header';
-import InscripcionActividad from './components/inscripcionActividad/InscripcionActividad';
+import InscripcionActividad from './components/inscripcionAutorizacion/InscripcionActividad';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
@@ -57,14 +57,6 @@ export default function App() {
             </PrivateRoute>
 
             <PrivateRoute
-              exact
-              path="/actividades"
-              rolesPermitidos={['bedel', 'admin']}
-            >
-              <ListadoActividades />
-            </PrivateRoute>
-
-            <PrivateRoute
               path="/actividades/nueva"
               rolesPermitidos={['bedel', 'admin']}
             >
@@ -83,6 +75,13 @@ export default function App() {
               rolesPermitidos={['bedel', 'admin']}
             >
               <AltaModificacionActividad titulo={'Modificar actividad'} />
+            </PrivateRoute>
+
+            <PrivateRoute
+              path="/actividades"
+              rolesPermitidos={['bedel', 'admin']}
+            >
+              <ListadoActividades />
             </PrivateRoute>
 
             <PrivateRoute
