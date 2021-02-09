@@ -1,15 +1,13 @@
 import { Box, Button } from '@material-ui/core/';
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { menuNavegacionState } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
-import { createBrowserHistory } from 'history';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function NavBar() {
   const menuNavegacion = useRecoilValue(menuNavegacionState);
   const classes = useStyles();
-  const history = createBrowserHistory();
+  const location = useLocation();
 
   return (
     <Box>
@@ -20,8 +18,9 @@ export default function NavBar() {
             className={classes.button}
             color="inherit"
             style={{
+              marginLeft: '30px',
               backgroundColor:
-                history.location.pathname === ruta ? '#009688' : '#4DB6AD',
+                location.pathname === ruta ? '#009688' : '#4DB6AD',
             }}
             component={Link}
             to={ruta}

@@ -1,10 +1,10 @@
 import {
   AppBar,
-  Grid,
   Toolbar,
   Zoom,
   makeStyles,
   useScrollTrigger,
+  Box,
 } from '@material-ui/core';
 import BotonCerrarSesion from './BotonCerrarSesion';
 import PropTypes from 'prop-types';
@@ -14,14 +14,14 @@ import { useEffect, useState } from 'react';
 import PantallaDesktop from './PantallaDesktop';
 import PantallaMobile from './PantallaMobile';
 
-export default function Header(props) {
+export default function Header() {
   const classes = useStyles();
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
   const [estadosPantalla, setEstadosPantalla] = useState({
     mobileView: false,
     drawerOpen: false,
   });
-  const { mobileView, drawerOpen } = estadosPantalla;
+  const { mobileView } = estadosPantalla;
 
   useEffect(() => {
     const setResponsiveness = () => {
@@ -41,7 +41,7 @@ export default function Header(props) {
   }, []);
 
   return (
-    <Grid container>
+    <Box>
       <AppBar position="static" className={classes.header}>
         <Toolbar>
           {mobileView ? (
@@ -53,12 +53,10 @@ export default function Header(props) {
           ) : (
             <PantallaDesktop hayUsuarioLogueado={hayUsuarioLogueado} />
           )}
-          <Grid item xs={2} sm={2} md={2}>
-            <BotonCerrarSesion />
-          </Grid>
+          <BotonCerrarSesion />
         </Toolbar>
       </AppBar>
-    </Grid>
+    </Box>
   );
 }
 

@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
 import {
-  Toolbar,
   IconButton,
   Drawer,
   makeStyles,
-  Button,
   MenuItem,
   Grid,
   Divider,
@@ -12,15 +10,14 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import { useRecoilValue } from 'recoil';
 import { menuNavegacionState } from '../../state/usuario';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logoCovid from '../../assets/logoCovid.png';
-import { createBrowserHistory } from 'history';
 
 export default function PantallaMobile(props) {
   const { estadosPantalla, setEstadosPantalla, hayUsuarioLogueado } = props;
   const classes = useStyles();
   const menuNavegacion = useRecoilValue(menuNavegacionState);
-  const history = createBrowserHistory();
+  const location = useLocation();
 
   const handleDrawerOpen = () =>
     setEstadosPantalla((prevState) => ({ ...prevState, drawerOpen: true }));
@@ -74,7 +71,7 @@ export default function PantallaMobile(props) {
 
   return (
     <>
-      <Grid item xs={2}>
+      <Grid item xs={2} sm={1}>
         {opcionesDelMenu()}
         {hayUsuarioLogueado && (
           <IconButton
@@ -91,9 +88,9 @@ export default function PantallaMobile(props) {
         )}
       </Grid>
 
-      <Grid item xs={8} align="center">
+      <Grid item xs={10} sm={11} align="center">
         <Link to="/">
-          {history.location.pathname !== '/' && (
+          {location.pathname !== '/' && (
             <img src={logoCovid} alt="" className={classes.tamanioLogo} />
           )}
         </Link>
@@ -102,7 +99,7 @@ export default function PantallaMobile(props) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   tamanioLogo: {
     width: '55px',
     height: '46px',

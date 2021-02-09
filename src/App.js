@@ -5,7 +5,7 @@ import AltaModificacionEspacio from './components/espacios/AltaModificacionEspac
 import { Box } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
 import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
-import Footer from './components/ui/Footer';
+//import Footer from './components/ui/Footer';
 import Header from './components/ui/Header';
 import InscripcionActividad from './components/inscripcionAutorizacion/InscripcionActividad';
 import ListadoActividades from './components/actividades/ListadoActividades';
@@ -13,11 +13,8 @@ import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Registro from './components/registro/Registro';
-import { hayUsuarioLogueadoState } from './state/usuario';
-import { useRecoilValue } from 'recoil';
 
 export default function App() {
-  const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
   return (
     <>
       <Box>
