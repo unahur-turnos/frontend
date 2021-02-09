@@ -16,15 +16,17 @@ import {
 import { useApi } from '../../utils/fetchApi';
 import { PropTypes } from 'prop-types';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { actividadPorId } from '../../state/actividades';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { dateFormatter } from '../../utils/dateUtils';
-import { todosLosEspacios } from '../../state/espacios';
 import { DateTime } from 'luxon';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import ERRORES from '../ErroresText/Errores';
+import { Autocomplete } from '@material-ui/lab';
+import { actividadPorId } from '../../state/actividades';
+import { todasLasCarreras } from '../../state/carreras';
+import { todosLosEspacios } from '../../state/espacios';
 
 export default function AltaActividad(props) {
   const matches = useMediaQuery('(min-width:600px)');
@@ -74,6 +76,7 @@ export default function AltaActividad(props) {
   };
 
   const espacios = useRecoilValue(todosLosEspacios);
+  const carreras = useRecoilValue(todasLasCarreras);
 
   return (
     <>
@@ -248,6 +251,42 @@ export default function AltaActividad(props) {
             </FormControl>
           </Grid>
 
+          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
+            <Typography variant="h6">Carrera:</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} align={!matches && 'center'}>
+            <FormControl style={{ minWidth: 250 }}>
+              <Autocomplete
+                id="carreras"
+                options={carreras}
+                getOptionLabel={(actividad) => actividad.nombre}
+                //className={classes.autocomplete}
+                noOptionsText="No hay carreras que coincidan con la búsqueda"
+                // onChange={(event, carrera) => {
+                //   props.setCarreraSeleccionada(carrera);
+                // }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Seleccione una carrera"
+                    variant="outlined"
+                  />
+                )}
+                renderOption={(carrera) => {
+                  return (
+                    <Grid container alignItems="center">
+                      <Grid item xs>
+                        <Typography variant="body1" style={{ fontWeight: 700 }}>
+                          {carrera.nombre}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  );
+                }}
+              />
+            </FormControl>
+          </Grid>
+
           <Grid container item xs={12} align="center" spacing={1}>
             <Grid item xs={6} align="right">
               <Button variant="contained" color="primary" type="submit">
@@ -268,4 +307,6 @@ export default function AltaActividad(props) {
 
 AltaActividad.propTypes = {
   titulo: PropTypes.string,
+  carreras: PropTypes.arrayOf(PropTypes.object),
+  setCarreraSeleccionada: PropTypes.func,
 };
