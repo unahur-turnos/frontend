@@ -12,6 +12,11 @@ import { useRecoilValue } from 'recoil';
 import { menuNavegacionState } from '../../state/usuario';
 import { Link, useLocation } from 'react-router-dom';
 import logoCovid from '../../assets/logoCovid.png';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import ApartmentIcon from '@material-ui/icons/Apartment';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import LocalActivityIcon from '@material-ui/icons/LocalActivity';
+import HomeIcon from '@material-ui/icons/Home';
 
 export default function PantallaMobile(props) {
   const { estadosPantalla, setEstadosPantalla, hayUsuarioLogueado } = props;
@@ -28,18 +33,21 @@ export default function PantallaMobile(props) {
   const getBotonesParaMenu = () => {
     return menuNavegacion.map(({ nombre, ruta }) => {
       return (
-        <MenuItem
-          key={nombre}
-          component={Link}
-          to={ruta}
-          color="inherit"
-          style={{
-            textDecoration: 'none',
-          }}
-          onClick={() => handleDrawerClose()}
-        >
-          {nombre}
-        </MenuItem>
+        <>
+          <MenuItem
+            key={nombre}
+            component={Link}
+            to={ruta}
+            color="inherit"
+            style={{
+              textDecoration: 'none',
+            }}
+            onClick={() => handleDrawerClose()}
+          >
+            <IconButton>{getIconByName(nombre)}</IconButton>
+            {nombre}
+          </MenuItem>
+        </>
       );
     });
   };
@@ -60,6 +68,9 @@ export default function PantallaMobile(props) {
             color="inherit"
             onClick={handleDrawerClose}
           >
+            <IconButton>
+              <HomeIcon />
+            </IconButton>
             Inicio
           </MenuItem>
           <Divider />
@@ -99,10 +110,30 @@ export default function PantallaMobile(props) {
   );
 }
 
+function getIconByName(name) {
+  switch (name) {
+    case 'Actividades':
+      return <LocalActivityIcon />;
+
+    case 'Espacios':
+      return <ApartmentIcon />;
+
+    case 'Autorización':
+      return <ListAltIcon />;
+
+    case 'Control de acceso':
+      return <AssignmentTurnedInIcon />;
+  }
+}
+
 const useStyles = makeStyles(() => ({
   tamanioLogo: {
     width: '55px',
     height: '46px',
+  },
+  drawerContainer: {
+    padding: '20px 30px',
+    width: '100%',
   },
 }));
 
