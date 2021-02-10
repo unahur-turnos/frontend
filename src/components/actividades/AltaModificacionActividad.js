@@ -77,6 +77,7 @@ export default function AltaActividad(props) {
 
   const espacios = useRecoilValue(todosLosEspacios);
   const carreras = useRecoilValue(todasLasCarreras);
+  const [carreraSeleccionada, setCarreraSeleccionada] = useState('');
 
   return (
     <>
@@ -259,12 +260,12 @@ export default function AltaActividad(props) {
               <Autocomplete
                 id="carreras"
                 options={carreras}
-                getOptionLabel={(actividad) => actividad.nombre}
-                //className={classes.autocomplete}
+                getOptionLabel={(carrera) => carrera.nombre}
                 noOptionsText="No hay carreras que coincidan con la búsqueda"
-                // onChange={(event, carrera) => {
-                //   props.setCarreraSeleccionada(carrera);
-                // }}
+                value={carreraSeleccionada}
+                onChange={(event, carrera) => {
+                  setCarreraSeleccionada(carrera);
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -307,6 +308,4 @@ export default function AltaActividad(props) {
 
 AltaActividad.propTypes = {
   titulo: PropTypes.string,
-  carreras: PropTypes.arrayOf(PropTypes.object),
-  setCarreraSeleccionada: PropTypes.func,
 };
