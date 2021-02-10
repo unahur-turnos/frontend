@@ -13,8 +13,10 @@ import { useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 import PantallaDesktop from './PantallaDesktop';
 import PantallaMobile from './PantallaMobile';
+import Fab from '@material-ui/core/Fab';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-export default function Header() {
+export default function Header(props) {
   const classes = useStyles();
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
   const [estadosPantalla, setEstadosPantalla] = useState({
@@ -41,29 +43,30 @@ export default function Header() {
   }, []);
 
   return (
-    <Box>
-      <AppBar position="static" className={classes.header}>
-        <Toolbar>
-          {mobileView ? (
-            <PantallaMobile
-              estadosPantalla={estadosPantalla}
-              setEstadosPantalla={setEstadosPantalla}
-              hayUsuarioLogueado={hayUsuarioLogueado}
-            />
-          ) : (
-            <PantallaDesktop hayUsuarioLogueado={hayUsuarioLogueado} />
-          )}
-          <BotonCerrarSesion />
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <>
+      <Box>
+        <AppBar position="static" className={classes.header}>
+          <Toolbar>
+            {mobileView ? (
+              <PantallaMobile
+                estadosPantalla={estadosPantalla}
+                setEstadosPantalla={setEstadosPantalla}
+              />
+            ) : (
+              <PantallaDesktop />
+            )}
+            {hayUsuarioLogueado && <BotonCerrarSesion />}
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <ScrollTop {...props}>
+        <Fab color="primary" size="small" aria-label="scroll back to top">
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
+    </>
   );
 }
-
-ScrollTop.propTypes = {
-  children: PropTypes.element.isRequired,
-  window: PropTypes.func,
-};
 
 function ScrollTop(props) {
   const { children, window } = props;
@@ -107,3 +110,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#4DB6AD',
   },
 }));
+
+ScrollTop.propTypes = {
+  children: PropTypes.element.isRequired,
+  window: PropTypes.func,
+};

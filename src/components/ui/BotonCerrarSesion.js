@@ -1,18 +1,13 @@
 import { Box, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { DefaultValue, useSetRecoilState } from 'recoil';
-
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { useState } from 'react';
-import { hayUsuarioLogueadoState, usuarioState } from '../../state/usuario';
-import { useRecoilValue } from 'recoil';
-import { useHistory } from 'react-router-dom';
+import { usuarioState } from '../../state/usuario';
 
 export default function BotonCerrarSesion() {
   const setUsuario = useSetRecoilState(usuarioState);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const history = useHistory();
-  const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -24,11 +19,6 @@ export default function BotonCerrarSesion() {
 
   const cerrarSesion = () => {
     setUsuario(new DefaultValue());
-    handleClose();
-  };
-
-  const iniciarSesion = () => {
-    history.push('/login');
     handleClose();
   };
 
@@ -58,12 +48,7 @@ export default function BotonCerrarSesion() {
         open={open}
         onClose={handleClose}
       >
-        {hayUsuarioLogueado && (
-          <MenuItem onClick={cerrarSesion}>Cerrar sesión</MenuItem>
-        )}
-        {!hayUsuarioLogueado && (
-          <MenuItem onClick={iniciarSesion}>Iniciar sesión</MenuItem>
-        )}
+        <MenuItem onClick={cerrarSesion}>Cerrar sesión</MenuItem>
       </Menu>
     </Box>
   );

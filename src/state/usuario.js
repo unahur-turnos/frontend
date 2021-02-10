@@ -1,7 +1,6 @@
 import { has } from 'ramda';
 import { atom, selector, selectorFamily } from 'recoil';
 import { localStorageEffect } from './effect';
-import SportsIcon from '@material-ui/icons/Sports';
 
 export const usuarioState = atom({
   key: 'usuario',
@@ -35,24 +34,20 @@ const listaRutas = [
     nombre: 'Actividades',
     ruta: '/actividades',
     rolesPermitidos: ['admin'],
-    icono: <SportsIcon />,
   },
   {
     nombre: 'Espacios',
     ruta: '/espacios',
     rolesPermitidos: ['admin'],
-    icono: <SportsIcon />,
   },
   {
     nombre: 'Autorización',
     ruta: '/autorizaciones/nueva',
     rolesPermitidos: ['asistente'],
-    icono: <SportsIcon />,
   },
   {
     nombre: 'Control de acceso',
     ruta: '/actividades/hoy',
     rolesPermitidos: ['bedel'],
-    icono: <SportsIcon />,
   },
 ];

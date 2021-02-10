@@ -4,9 +4,12 @@ import unahur from '../../assets/unahur.png';
 import { Link } from 'react-router-dom';
 import NavBar from './NavBar';
 import PropTypes from 'prop-types';
+import { useRecoilValue } from 'recoil';
+import { hayUsuarioLogueadoState } from '../../state/usuario';
 
-export default function PantallaDesktop({ hayUsuarioLogueado }) {
+export default function PantallaDesktop() {
   const classes = useStyles();
+  const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
 
   return (
     <>

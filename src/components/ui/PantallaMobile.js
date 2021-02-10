@@ -5,24 +5,25 @@ import {
   makeStyles,
   MenuItem,
   Grid,
-  Divider,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useRecoilValue } from 'recoil';
-import { menuNavegacionState } from '../../state/usuario';
-import { Link, useLocation } from 'react-router-dom';
+import {
+  hayUsuarioLogueadoState,
+  menuNavegacionState,
+} from '../../state/usuario';
+import { Link } from 'react-router-dom';
 import logoCovid from '../../assets/logoCovid.png';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import LocalActivityIcon from '@material-ui/icons/LocalActivity';
-import HomeIcon from '@material-ui/icons/Home';
 
 export default function PantallaMobile(props) {
-  const { estadosPantalla, setEstadosPantalla, hayUsuarioLogueado } = props;
+  const { estadosPantalla, setEstadosPantalla } = props;
   const classes = useStyles();
+  const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
   const menuNavegacion = useRecoilValue(menuNavegacionState);
-  const location = useLocation();
 
   const handleDrawerOpen = () =>
     setEstadosPantalla((prevState) => ({ ...prevState, drawerOpen: true }));
@@ -61,21 +62,7 @@ export default function PantallaMobile(props) {
           onClose: handleDrawerClose,
         }}
       >
-        <div className={classes.drawerContainer}>
-          <MenuItem
-            component={Link}
-            to="/"
-            color="inherit"
-            onClick={handleDrawerClose}
-          >
-            <IconButton>
-              <HomeIcon />
-            </IconButton>
-            Inicio
-          </MenuItem>
-          <Divider />
-          {getBotonesParaMenu()}
-        </div>
+        <div className={classes.drawerContainer}>{getBotonesParaMenu()}</div>
       </Drawer>
     );
   };
@@ -99,11 +86,9 @@ export default function PantallaMobile(props) {
         )}
       </Grid>
 
-      <Grid item xs={10} sm={11} align="center">
-        <Link to="/">
-          {location.pathname !== '/' && (
-            <img src={logoCovid} alt="" className={classes.tamanioLogo} />
-          )}
+      <Grid item xs={8} sm={10} align="center">
+        <Link to={menuNavegacion[0] ? menuNavegacion[0].ruta : '/login'}>
+          <img src={logoCovid} alt="" className={classes.tamanioLogo} />
         </Link>
       </Grid>
     </>

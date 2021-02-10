@@ -5,7 +5,6 @@ import AltaModificacionEspacio from './components/espacios/AltaModificacionEspac
 import { Box } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
 import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
-//import Footer from './components/ui/Footer';
 import Header from './components/ui/Header';
 import InscripcionActividad from './components/inscripcionAutorizacion/InscripcionActividad';
 import ListadoActividades from './components/actividades/ListadoActividades';
@@ -97,7 +96,6 @@ export default function App() {
           </Switch>
         </Router>
       </Box>
-      {/* <Footer /> */}
     </>
   );
 }
