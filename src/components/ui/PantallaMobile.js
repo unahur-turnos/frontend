@@ -14,10 +14,6 @@ import {
 } from '../../state/usuario';
 import { Link } from 'react-router-dom';
 import logoCovid from '../../assets/logoCovid.png';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import ApartmentIcon from '@material-ui/icons/Apartment';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-import LocalActivityIcon from '@material-ui/icons/LocalActivity';
 
 export default function PantallaMobile(props) {
   const { estadosPantalla, setEstadosPantalla } = props;
@@ -32,7 +28,7 @@ export default function PantallaMobile(props) {
     setEstadosPantalla((prevState) => ({ ...prevState, drawerOpen: false }));
 
   const getBotonesParaMenu = () => {
-    return menuNavegacion.map(({ nombre, ruta }) => {
+    return menuNavegacion.map(({ nombre, ruta, icono }) => {
       return (
         <>
           <MenuItem
@@ -45,7 +41,7 @@ export default function PantallaMobile(props) {
             }}
             onClick={() => handleDrawerClose()}
           >
-            <IconButton>{getIconByName(nombre)}</IconButton>
+            <IconButton>{icono}</IconButton>
             {nombre}
           </MenuItem>
         </>
@@ -93,22 +89,6 @@ export default function PantallaMobile(props) {
       </Grid>
     </>
   );
-}
-
-function getIconByName(name) {
-  switch (name) {
-    case 'Actividades':
-      return <LocalActivityIcon />;
-
-    case 'Espacios':
-      return <ApartmentIcon />;
-
-    case 'Autorización':
-      return <ListAltIcon />;
-
-    case 'Control de acceso':
-      return <AssignmentTurnedInIcon />;
-  }
 }
 
 const useStyles = makeStyles(() => ({

@@ -1,27 +1,35 @@
 import { has } from 'ramda';
 import { atom, selector, selectorFamily } from 'recoil';
 import { localStorageEffect } from './effect';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import ApartmentIcon from '@material-ui/icons/Apartment';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import LocalActivityIcon from '@material-ui/icons/LocalActivity';
 
 const listaRutas = [
   {
     nombre: 'Actividades',
     ruta: '/actividades',
     rolesPermitidos: ['admin'],
+    icono: <LocalActivityIcon />,
   },
   {
     nombre: 'Espacios',
     ruta: '/espacios',
     rolesPermitidos: ['admin'],
+    icono: <ApartmentIcon />,
   },
   {
     nombre: 'Autorización',
     ruta: '/autorizaciones/nueva',
     rolesPermitidos: ['asistente'],
+    icono: <ListAltIcon />,
   },
   {
     nombre: 'Control de acceso',
     ruta: '/actividades/hoy',
     rolesPermitidos: ['bedel'],
+    icono: <AssignmentTurnedInIcon />,
   },
 ];
 
