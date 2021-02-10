@@ -7,7 +7,7 @@ import {
 
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
-import { Box } from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
 import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
 import Header from './components/ui/Header';
@@ -28,10 +28,10 @@ export default function App() {
   const rutaInicialUsuario = useRecoilValue(rutaInicialUsuarioState);
 
   return (
-    <>
-      <Box>
-        <Router>
-          <Header />
+    <Box>
+      <Router>
+        <Header />
+        <Container>
           <Switch>
             <Route exact path="/">
               <Redirect
@@ -111,8 +111,8 @@ export default function App() {
               <FinalDDJJ />
             </PrivateRoute>
           </Switch>
-        </Router>
-      </Box>
-    </>
+        </Container>
+      </Router>
+    </Box>
   );
 }
