@@ -1,32 +1,43 @@
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
-import { Box } from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
 import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
-import Footer from './components/ui/Footer';
 import Header from './components/ui/Header';
 import InscripcionActividad from './components/inscripcionAutorizacion/InscripcionActividad';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
-import NavBar from './components/ui/NavBar';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Registro from './components/registro/Registro';
 import { useRecoilValue } from 'recoil';
-import { hayUsuarioLogueadoState } from './state/usuario';
+import {
+  hayUsuarioLogueadoState,
+  rutaInicialUsuarioState,
+} from './state/usuario';
 
 export default function App() {
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
+  const rutaInicialUsuario = useRecoilValue(rutaInicialUsuarioState);
+
   return (
-    <>
-      <Header />
-      <Box>
-        <Router>
-          {hayUsuarioLogueado && <NavBar />}
+    <Box>
+      <Router>
+        <Header />
+        <Container>
           <Switch>
-            <Route exact path="/" component={Login} />
+            <Route exact path="/">
+              <Redirect
+                to={hayUsuarioLogueado ? rutaInicialUsuario : '/login'}
+              />
+            </Route>
 
             <Route path="/login">
               <Login />
@@ -100,9 +111,8 @@ export default function App() {
               <FinalDDJJ />
             </PrivateRoute>
           </Switch>
-        </Router>
-      </Box>
-      {/* <Footer /> */}
-    </>
+        </Container>
+      </Router>
+    </Box>
   );
 }

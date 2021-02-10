@@ -1,44 +1,72 @@
 import {
-  Box,
-  Fab,
+  AppBar,
+  Toolbar,
   Zoom,
   makeStyles,
-  Toolbar,
   useScrollTrigger,
+  Box,
 } from '@material-ui/core';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import BotonCerrarSesion from './BotonCerrarSesion';
 import PropTypes from 'prop-types';
-import logoCovid from '../../assets/logoCovid.png';
-import unahur from '../../assets/unahur.png';
+import { hayUsuarioLogueadoState } from '../../state/usuario';
+import { useRecoilValue } from 'recoil';
+import { useEffect, useState } from 'react';
+import PantallaDesktop from './PantallaDesktop';
+import PantallaMobile from './PantallaMobile';
+import Fab from '@material-ui/core/Fab';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: 'fixed',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  header: {
-    backgroundColor: '#C4C4C4',
-    color: '#4DB6AD',
-    height: '5vw',
-    minWidth: '100vw',
-  },
-  tamanioImagen: {
-    width: '60px',
-    height: '56px',
-  },
-  tamanioUnahur: {
-    width: '180px',
-    height: '45px',
-    marginTop: '1px',
-  },
-}));
+export default function Header(props) {
+  const classes = useStyles();
+  const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
+  const [estadosPantalla, setEstadosPantalla] = useState({
+    mobileView: false,
+    drawerOpen: false,
+  });
+  const { mobileView } = estadosPantalla;
+
+  useEffect(() => {
+    const setResponsiveness = () => {
+      return window.innerWidth < 800
+        ? setEstadosPantalla((prevState) => ({
+            ...prevState,
+            mobileView: true,
+          }))
+        : setEstadosPantalla((prevState) => ({
+            ...prevState,
+            mobileView: false,
+          }));
+    };
+
+    setResponsiveness();
+    window.addEventListener('resize', () => setResponsiveness());
+  }, []);
+
+  return (
+    <>
+      <Box>
+        <AppBar position="static" className={classes.header}>
+          <Toolbar>
+            {mobileView ? (
+              <PantallaMobile
+                estadosPantalla={estadosPantalla}
+                setEstadosPantalla={setEstadosPantalla}
+              />
+            ) : (
+              <PantallaDesktop />
+            )}
+            {hayUsuarioLogueado && <BotonCerrarSesion />}
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <ScrollTop {...props}>
+        <Fab color="primary" size="small" aria-label="scroll back to top">
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
+    </>
+  );
+}
 
 function ScrollTop(props) {
   const { children, window } = props;
@@ -68,24 +96,22 @@ function ScrollTop(props) {
   );
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  header: {
+    backgroundColor: '#4DB6AD',
+  },
+}));
+
 ScrollTop.propTypes = {
   children: PropTypes.element.isRequired,
   window: PropTypes.func,
 };
-
-export default function Header(props) {
-  const classes = useStyles();
-  return (
-    <Box display="flex">
-      <Toolbar className={classes.header} id="back-to-top-anchor">
-        <img src={logoCovid} className={classes.tamanioImagen} alt="" />
-        <img src={unahur} className={classes.tamanioUnahur} alt="" />
-        <ScrollTop {...props}>
-          <Fab color="primary" size="small" aria-label="scroll back to top">
-            <KeyboardArrowUpIcon />
-          </Fab>
-        </ScrollTop>
-      </Toolbar>
-    </Box>
-  );
-}
