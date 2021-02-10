@@ -1,4 +1,9 @@
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
@@ -12,15 +17,27 @@ import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Registro from './components/registro/Registro';
+import { useRecoilValue } from 'recoil';
+import {
+  hayUsuarioLogueadoState,
+  rutaInicialUsuarioState,
+} from './state/usuario';
 
 export default function App() {
+  const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
+  const rutaInicialUsuario = useRecoilValue(rutaInicialUsuarioState);
+
   return (
     <>
       <Box>
         <Router>
           <Header />
           <Switch>
-            <Route exact path="/" component={Login} />
+            <Route exact path="/">
+              <Redirect
+                to={hayUsuarioLogueado ? rutaInicialUsuario : '/login'}
+              />
+            </Route>
 
             <Route path="/login">
               <Login />

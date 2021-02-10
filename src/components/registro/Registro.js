@@ -19,9 +19,8 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
-import { usuarioState } from '../../state/usuario';
+import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
 import ERRORES from '../ErroresText/Errores';
-import rutaInicialusuario from '../autenticacion/rutaInicialusuario';
 
 export default function Registro() {
   const matches = useMediaQuery('(min-width:600px)');
@@ -69,7 +68,7 @@ export default function Registro() {
     create(informacionDelUsuario)
       .then((usuario) => {
         setUsuario(usuario);
-        history.push(rutaInicialusuario(usuario));
+        history.push(rutaInicialUsuario(usuario));
       })
       .catch((err) => {
         ERRORES.mensajeDeError = err.response.data.error;

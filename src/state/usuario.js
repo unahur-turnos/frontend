@@ -2,6 +2,29 @@ import { has } from 'ramda';
 import { atom, selector, selectorFamily } from 'recoil';
 import { localStorageEffect } from './effect';
 
+const listaRutas = [
+  {
+    nombre: 'Actividades',
+    ruta: '/actividades',
+    rolesPermitidos: ['admin'],
+  },
+  {
+    nombre: 'Espacios',
+    ruta: '/espacios',
+    rolesPermitidos: ['admin'],
+  },
+  {
+    nombre: 'Autorización',
+    ruta: '/autorizaciones/nueva',
+    rolesPermitidos: ['asistente'],
+  },
+  {
+    nombre: 'Control de acceso',
+    ruta: '/actividades/hoy',
+    rolesPermitidos: ['bedel'],
+  },
+];
+
 export const usuarioState = atom({
   key: 'usuario',
   default: {},
@@ -29,25 +52,20 @@ export const menuNavegacionState = selector({
   },
 });
 
-const listaRutas = [
-  {
-    nombre: 'Actividades',
-    ruta: '/actividades',
-    rolesPermitidos: ['admin'],
-  },
-  {
-    nombre: 'Espacios',
-    ruta: '/espacios',
-    rolesPermitidos: ['admin'],
-  },
-  {
-    nombre: 'Autorización',
-    ruta: '/autorizaciones/nueva',
-    rolesPermitidos: ['asistente'],
-  },
-  {
-    nombre: 'Control de acceso',
-    ruta: '/actividades/hoy',
-    rolesPermitidos: ['bedel'],
-  },
-];
+export const rutaInicialUsuarioState = selector({
+  key: 'rutaInicialUsuario',
+  get: ({ get }) => rutaInicialUsuario(get(usuarioState)),
+});
+
+export function rutaInicialUsuario(usuario) {
+  switch (usuario.rol) {
+    case 'asistente':
+      return '/autorizaciones/nueva';
+    case 'bedel':
+      return '/actividades/hoy';
+    case 'admin':
+      return '/actividades';
+    default:
+      return '/';
+  }
+}
