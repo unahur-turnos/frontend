@@ -13,11 +13,10 @@ import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useApi } from '../../utils/fetchApi';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { usuarioState } from '../../state/usuario';
+import { useSetRecoilState } from 'recoil';
+import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import ERRORES from '../ErroresText/Errores';
-import rutaInicialusuario from '../autenticacion/rutaInicialusuario';
+import { ERRORES } from '../textos/Textos';
 
 export default function Login() {
   const matches = useMediaQuery('(min-width:600px)');
@@ -60,7 +59,7 @@ export default function Login() {
     create(valoresUsuario)
       .then((usuario) => {
         setUsuario(usuario);
-        history.push(rutaInicialusuario(usuario));
+        history.push(rutaInicialUsuario(usuario));
       })
 
       .catch(() => {

@@ -13,15 +13,14 @@ import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { useApi } from '../../utils/fetchApi';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
-import { usuarioState } from '../../state/usuario';
-import ERRORES from '../ErroresText/Errores';
-import rutaInicialusuario from '../autenticacion/rutaInicialusuario';
+import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
+import { ERRORES } from '../textos/Textos';
 
 export default function Registro() {
   const matches = useMediaQuery('(min-width:600px)');
@@ -69,7 +68,7 @@ export default function Registro() {
     create(informacionDelUsuario)
       .then((usuario) => {
         setUsuario(usuario);
-        history.push(rutaInicialusuario(usuario));
+        history.push(rutaInicialUsuario(usuario));
       })
       .catch((err) => {
         ERRORES.mensajeDeError = err.response.data.error;
