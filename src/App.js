@@ -103,13 +103,13 @@ export default function App() {
     <Box>
       <Router>
         <Header />
-        <Suspense fallback={<Cargando />}>
-          <Container>
+        <Container>
+          <Suspense fallback={<Cargando />}>
             <ErrorBoundary fallback={<ErrorInesperado />}>
               <Rutas />
             </ErrorBoundary>
-          </Container>
-        </Suspense>
+          </Suspense>
+        </Container>
       </Router>
     </Box>
   );
