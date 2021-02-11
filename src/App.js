@@ -3,19 +3,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Redirect,
-  Link,
 } from 'react-router-dom';
-import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
-import {
-  Box,
-  CircularProgress,
-  Container,
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
 import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
 import Header from './components/ui/Header';
@@ -32,6 +23,8 @@ import {
 } from './state/usuario';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import Cargando from './components/ui/Cargando';
+import ErrorInesperado from './components/ui/ErrorInesperado';
 
 function Rutas() {
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
@@ -105,41 +98,12 @@ function Rutas() {
   );
 }
 
-function ErrorInesperado() {
-  return (
-    <>
-      <Grid container spacing={1}>
-        <Grid item>
-          <Typography variant="h5" color="error" gutterBottom>
-            Lo sentimos, ocurrió un error inesperado...
-          </Typography>
-        </Grid>
-        <Grid item>
-          <SentimentVeryDissatisfiedIcon color="error" />
-        </Grid>
-      </Grid>
-      <Grid container>
-        <Typography variant="subtitle1" gutterBottom>
-          ¡Ya estamos trabajando para solucionarlo! Mientras tanto, podés{' '}
-          <Link to="/">volver al inicio</Link>.
-        </Typography>
-      </Grid>
-    </>
-  );
-}
-
 export default function App() {
   return (
     <Box>
       <Router>
         <Header />
-        <Suspense
-          fallback={
-            <Box mt={5} display="flex" justifyContent="center">
-              <CircularProgress />
-            </Box>
-          }
-        >
+        <Suspense fallback={<Cargando />}>
           <Container>
             <ErrorBoundary fallback={<ErrorInesperado />}>
               <Rutas />
