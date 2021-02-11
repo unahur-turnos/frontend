@@ -1,10 +1,12 @@
 import {
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   TextField,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
 
@@ -14,10 +16,13 @@ import { PropTypes } from 'prop-types';
 import { todasLasActividades } from '../../state/actividades';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRecoilValue } from 'recoil';
+import HelpIcon from '@material-ui/icons/Help';
+import { AYUDAS } from '../textos/Textos';
+import theme from '../../theme';
 
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
-  const matches = useMediaQuery('(min-width:600px)');
-
+  const matches = useMediaQuery('(min-width:800px)');
+  const { it } = theme.breakpoints.values;
   const actividades = useRecoilValue(todasLasActividades());
 
   const cambioDeActividad = (nombre, actividad) => {
@@ -27,11 +32,11 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   return (
     <>
       <Grid container alignItems="flex-end" spacing={4}>
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Seleccione actividad:</Typography>
+        <Grid item xs={12} it={6} md={6} align={matches ? 'right' : 'center'}>
+          <Typography variant="h6">Seleccioná actividad:</Typography>
         </Grid>
 
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
+        <Grid item xs={12} it={6} align={!matches && 'center'}>
           <FormControl style={{ minWidth: 250 }}>
             <Autocomplete
               options={actividades}
@@ -64,13 +69,19 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
               )}
             />
           </FormControl>
+          {
+            <ToolTipButton
+              mensaje={AYUDAS.autorizacionSelectorActividades}
+              margen={25}
+            />
+          }
         </Grid>
 
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Medio de transporte</Typography>
+        <Grid item xs={12} it={6} align={matches ? 'right' : 'center'}>
+          <Typography variant="h6">Medio de transporte:</Typography>
         </Grid>
 
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
+        <Grid item xs={12} it={6} align={!matches && 'center'}>
           <FormControl style={{ minWidth: 250 }}>
             <InputLabel id="medioDeTransporte">Elija un transporte</InputLabel>
             <Select
@@ -86,8 +97,26 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
               <MenuItem value={'Bicicleta'}>Caminando/Bici</MenuItem>
             </Select>
           </FormControl>
+          {
+            <ToolTipButton
+              mensaje={AYUDAS.autorizacionSelectorTransporte}
+              margen={8}
+            />
+          }
         </Grid>
       </Grid>
+    </>
+  );
+}
+
+function ToolTipButton({ mensaje, margen }) {
+  return (
+    <>
+      <Tooltip title={mensaje} placement="top">
+        <IconButton style={{ marginTop: margen }}>
+          <HelpIcon />
+        </IconButton>
+      </Tooltip>
     </>
   );
 }
@@ -95,4 +124,9 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
 Paso1DDJJ.propTypes = {
   handleChange: PropTypes.func,
   agregarUnValor: PropTypes.func,
+};
+
+ToolTipButton.propTypes = {
+  mensaje: PropTypes.string,
+  margen: PropTypes.integer,
 };
