@@ -5,19 +5,13 @@ import reportWebVitals from './reportWebVitals';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import theme from './theme';
 import { RecoilRoot } from 'recoil';
-import { ErrorBoundary } from 'react-error-boundary';
-import { Alert } from '@material-ui/lab';
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <React.StrictMode>
       <CssBaseline />
       <RecoilRoot>
-        <ErrorBoundary
-          fallback={<Alert severity="error">Algo se rompió feo :(</Alert>}
-        >
-          <App />
-        </ErrorBoundary>
+        <App />
       </RecoilRoot>
     </React.StrictMode>
   </ThemeProvider>,
