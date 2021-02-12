@@ -1,7 +1,9 @@
 import {
+  Button,
   Card,
   CardContent,
   Grid,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -15,6 +17,8 @@ import {
 
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Autocomplete } from '@material-ui/lab';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import ConfirmarEntrada from '../ui/ConfirmarEntrada';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import { autorizacionesPorActividad } from '../../state/autorizaciones';
@@ -39,10 +43,10 @@ const useStyles = makeStyles((theme) => ({
     borderColor: theme.palette.primary.main,
   },
   table: {
-    maxWidth: '40%',
+    maxWidth: '50%',
   },
   tableCell: {
-    width: '50%',
+    width: '33%',
   },
 }));
 
@@ -51,7 +55,7 @@ export default function ControlAcceso() {
 
   const fechaActual = DateTime.local().toISODate();
   const actividades = useRecoilValue(
-    todasLasActividades({ desde: fechaActual, hasta: fechaActual })
+    todasLasActividades({ desde: '2021-02-01', hasta: fechaActual })
   );
 
   const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
@@ -163,6 +167,15 @@ function ListadoAutorizaciones({ idActividad }) {
   const autorizaciones = useRecoilValue(
     autorizacionesPorActividad(idActividad)
   );
+  const [abrirModal, setAbrirModal] = useState(false);
+  const [registroAutorizacion, setRegistroAutorizacion] = useState(
+    autorizaciones[0]
+  );
+
+  const confirmarRegistro = (autorizacion) => {
+    setRegistroAutorizacion(autorizacion);
+    setAbrirModal(true);
+  };
 
   return (
     <TableContainer>
@@ -175,6 +188,9 @@ function ListadoAutorizaciones({ idActividad }) {
             <TableCell className={classes.tableCell} align="center">
               DNI
             </TableCell>
+            <TableCell className={classes.tableCell} align="center">
+              Acciones
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -182,10 +198,24 @@ function ListadoAutorizaciones({ idActividad }) {
             <TableRow key={autorizacion.id}>
               <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
               <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
+              <TableCell align="center">
+                <IconButton
+                  color="primary"
+                  onClick={() => confirmarRegistro(autorizacion)}
+                >
+                  <CheckBoxIcon />
+                </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <ConfirmarEntrada
+        abrirModal={abrirModal}
+        setAbrirModal={setAbrirModal}
+        ruta={'NO HAY END-POINT'}
+        entidad={registroAutorizacion}
+      />
     </TableContainer>
   );
 }

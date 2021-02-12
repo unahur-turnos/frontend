@@ -1,27 +1,28 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
+import { Button, Dialog } from '@material-ui/core';
+
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 
-export default function ConfirmarEliminacion({
+export default function ConfirmarEntrada({
   abrirModal,
   setAbrirModal,
   ruta,
-  entidadAEliminar,
+  entidad,
 }) {
   const notificarActualizacion = useNotificarActualizacion(ruta);
-  const { deleteById } = useApi(ruta);
+  const { create } = useApi(ruta);
 
   const cerrarModal = () => {
     setAbrirModal(false);
   };
 
-  const eliminar = async () => {
-    await deleteById(entidadAEliminar.id);
-    notificarActualizacion();
+  // TODO: pegarle al nuevo endpoint
+  const registrarIngreso = async () => {
+    //  await create(entidad.id);
+    //  notificarActualizacion();
     cerrarModal();
   };
 
@@ -31,26 +32,27 @@ export default function ConfirmarEliminacion({
       aria-labelledby="simple-dialog-title"
       open={abrirModal}
     >
-      <DialogTitle id="alert-dialog-slide-title">
-        ¿Confirma que desea eliminar <strong>{entidadAEliminar?.nombre}</strong>
+      {console.log(entidad)}
+      <DialogTitle>
+        ¿Confirma que desea registrar el ingreso de{' '}
+        <strong>
+          {entidad.Usuario.apellido} {entidad.Usuario.nombre}
+        </strong>
         ?
       </DialogTitle>
       <DialogActions>
-        <Button onClick={cerrarModal}>Cancelar</Button>
-        <Button variant="contained" color="secondary" onClick={eliminar}>
-          Borrar
+        <Button variant="contained" color="primary" onClick={registrarIngreso}>
+          Confirmar
         </Button>
+        <Button onClick={cerrarModal}>Cancelar</Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-ConfirmarEliminacion.propTypes = {
+ConfirmarEntrada.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
   ruta: PropTypes.string,
-  entidadAEliminar: PropTypes.shape({
-    id: PropTypes.number,
-    nombre: PropTypes.string,
-  }),
+  entidad: PropTypes.object,
 };
