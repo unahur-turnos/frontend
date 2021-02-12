@@ -1,6 +1,37 @@
 import { has } from 'ramda';
 import { atom, selector, selectorFamily } from 'recoil';
 import { localStorageEffect } from './effect';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import ApartmentIcon from '@material-ui/icons/Apartment';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import LocalActivityIcon from '@material-ui/icons/LocalActivity';
+
+const listaRutas = [
+  {
+    nombre: 'Actividades',
+    ruta: '/actividades',
+    rolesPermitidos: ['admin'],
+    icono: <LocalActivityIcon />,
+  },
+  {
+    nombre: 'Espacios',
+    ruta: '/espacios',
+    rolesPermitidos: ['admin'],
+    icono: <ApartmentIcon />,
+  },
+  {
+    nombre: 'Autorización',
+    ruta: '/autorizaciones/nueva',
+    rolesPermitidos: ['asistente'],
+    icono: <ListAltIcon />,
+  },
+  {
+    nombre: 'Control de acceso',
+    ruta: '/actividades/hoy',
+    rolesPermitidos: ['bedel'],
+    icono: <AssignmentTurnedInIcon />,
+  },
+];
 
 export const usuarioState = atom({
   key: 'usuario',
@@ -29,25 +60,20 @@ export const menuNavegacionState = selector({
   },
 });
 
-const listaRutas = [
-  {
-    nombre: 'Actividades',
-    ruta: '/actividades',
-    rolesPermitidos: ['admin'],
-  },
-  {
-    nombre: 'Espacios',
-    ruta: '/espacios',
-    rolesPermitidos: ['admin'],
-  },
-  {
-    nombre: 'Autorización',
-    ruta: '/autorizaciones/nueva',
-    rolesPermitidos: ['asistente'],
-  },
-  {
-    nombre: 'Control de acceso',
-    ruta: '/actividades/hoy',
-    rolesPermitidos: ['bedel'],
-  },
-];
+export const rutaInicialUsuarioState = selector({
+  key: 'rutaInicialUsuario',
+  get: ({ get }) => rutaInicialUsuario(get(usuarioState)),
+});
+
+export function rutaInicialUsuario(usuario) {
+  switch (usuario.rol) {
+    case 'asistente':
+      return '/autorizaciones/nueva';
+    case 'bedel':
+      return '/actividades/hoy';
+    case 'admin':
+      return '/actividades';
+    default:
+      return '/';
+  }
+}
