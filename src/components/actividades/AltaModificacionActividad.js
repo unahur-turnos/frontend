@@ -24,7 +24,7 @@ import { DateTime } from 'luxon';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import ERRORES from '../ErroresText/Errores';
+import { ERRORES } from '../textos/Textos';
 
 export default function AltaActividad(props) {
   const matches = useMediaQuery('(min-width:600px)');
