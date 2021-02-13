@@ -26,7 +26,7 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
     <>
       <Grid container spacing={4}>
         <Grid item xs={12} align={'center'}>
-          <FormControl style={{ minWidth: 300 }}>
+          <FormControl>
             <Autocomplete
               options={actividades}
               noOptionsText={'No se encuentra'}
@@ -55,15 +55,14 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
                   helperText={AYUDAS.autorizacionSelectorActividades}
                   {...params}
                   label="Buscá una actividad"
-                  margin="normal"
                 />
               )}
             />
           </FormControl>
         </Grid>
 
-        <Grid item xs={12} align={'center'}>
-          <FormControl style={{ minWidth: 300 }}>
+        <Grid item xs={12} align="center">
+          <FormControl>
             <InputLabel id="medioDeTransporte">
               Elegí tu medio de transporte
             </InputLabel>
@@ -72,6 +71,7 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
               name="medioDeTransporte"
               onChange={handleChange}
               defaultValue={'Auto'}
+              align="left"
             >
               <MenuItem value={'Auto'}>Auto</MenuItem>
               <MenuItem value={'TransportePublico'}>
