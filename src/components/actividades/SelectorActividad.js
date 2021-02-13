@@ -24,6 +24,10 @@ export default function SelectorActividad({
 }) {
   const classes = useStyles();
 
+  const noHayCuposDisponibles = (aforo, autorizaciones) => {
+    return aforo - autorizaciones === 0;
+  };
+
   return (
     <Autocomplete
       options={actividades}
@@ -37,10 +41,10 @@ export default function SelectorActividad({
           funcionOnChange(actividad);
         }
       }}
-      getOptionDisabled={(actividad) => {
+      getOptionDisabled={(actividad) =>
         deshabilitarSinCupo &&
-          actividad.Espacio.aforo - actividad.autorizaciones === 0;
-      }}
+        noHayCuposDisponibles(actividad.Espacio.aforo, actividad.autorizaciones)
+      }
       renderInput={(params) => (
         <TextField
           {...params}
@@ -52,7 +56,18 @@ export default function SelectorActividad({
         return (
           <Grid container alignItems="center">
             <Grid item>
-              <AssignmentIcon color="primary" className={classes.icon} />
+              <AssignmentIcon
+                color={
+                  deshabilitarSinCupo &&
+                  noHayCuposDisponibles(
+                    actividad.Espacio.aforo,
+                    actividad.autorizaciones
+                  )
+                    ? 'secondary'
+                    : 'primary'
+                }
+                className={classes.icon}
+              />
             </Grid>
             <Grid item xs>
               <Typography variant="body1" style={{ fontWeight: 700 }}>
