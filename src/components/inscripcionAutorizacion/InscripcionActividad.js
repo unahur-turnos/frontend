@@ -88,13 +88,13 @@ export default function Actividad() {
 
   return (
     <>
-      <Box mt={5} display="flex" justifyContent="center">
+      <Box mt={3} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
           Solicitar autorización
         </Typography>
       </Box>
 
-      <Grid item xs={12} sm={12} align="center">
+      <Grid item xs={12} align="center">
         <Stepper
           activeStep={numeroPaso}
           alternativeLabel
