@@ -8,15 +8,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import { Autocomplete } from '@material-ui/lab';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
+import SelectorActividad from './SelectorActividad';
 import { autorizacionesPorActividad } from '../../state/autorizaciones';
 import { hourFormatter } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
@@ -66,9 +64,12 @@ export default function ControlAcceso() {
         </Grid>
 
         <Grid item xs={12} align="center">
-          <SeleccionDeActividad
+          <SelectorActividad
             actividades={actividades}
-            setActividadSeleccionada={setActividadSeleccionada}
+            funcionOnChange={setActividadSeleccionada}
+            deshabilitarSinCupo={false}
+            agregarHorario={false}
+            agregarInfo={false}
           />
         </Grid>
 
@@ -85,47 +86,6 @@ export default function ControlAcceso() {
         </Grid>
       </Grid>
     </>
-  );
-}
-
-function SeleccionDeActividad({ actividades, setActividadSeleccionada }) {
-  const classes = useStyles();
-
-  return (
-    <Autocomplete
-      id="actividades"
-      options={actividades}
-      getOptionLabel={(actividad) => actividad.nombre}
-      className={classes.autocomplete}
-      noOptionsText="No hay actividades que coincidan con la búsqueda"
-      onChange={(event, actividad) => {
-        setActividadSeleccionada(actividad);
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Seleccione una actividad"
-          variant="outlined"
-        />
-      )}
-      renderOption={(actividad) => {
-        return (
-          <Grid container alignItems="center">
-            <Grid item>
-              <AssignmentIcon color="primary" className={classes.icon} />
-            </Grid>
-            <Grid item xs>
-              <Typography variant="body1" style={{ fontWeight: 700 }}>
-                {actividad.nombre}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                {`${actividad.Espacio.nombre} - ${actividad.Espacio.Edificio.nombre}`}
-              </Typography>
-            </Grid>
-          </Grid>
-        );
-      }}
-    />
   );
 }
 
@@ -189,11 +149,6 @@ function ListadoAutorizaciones({ idActividad }) {
     </TableContainer>
   );
 }
-
-SeleccionDeActividad.propTypes = {
-  actividades: PropTypes.arrayOf(PropTypes.object),
-  setActividadSeleccionada: PropTypes.func,
-};
 
 DatosActividad.propTypes = {
   actividad: PropTypes.object,

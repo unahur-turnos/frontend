@@ -13,3 +13,12 @@ export const dateFormatter = (fecha) => {
 export const hourFormatter = (fecha) => {
   return DateTime.fromISO(fecha).setLocale('es').toFormat('T');
 };
+
+export const fechaHoraActividad = (fechaHoraInicio, fechaHoraFin) => {
+  const inicio = DateTime.fromISO(fechaHoraInicio)
+    .setLocale('es')
+    .toFormat("cccc D 'de' T 'a'");
+  const fin = hourFormatter(fechaHoraFin);
+
+  return `${inicio} ${fin}`;
+};
