@@ -20,7 +20,7 @@ import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
-import ERRORES from '../ErroresText/Errores';
+import { ERRORES } from '../textos/Textos';
 
 export default function Registro() {
   const matches = useMediaQuery('(min-width:600px)');

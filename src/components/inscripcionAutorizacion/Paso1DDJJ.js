@@ -5,19 +5,17 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography,
+  FormHelperText,
 } from '@material-ui/core';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import { todasLasActividades } from '../../state/actividades';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRecoilValue } from 'recoil';
+import { AYUDAS } from '../textos/Textos';
 
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
-  const matches = useMediaQuery('(min-width:600px)');
-
   const actividades = useRecoilValue(todasLasActividades());
 
   const cambioDeActividad = (nombre, actividad) => {
@@ -26,13 +24,9 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
 
   return (
     <>
-      <Grid container alignItems="flex-end" spacing={4}>
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Seleccione actividad:</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <FormControl style={{ minWidth: 250 }}>
+      <Grid container spacing={4}>
+        <Grid item xs={12} align={'center'}>
+          <FormControl>
             <Autocomplete
               options={actividades}
               noOptionsText={'No se encuentra'}
@@ -57,27 +51,27 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
               blurOnSelect
               renderInput={(params) => (
                 <TextField
+                  style={{ maxWidth: 300 }}
+                  helperText={AYUDAS.autorizacionSelectorActividades}
                   {...params}
-                  label="Actividades disponibles:"
-                  margin="normal"
+                  label="Buscá una actividad"
                 />
               )}
             />
           </FormControl>
         </Grid>
 
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Medio de transporte</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <FormControl style={{ minWidth: 250 }}>
-            <InputLabel id="medioDeTransporte">Elija un transporte</InputLabel>
+        <Grid item xs={12} align="center">
+          <FormControl>
+            <InputLabel id="medioDeTransporte">
+              Elegí tu medio de transporte
+            </InputLabel>
             <Select
               labelId="medioDeTransporte"
               name="medioDeTransporte"
               onChange={handleChange}
               defaultValue={'Auto'}
+              align="left"
             >
               <MenuItem value={'Auto'}>Auto</MenuItem>
               <MenuItem value={'TransportePublico'}>
@@ -85,6 +79,9 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
               </MenuItem>
               <MenuItem value={'Bicicleta'}>Caminando/Bici</MenuItem>
             </Select>
+            <FormHelperText style={{ maxWidth: 300 }}>
+              {AYUDAS.autorizacionSelectorTransporte}
+            </FormHelperText>
           </FormControl>
         </Grid>
       </Grid>
