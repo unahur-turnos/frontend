@@ -20,7 +20,6 @@ export default function SelectorActividad({
   funcionOnChange,
   deshabilitarSinCupo,
   agregarHorario,
-  agregarInfo,
 }) {
   const classes = useStyles();
 
@@ -35,11 +34,7 @@ export default function SelectorActividad({
       className={classes.autocomplete}
       noOptionsText="No hay actividades que coincidan con la búsqueda"
       onChange={(event, actividad) => {
-        if (agregarInfo) {
-          funcionOnChange('actividad', actividad);
-        } else {
-          funcionOnChange(actividad);
-        }
+        funcionOnChange(actividad);
       }}
       getOptionDisabled={(actividad) =>
         deshabilitarSinCupo &&
@@ -97,5 +92,4 @@ SelectorActividad.propTypes = {
   funcionOnChange: PropTypes.func,
   deshabilitarSinCupo: PropTypes.bool,
   agregarHorario: PropTypes.bool,
-  agregarInfo: PropTypes.bool,
 };

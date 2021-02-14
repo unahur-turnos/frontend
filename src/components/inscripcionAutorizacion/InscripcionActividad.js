@@ -42,7 +42,7 @@ export default function Actividad() {
         return (
           <Paso1DDJJ
             handleChange={handleChange}
-            agregarUnValor={agregarUnValor}
+            agregarActividad={agregarActividad}
           />
         );
       case 1:
@@ -61,10 +61,10 @@ export default function Actividad() {
     });
   };
 
-  const agregarUnValor = (name, valor) => {
+  const agregarActividad = (actividad) => {
     setInformacionSeleccionada({
       ...informacionSeleccionada,
-      [name]: valor,
+      actividad: actividad,
     });
   };
 

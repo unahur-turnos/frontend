@@ -69,7 +69,6 @@ export default function ControlAcceso() {
             funcionOnChange={setActividadSeleccionada}
             deshabilitarSinCupo={false}
             agregarHorario={false}
-            agregarInfo={false}
           />
         </Grid>
 

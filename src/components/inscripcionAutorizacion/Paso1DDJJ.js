@@ -13,11 +13,11 @@ import SelectorActividad from '../actividades/SelectorActividad';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 
-export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
+export default function Paso1DDJJ({ handleChange, agregarActividad }) {
   const actividades = useRecoilValue(todasLasActividades());
 
-  const cambioDeActividad = (nombre, actividad) => {
-    agregarUnValor(nombre, actividad);
+  const cambioDeActividad = (actividad) => {
+    agregarActividad(actividad);
   };
 
   return (
@@ -29,7 +29,6 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
             funcionOnChange={cambioDeActividad}
             deshabilitarSinCupo={true}
             agregarHorario={true}
-            agregarInfo={true}
           />
         </Grid>
 
@@ -63,5 +62,5 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
 
 Paso1DDJJ.propTypes = {
   handleChange: PropTypes.func,
-  agregarUnValor: PropTypes.func,
+  agregarActividad: PropTypes.func,
 };
