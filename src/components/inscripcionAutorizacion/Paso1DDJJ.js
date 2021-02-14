@@ -11,14 +11,16 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
-import { todasLasActividades } from '../../state/actividades';
+import { actividadesUsuario } from '../../state/usuario';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRecoilValue } from 'recoil';
 
 export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   const matches = useMediaQuery('(min-width:600px)');
-
-  const actividades = useRecoilValue(todasLasActividades());
+  const fechaActual = DateTime.local().toISODate();
+  const actividades = useRecoilValue(
+    actividadesUsuario({ desde: fechaActual, hasta: fechaActual })
+  );
 
   const cambioDeActividad = (nombre, actividad) => {
     agregarUnValor(nombre, actividad);

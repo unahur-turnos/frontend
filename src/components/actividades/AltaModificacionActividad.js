@@ -13,20 +13,19 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { useApi } from '../../utils/fetchApi';
-import { PropTypes } from 'prop-types';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { useNotificarActualizacion } from '../../state/actualizaciones';
-import { dateFormatter } from '../../utils/dateUtils';
-import { DateTime } from 'luxon';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { useState } from 'react';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
+import { DateTime } from 'luxon';
 import ERRORES from '../ErroresText/Errores';
-import { Autocomplete } from '@material-ui/lab';
+import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
+import { dateFormatter } from '../../utils/dateUtils';
 import { todasLasCarreras } from '../../state/carreras';
 import { todosLosEspacios } from '../../state/espacios';
+import { useApi } from '../../utils/fetchApi';
+import { useNotificarActualizacion } from '../../state/actualizaciones';
+import { useRecoilValue } from 'recoil';
+import { useState } from 'react';
 
 export default function AltaActividad(props) {
   const matches = useMediaQuery('(min-width:600px)');
@@ -55,6 +54,7 @@ export default function AltaActividad(props) {
     fechaHoraFin,
     responsable,
     dniResponsable,
+    restriccionId,
   } = actividad;
 
   const handleChange = (e) => {
@@ -77,7 +77,6 @@ export default function AltaActividad(props) {
 
   const espacios = useRecoilValue(todosLosEspacios);
   const carreras = useRecoilValue(todasLasCarreras);
-  const [carreraSeleccionada, setCarreraSeleccionada] = useState('');
 
   return (
     <>
@@ -255,36 +254,22 @@ export default function AltaActividad(props) {
           <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
             <Typography variant="h6">Carrera:</Typography>
           </Grid>
+
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <FormControl style={{ minWidth: 250 }}>
-              <Autocomplete
-                id="carreras"
-                options={carreras}
-                getOptionLabel={(carrera) => carrera.nombre}
-                noOptionsText="No hay carreras que coincidan con la búsqueda"
-                value={carreraSeleccionada}
-                onChange={(event, carrera) => {
-                  setCarreraSeleccionada(carrera);
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Seleccione una carrera"
-                    variant="outlined"
-                  />
-                )}
-                renderOption={(carrera) => {
-                  return (
-                    <Grid container alignItems="center">
-                      <Grid item xs>
-                        <Typography variant="body1" style={{ fontWeight: 700 }}>
-                          {carrera.nombre}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  );
-                }}
-              />
+              <InputLabel id="labelCarreras">Elija una carrera</InputLabel>
+              <Select
+                labelId="labelCarreras"
+                name="restriccionId"
+                value={restriccionId}
+                onChange={handleChange}
+              >
+                {carreras.map((carrera) => (
+                  <MenuItem value={carrera.id} key={carrera.id}>
+                    {carrera.nombre}
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
           </Grid>
 
