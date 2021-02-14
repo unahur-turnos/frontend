@@ -27,8 +27,7 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
           <SelectorActividad
             actividades={actividades}
             funcionOnChange={cambioDeActividad}
-            deshabilitarSinCupo={true}
-            agregarHorario={true}
+            esAsistente={true}
           />
         </Grid>
 

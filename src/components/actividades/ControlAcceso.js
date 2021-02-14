@@ -67,8 +67,7 @@ export default function ControlAcceso() {
           <SelectorActividad
             actividades={actividades}
             funcionOnChange={setActividadSeleccionada}
-            deshabilitarSinCupo={false}
-            agregarHorario={false}
+            esAsistente={false}
           />
         </Grid>
 

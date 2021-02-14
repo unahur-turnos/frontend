@@ -18,8 +18,7 @@ const useStyles = makeStyles(() => ({
 export default function SelectorActividad({
   actividades,
   funcionOnChange,
-  deshabilitarSinCupo,
-  agregarHorario,
+  esAsistente,
 }) {
   const classes = useStyles();
 
@@ -37,14 +36,18 @@ export default function SelectorActividad({
         funcionOnChange(actividad);
       }}
       getOptionDisabled={(actividad) =>
-        deshabilitarSinCupo &&
+        esAsistente &&
         noHayCuposDisponibles(actividad.Espacio.aforo, actividad.autorizaciones)
       }
       renderInput={(params) => (
         <TextField
           {...params}
           label="Buscá una actividad"
-          helperText={AYUDAS.autorizacionSelectorActividades}
+          helperText={
+            esAsistente
+              ? AYUDAS.selectorActividadesAsistente
+              : AYUDAS.selectorActividadesBedel
+          }
         />
       )}
       renderOption={(actividad) => {
@@ -53,7 +56,7 @@ export default function SelectorActividad({
             <Grid item>
               <AssignmentIcon
                 color={
-                  deshabilitarSinCupo &&
+                  esAsistente &&
                   noHayCuposDisponibles(
                     actividad.Espacio.aforo,
                     actividad.autorizaciones
@@ -71,7 +74,7 @@ export default function SelectorActividad({
               <Typography variant="body2" color="textSecondary">
                 {`${actividad.Espacio.nombre} - ${actividad.Espacio.Edificio.nombre}`}
               </Typography>
-              {agregarHorario && (
+              {esAsistente && (
                 <Typography variant="body2" color="textSecondary">
                   {fechaHoraActividad(
                     actividad.fechaHoraInicio,
@@ -90,6 +93,5 @@ export default function SelectorActividad({
 SelectorActividad.propTypes = {
   actividades: PropTypes.arrayOf(PropTypes.object),
   funcionOnChange: PropTypes.func,
-  deshabilitarSinCupo: PropTypes.bool,
-  agregarHorario: PropTypes.bool,
+  esAsistente: PropTypes.bool,
 };
