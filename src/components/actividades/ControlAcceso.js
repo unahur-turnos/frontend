@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardContent,
   Grid,
@@ -26,6 +25,29 @@ import { hourFormatter } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    marginTop: 16,
+  },
+  autocomplete: {
+    width: 400,
+  },
+  icon: {
+    marginRight: 16,
+  },
+  card: {
+    maxWidth: 275,
+    borderRadius: 20,
+    borderColor: theme.palette.primary.main,
+  },
+  table: {
+    maxWidth: '50%',
+  },
+  tableCell: {
+    width: '33%',
+  },
+}));
 
 export default function ControlAcceso() {
   const classes = useStyles();
@@ -141,29 +163,22 @@ function DatosActividad({ actividad }) {
 
 function ListadoAutorizaciones({ idActividad }) {
   const classes = useStyles();
-  const autorizacionesState = useRecoilValue(
+
+  const autorizaciones = useRecoilValue(
     autorizacionesPorActividad(idActividad)
   );
-  const [
-    autorizacionesNoRegistradas,
-    setAutorizacionesNoRegistradas,
-  ] = useState(
-    autorizacionesState.filter(
-      (autorizacion) => autorizacion.fechaHoraIngreso === null
-    )
+  const [registradas, setRegistradas] = useState(
+    autorizaciones.filter((aut) => aut.fechaHoraIngreso !== null)
   );
-  const [autorizacionesRegistradas, setAutorizacionesRegistradas] = useState(
-    autorizacionesState.filter(
-      (autorizacion) => autorizacion.fechaHoraIngreso !== null
-    )
-  );
-  const [abrirModal, setAbrirModal] = useState(false);
-  const [registroAutorizacion, setRegistroAutorizacion] = useState(
-    autorizacionesNoRegistradas[0]
+  const [noRegistradas, setNoRegistradas] = useState(
+    autorizaciones.filter((aut) => aut.fechaHoraIngreso === null)
   );
 
+  const [abrirModal, setAbrirModal] = useState(false);
+  const [autorizacionARegistrar, setAutorizacionARegistrar] = useState();
+
   const confirmarRegistro = (autorizacion) => {
-    setRegistroAutorizacion(autorizacion);
+    setAutorizacionARegistrar(autorizacion);
     setAbrirModal(true);
   };
 
@@ -184,7 +199,7 @@ function ListadoAutorizaciones({ idActividad }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {autorizacionesNoRegistradas.map((autorizacion) => {
+          {noRegistradas.map((autorizacion) => {
             return (
               <TableRow key={autorizacion.id}>
                 <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
@@ -194,13 +209,13 @@ function ListadoAutorizaciones({ idActividad }) {
                     color="primary"
                     onClick={() => confirmarRegistro(autorizacion)}
                   >
-                    <CheckBoxIcon style={{ border: 'none' }} />
+                    <CheckBoxIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
             );
           })}
-          {autorizacionesRegistradas
+          {registradas
             .sort(function (a, b) {
               return (
                 (a.fechaHoraIngreso === null) + (b.fechaHoraIngreso === null) ||
@@ -215,31 +230,22 @@ function ListadoAutorizaciones({ idActividad }) {
                   <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
                   <TableCell align="center">
                     <Typography variant="h6">
-                      {console.log(autorizacion.fechaHoraIngreso)}
-                      {DateTime.fromISO(
-                        autorizacion.fechaHoraIngreso !== null
-                          ? autorizacion.fechaHoraIngreso
-                          : DateTime.local()
-                      )
-                        .setLocale('es')
-                        .toFormat('T')}
+                      {autorizacion.fechaHoraIngreso}
                     </Typography>
                   </TableCell>
                 </TableRow>
               );
             })}
-          {console.log('----------------')}
         </TableBody>
       </Table>
       <ConfirmarEntrada
         abrirModal={abrirModal}
         setAbrirModal={setAbrirModal}
-        entidad={registroAutorizacion}
-        autorizacionesRegistradas={autorizacionesRegistradas}
-        autorizacionesNoRegistradas={autorizacionesNoRegistradas}
-        setEntidad={setRegistroAutorizacion}
-        setAutorizacionesRegistradas={setAutorizacionesRegistradas}
-        setAutorizacionesNoRegistradas={setAutorizacionesNoRegistradas}
+        autorizacionARegistrar={autorizacionARegistrar}
+        registradas={registradas}
+        setRegistradas={setRegistradas}
+        noRegistradas={noRegistradas}
+        setNoRegistradas={setNoRegistradas}
       />
     </TableContainer>
   );
@@ -257,26 +263,3 @@ DatosActividad.propTypes = {
 ListadoAutorizaciones.propTypes = {
   idActividad: PropTypes.number,
 };
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginTop: 16,
-  },
-  autocomplete: {
-    width: 400,
-  },
-  icon: {
-    marginRight: 16,
-  },
-  card: {
-    maxWidth: 275,
-    borderRadius: 20,
-    borderColor: theme.palette.primary.main,
-  },
-  table: {
-    maxWidth: '50%',
-  },
-  tableCell: {
-    width: '33%',
-  },
-}));

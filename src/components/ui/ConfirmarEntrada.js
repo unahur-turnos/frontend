@@ -1,37 +1,35 @@
 import { Button, Dialog } from '@material-ui/core';
 
-import { DateTime } from 'luxon';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
-import { dateFormatter } from '../../utils/dateUtils';
 import { useApi } from '../../utils/fetchApi';
-import { useNotificarActualizacion } from '../../state/actualizaciones';
 
 export default function ConfirmarEntrada({
   abrirModal,
-  entidad,
-  autorizacionesRegistradas,
-  autorizacionesNoRegistradas,
   setAbrirModal,
-  setEntidad,
-  setAutorizacionesRegistradas,
-  setAutorizacionesNoRegistradas,
+  autorizacionARegistrar,
+  registradas,
+  setRegistradas,
+  noRegistradas,
+  setNoRegistradas,
 }) {
-  const { create } = useApi(`autorizaciones/${entidad?.id}/ingreso`);
+  const { create } = useApi(
+    `autorizaciones/${autorizacionARegistrar?.id}/ingreso`
+  );
 
   const cerrarModal = () => {
     setAbrirModal(false);
   };
 
   const registrarIngreso = async () => {
-    //await create(entidad);
-    setAutorizacionesNoRegistradas(
-      autorizacionesNoRegistradas.filter((autorizacion) => {
-        autorizacion.id !== entidad.id;
+    await create(autorizacionARegistrar);
+    setNoRegistradas(
+      noRegistradas.filter((autorizacion) => {
+        autorizacion.id !== autorizacionARegistrar.id;
       })
     );
-    setAutorizacionesRegistradas(autorizacionesRegistradas.concat(entidad));
+    setRegistradas(registradas.concat(autorizacionARegistrar));
     cerrarModal();
   };
 
@@ -44,7 +42,8 @@ export default function ConfirmarEntrada({
       <DialogTitle>
         ¿Confirma que desea registrar el ingreso de{' '}
         <strong>
-          {entidad?.Usuario.apellido} {entidad?.Usuario.nombre}
+          {autorizacionARegistrar?.Usuario.apellido}{' '}
+          {autorizacionARegistrar?.Usuario.nombre}
         </strong>
         ?
       </DialogTitle>
@@ -61,10 +60,9 @@ export default function ConfirmarEntrada({
 ConfirmarEntrada.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
-  entidad: PropTypes.object,
-  autorizacionesRegistradas: PropTypes.object,
-  autorizacionesNoRegistradas: PropTypes.object,
-  setEntidad: PropTypes.func,
-  setAutorizacionesRegistradas: PropTypes.func,
-  setAutorizacionesNoRegistradas: PropTypes.func,
+  autorizacionARegistrar: PropTypes.object,
+  registradas: PropTypes.arrayOf(PropTypes.object),
+  setRegistradas: PropTypes.func,
+  noRegistradas: PropTypes.arrayOf(PropTypes.object),
+  setNoRegistradas: PropTypes.func,
 };
