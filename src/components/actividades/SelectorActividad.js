@@ -43,11 +43,7 @@ export default function SelectorActividad({
         <TextField
           {...params}
           label="Buscá una actividad"
-          helperText={
-            esAsistente
-              ? AYUDAS.selectorActividadesAsistente
-              : AYUDAS.selectorActividadesBedel
-          }
+          helperText={AYUDAS.selectorActividad}
         />
       )}
       renderOption={(actividad) => {
@@ -74,14 +70,12 @@ export default function SelectorActividad({
               <Typography variant="body2" color="textSecondary">
                 {`${actividad.Espacio.nombre} - ${actividad.Espacio.Edificio.nombre}`}
               </Typography>
-              {esAsistente && (
-                <Typography variant="body2" color="textSecondary">
-                  {fechaHoraActividad(
-                    actividad.fechaHoraInicio,
-                    actividad.fechaHoraFin
-                  )}
-                </Typography>
-              )}
+              <Typography variant="body2" color="textSecondary">
+                {fechaHoraActividad(
+                  actividad.fechaHoraInicio,
+                  actividad.fechaHoraFin
+                )}
+              </Typography>
             </Grid>
           </Grid>
         );

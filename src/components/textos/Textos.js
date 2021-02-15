@@ -14,10 +14,8 @@ export const ERRORES = {
 };
 
 export const AYUDAS = {
-  selectorActividadesBedel:
+  selectorActividad:
     'Podés tipear el tipo de actividad a la que querés acceder.',
-  selectorActividadesAsistente:
-    'Podés ir tipeando el tipo de actividad a la que querés acceder y se filtra según la disponibilidad.',
-  autorizacionSelectorTransporte:
-    'Indicá cómo pensás movilizarte hasta la universidad cuando vayas a realizar la actividad',
+  selectorTransporte:
+    'Indicá cómo pensás movilizarte hasta la universidad cuando vayas a realizar la actividad.',
 };

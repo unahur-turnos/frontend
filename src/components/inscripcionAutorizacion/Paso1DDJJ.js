@@ -50,7 +50,7 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
               <MenuItem value={'Bicicleta'}>Caminando/Bici</MenuItem>
             </Select>
             <FormHelperText style={{ maxWidth: 330 }}>
-              {AYUDAS.autorizacionSelectorTransporte}
+              {AYUDAS.selectorTransporte}
             </FormHelperText>
           </FormControl>
         </Grid>
