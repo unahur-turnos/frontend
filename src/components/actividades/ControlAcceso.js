@@ -1,8 +1,8 @@
 import {
+  Button,
   Card,
   CardContent,
   Grid,
-  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -13,14 +13,12 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import { Autocomplete } from '@material-ui/lab';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import ConfirmarEntrada from '../ui/ConfirmarEntrada';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
 import { autorizacionesPorActividad } from '../../state/autorizaciones';
+import { filter } from 'ramda';
 import { hourFormatter } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
@@ -54,7 +52,7 @@ export default function ControlAcceso() {
 
   const fechaActual = DateTime.local().toISODate();
   const actividades = useRecoilValue(
-    todasLasActividades({ desde: '2021-02-01', hasta: fechaActual })
+    todasLasActividades({ desde: fechaActual, hasta: fechaActual })
   );
 
   const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
@@ -128,10 +126,10 @@ function ListadoAutorizaciones({ idActividad }) {
     autorizacionesPorActividad(idActividad)
   );
   const [registradas, setRegistradas] = useState(
-    autorizaciones.filter((aut) => aut.fechaHoraIngreso !== null)
+    filter((aut) => aut.fechaHoraIngreso !== null, autorizaciones)
   );
   const [noRegistradas, setNoRegistradas] = useState(
-    autorizaciones.filter((aut) => aut.fechaHoraIngreso === null)
+    filter((aut) => aut.fechaHoraIngreso === null, autorizaciones)
   );
 
   const [abrirModal, setAbrirModal] = useState(false);
@@ -154,7 +152,7 @@ function ListadoAutorizaciones({ idActividad }) {
               DNI
             </TableCell>
             <TableCell className={classes.tableCell} align="center">
-              Acciones
+              Ingreso
             </TableCell>
           </TableRow>
         </TableHead>
@@ -165,12 +163,12 @@ function ListadoAutorizaciones({ idActividad }) {
                 <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
                 <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
                 <TableCell align="center">
-                  <IconButton
+                  <Button
                     color="primary"
                     onClick={() => confirmarRegistro(autorizacion)}
                   >
-                    <CheckBoxIcon />
-                  </IconButton>
+                    Registrar
+                  </Button>
                 </TableCell>
               </TableRow>
             );
@@ -189,8 +187,8 @@ function ListadoAutorizaciones({ idActividad }) {
                   <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
                   <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
                   <TableCell align="center">
-                    <Typography variant="h6">
-                      {autorizacion.fechaHoraIngreso}
+                    <Typography>
+                      {hourFormatter(autorizacion.fechaHoraIngreso)}
                     </Typography>
                   </TableCell>
                 </TableRow>

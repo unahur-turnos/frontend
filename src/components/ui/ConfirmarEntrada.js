@@ -1,4 +1,5 @@
 import { Button, Dialog } from '@material-ui/core';
+import { append, filter } from 'ramda';
 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -23,13 +24,16 @@ export default function ConfirmarEntrada({
   };
 
   const registrarIngreso = async () => {
-    await create(autorizacionARegistrar);
+    const { data } = await create(autorizacionARegistrar);
+
     setNoRegistradas(
-      noRegistradas.filter((autorizacion) => {
-        autorizacion.id !== autorizacionARegistrar.id;
-      })
+      filter(
+        (autorizacion) => autorizacion.id !== autorizacionARegistrar.id,
+        noRegistradas
+      )
     );
-    setRegistradas(registradas.concat(autorizacionARegistrar));
+    setRegistradas(append(data), registradas);
+
     cerrarModal();
   };
 
