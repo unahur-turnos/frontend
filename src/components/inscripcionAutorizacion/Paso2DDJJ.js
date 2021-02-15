@@ -6,6 +6,7 @@ import {
   RadioGroup,
   Typography,
 } from '@material-ui/core';
+
 import { PropTypes } from 'prop-types';
 
 export default function Paso2DDJJ({ handleChange }) {
@@ -53,8 +54,8 @@ export default function Paso2DDJJ({ handleChange }) {
           <FormControl>
             <RadioGroup
               row
-              aria-label="contactoConAlguien"
-              name="contactoConAlguien"
+              aria-label="estuvoEnContacto"
+              name="estuvoEnContacto"
               onChange={handleChange}
               defaultValue={'false'}
             >
