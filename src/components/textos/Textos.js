@@ -14,8 +14,8 @@ export const ERRORES = {
 };
 
 export const AYUDAS = {
-  autorizacionSelectorActividades:
-    'Podés ir tipeando el tipo de actividad a la que querés acceder y se filtra según la disponibilidad.',
-  autorizacionSelectorTransporte:
-    'Indicá cómo pensás movilizarte hasta la universidad cuando vayas a realizar la actividad',
+  selectorActividad:
+    'Podés tipear el tipo de actividad a la que querés acceder.',
+  selectorTransporte:
+    'Indicá cómo pensás movilizarte hasta la universidad cuando vayas a realizar la actividad.',
 };
