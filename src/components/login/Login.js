@@ -117,10 +117,10 @@ export default function Login() {
             name="contrasenia"
             type={showPassword ? 'text' : 'password'}
             onChange={handleChange}
-            style={{ minWidth: 250 }}
+            style={{ maxWidth: 250 }}
             value={valoresUsuario.contrasenia}
-            validators={['required', 'minStringLength:6']}
-            errorMessages={[ERRORES.requerido, ERRORES.contrasenia]}
+            validators={['required']}
+            errorMessages={[ERRORES.requerido]}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -138,7 +138,7 @@ export default function Login() {
         </Grid>
 
         {tengoErrorEn.mandarError && (
-          <Grid item xs={12} sm={6} align="center">
+          <Grid item xs={12} align="center">
             <Typography color="secondary">
               El DNI y/o contraseña ingresados son inválidos, por favor vuelva a
               intentar.

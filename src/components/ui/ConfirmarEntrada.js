@@ -1,28 +1,37 @@
 import { Button, Dialog } from '@material-ui/core';
 
+import { DateTime } from 'luxon';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
+import { dateFormatter } from '../../utils/dateUtils';
 import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 
 export default function ConfirmarEntrada({
   abrirModal,
-  setAbrirModal,
-  ruta,
   entidad,
+  autorizacionesRegistradas,
+  autorizacionesNoRegistradas,
+  setAbrirModal,
+  setEntidad,
+  setAutorizacionesRegistradas,
+  setAutorizacionesNoRegistradas,
 }) {
-  const notificarActualizacion = useNotificarActualizacion(ruta);
-  const { create } = useApi(ruta);
+  const { create } = useApi(`autorizaciones/${entidad?.id}/ingreso`);
 
   const cerrarModal = () => {
     setAbrirModal(false);
   };
 
-  // TODO: pegarle al nuevo endpoint
   const registrarIngreso = async () => {
-    //  await create(entidad.id);
-    //  notificarActualizacion();
+    //await create(entidad);
+    setAutorizacionesNoRegistradas(
+      autorizacionesNoRegistradas.filter((autorizacion) => {
+        autorizacion.id !== entidad.id;
+      })
+    );
+    setAutorizacionesRegistradas(autorizacionesRegistradas.concat(entidad));
     cerrarModal();
   };
 
@@ -32,11 +41,10 @@ export default function ConfirmarEntrada({
       aria-labelledby="simple-dialog-title"
       open={abrirModal}
     >
-      {console.log(entidad)}
       <DialogTitle>
         ¿Confirma que desea registrar el ingreso de{' '}
         <strong>
-          {entidad.Usuario.apellido} {entidad.Usuario.nombre}
+          {entidad?.Usuario.apellido} {entidad?.Usuario.nombre}
         </strong>
         ?
       </DialogTitle>
@@ -53,6 +61,10 @@ export default function ConfirmarEntrada({
 ConfirmarEntrada.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
-  ruta: PropTypes.string,
   entidad: PropTypes.object,
+  autorizacionesRegistradas: PropTypes.object,
+  autorizacionesNoRegistradas: PropTypes.object,
+  setEntidad: PropTypes.func,
+  setAutorizacionesRegistradas: PropTypes.func,
+  setAutorizacionesNoRegistradas: PropTypes.func,
 };
