@@ -157,27 +157,30 @@ function ListadoAutorizaciones({ idActividad }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {noRegistradas.map((autorizacion) => {
-            return (
-              <TableRow key={autorizacion.id}>
-                <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
-                <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
-                <TableCell align="center">
-                  <Button
-                    color="primary"
-                    onClick={() => confirmarRegistro(autorizacion)}
-                  >
-                    Registrar
-                  </Button>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {noRegistradas
+            .sort(function (a, b) {
+              a.Usuario.nombre.localeCompare(b.Usuario.nombre);
+            })
+            .map((autorizacion) => {
+              return (
+                <TableRow key={autorizacion.id}>
+                  <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
+                  <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
+                  <TableCell align="center">
+                    <Button
+                      color="primary"
+                      onClick={() => confirmarRegistro(autorizacion)}
+                    >
+                      Registrar
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           {registradas
             .sort(function (a, b) {
               return (
-                (a.fechaHoraIngreso === null) + (b.fechaHoraIngreso === null) ||
-                -(a.fechaHoraIngreso > b.fechaHoraIngreso) ||
+                a.fechaHoraIngreso > b.fechaHoraIngreso ||
                 +(a.fechaHoraIngreso < b.fechaHoraIngreso)
               );
             })
