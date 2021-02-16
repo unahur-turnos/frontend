@@ -11,6 +11,7 @@ import {
   TableRow,
   Typography,
   makeStyles,
+  TextField,
 } from '@material-ui/core';
 
 import ConfirmarEntrada from '../ui/ConfirmarEntrada';
@@ -18,7 +19,7 @@ import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
 import { autorizacionesPorActividad } from '../../state/autorizaciones';
-import { filter } from 'ramda';
+import { sort } from 'ramda';
 import { hourFormatter } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
@@ -122,15 +123,10 @@ function DatosActividad({ actividad }) {
 function ListadoAutorizaciones({ idActividad }) {
   const classes = useStyles();
 
-  const autorizaciones = useRecoilValue(
+  const autorizacionesState = useRecoilValue(
     autorizacionesPorActividad(idActividad)
   );
-  const [registradas, setRegistradas] = useState(
-    filter((aut) => aut.fechaHoraIngreso !== null, autorizaciones)
-  );
-  const [noRegistradas, setNoRegistradas] = useState(
-    filter((aut) => aut.fechaHoraIngreso === null, autorizaciones)
-  );
+  const [autorizaciones, setAutorizaciones] = useState(autorizacionesState);
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [autorizacionARegistrar, setAutorizacionARegistrar] = useState();
@@ -140,75 +136,81 @@ function ListadoAutorizaciones({ idActividad }) {
     setAbrirModal(true);
   };
 
+  const ordenarLista = () => {
+    const listaOrdenada = () =>
+      function (a, b) {
+        if (a.fechaHoraIngreso === b.fechaHoraIngreso) {
+          return 0;
+        } else if (a.fechaHoraIngreso === null) {
+          return -1;
+        } else if (b.fechaHoraIngreso === null) {
+          return 1;
+        } else {
+          return a.fechaHoraIngreso < b.fechaHoraIngreso ||
+            a.Usuario.apellido < b.Usuario.apellido
+            ? 1
+            : -1;
+        }
+      };
+    return sort(listaOrdenada(false), autorizaciones);
+  };
+
   return (
-    <TableContainer>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.tableCell} align="center">
-              Asistente
-            </TableCell>
-            <TableCell className={classes.tableCell} align="center">
-              DNI
-            </TableCell>
-            <TableCell className={classes.tableCell} align="center">
-              Ingreso
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {noRegistradas
-            .sort(function (a, b) {
-              a.Usuario.nombre.localeCompare(b.Usuario.nombre);
-            })
-            .map((autorizacion) => {
+    <>
+      {/* <TextField 
+      label="Ingrese un DNI, o apellido" 
+      
+      /> */}
+
+      <TableContainer>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes.tableCell} align="center">
+                Asistente
+              </TableCell>
+              <TableCell className={classes.tableCell} align="center">
+                DNI
+              </TableCell>
+              <TableCell className={classes.tableCell} align="center">
+                Ingreso
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {ordenarLista().map((autorizacion) => {
               return (
                 <TableRow key={autorizacion.id}>
                   <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
                   <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
                   <TableCell align="center">
-                    <Button
-                      color="primary"
-                      onClick={() => confirmarRegistro(autorizacion)}
-                    >
-                      Registrar
-                    </Button>
+                    {!autorizacion.fechaHoraIngreso ? (
+                      <Button
+                        color="primary"
+                        onClick={() => confirmarRegistro(autorizacion)}
+                      >
+                        Registrar
+                      </Button>
+                    ) : (
+                      <Typography>
+                        {hourFormatter(autorizacion.fechaHoraIngreso)}
+                      </Typography>
+                    )}
                   </TableCell>
                 </TableRow>
               );
             })}
-          {registradas
-            .sort(function (a, b) {
-              return (
-                a.fechaHoraIngreso > b.fechaHoraIngreso ||
-                +(a.fechaHoraIngreso < b.fechaHoraIngreso)
-              );
-            })
-            .map((autorizacion) => {
-              return (
-                <TableRow key={autorizacion.id}>
-                  <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
-                  <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
-                  <TableCell align="center">
-                    <Typography>
-                      {hourFormatter(autorizacion.fechaHoraIngreso)}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-      <ConfirmarEntrada
-        abrirModal={abrirModal}
-        setAbrirModal={setAbrirModal}
-        autorizacionARegistrar={autorizacionARegistrar}
-        registradas={registradas}
-        setRegistradas={setRegistradas}
-        noRegistradas={noRegistradas}
-        setNoRegistradas={setNoRegistradas}
-      />
-    </TableContainer>
+          </TableBody>
+        </Table>
+        <ConfirmarEntrada
+          abrirModal={abrirModal}
+          setAbrirModal={setAbrirModal}
+          autorizacionARegistrar={autorizacionARegistrar}
+          autorizaciones={autorizaciones}
+          setAutorizaciones={setAutorizaciones}
+        />
+      </TableContainer>
+    </>
   );
 }
 

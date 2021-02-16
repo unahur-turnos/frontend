@@ -10,10 +10,8 @@ export default function ConfirmarEntrada({
   abrirModal,
   setAbrirModal,
   autorizacionARegistrar,
-  registradas,
-  setRegistradas,
-  noRegistradas,
-  setNoRegistradas,
+  autorizaciones,
+  setAutorizaciones,
 }) {
   const { create } = useApi(
     `autorizaciones/${autorizacionARegistrar?.id}/ingreso`
@@ -26,14 +24,13 @@ export default function ConfirmarEntrada({
   const registrarIngreso = async () => {
     const { data } = await create(autorizacionARegistrar);
 
-    setNoRegistradas(
+    setAutorizaciones(
       filter(
         (autorizacion) => autorizacion.id !== autorizacionARegistrar.id,
-        noRegistradas
+        autorizaciones
       )
     );
-    setRegistradas(append(data), registradas);
-
+    setAutorizaciones(append(data), autorizaciones);
     cerrarModal();
   };
 
@@ -65,8 +62,6 @@ ConfirmarEntrada.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
   autorizacionARegistrar: PropTypes.object,
-  registradas: PropTypes.arrayOf(PropTypes.object),
-  setRegistradas: PropTypes.func,
-  noRegistradas: PropTypes.arrayOf(PropTypes.object),
-  setNoRegistradas: PropTypes.func,
+  autorizaciones: PropTypes.object,
+  setAutorizaciones: PropTypes.func,
 };
