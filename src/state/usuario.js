@@ -8,6 +8,12 @@ import LocalActivityIcon from '@material-ui/icons/LocalActivity';
 
 const listaRutas = [
   {
+    nombre: 'Mis actividades',
+    ruta: '/misActividades',
+    rolesPermitidos: ['asistente'],
+    icono: <LocalActivityIcon />,
+  },
+  {
     nombre: 'Actividades',
     ruta: '/actividades',
     rolesPermitidos: ['admin'],
@@ -68,7 +74,7 @@ export const rutaInicialUsuarioState = selector({
 export function rutaInicialUsuario(usuario) {
   switch (usuario.rol) {
     case 'asistente':
-      return '/autorizaciones/nueva';
+      return '/misActividades';
     case 'bedel':
       return '/actividades/hoy';
     case 'admin':
