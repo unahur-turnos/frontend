@@ -12,6 +12,10 @@ import {
   Typography,
   makeStyles,
   TextField,
+  Switch,
+  FormGroup,
+  FormControlLabel,
+  Box,
 } from '@material-ui/core';
 
 import ConfirmarEntrada from '../ui/ConfirmarEntrada';
@@ -104,15 +108,9 @@ function DatosActividad({ actividad }) {
   return (
     <Card className={classes.card} variant="outlined">
       <CardContent>
-        <Typography variant="h6">{nombre}</Typography>
-        <Typography variant="body1">{`Espacio: ${Espacio.nombre}`}</Typography>
+        <Typography variant="body1">{`${Espacio.nombre} (${Espacio.Edificio.nombre})`}</Typography>
         <Typography variant="body1">
-          {`Edificio: ${Espacio.Edificio.nombre}`}
-        </Typography>
-        <Typography variant="body1">
-          {`Horario: ${hourFormatter(fechaHoraInicio)} a ${hourFormatter(
-            fechaHoraFin
-          )}`}
+          {`${hourFormatter(fechaHoraInicio)} - ${hourFormatter(fechaHoraFin)}`}
         </Typography>
         <Typography variant="body1">{`Responsable: ${responsable}`}</Typography>
       </CardContent>
@@ -127,9 +125,10 @@ function ListadoAutorizaciones({ idActividad }) {
     autorizacionesPorActividad(idActividad)
   );
   const [autorizaciones, setAutorizaciones] = useState(autorizacionesState);
-
+  const [listaDeAutCompleta, setListaDeAutCompleta] = useState();
   const [abrirModal, setAbrirModal] = useState(false);
   const [autorizacionARegistrar, setAutorizacionARegistrar] = useState();
+  const [check, setCheck] = useState(true);
 
   const confirmarRegistro = (autorizacion) => {
     setAutorizacionARegistrar(autorizacion);
@@ -155,13 +154,29 @@ function ListadoAutorizaciones({ idActividad }) {
     return sort(listaOrdenada(false), autorizaciones);
   };
 
+  const cambioCheck = () => {
+    setListaDeAutCompleta(autorizaciones);
+    setCheck(!check);
+    if (check) {
+      const listaFiltrada = autorizaciones.filter(
+        (autorizacion) => autorizacion.fechaHoraIngreso === null
+      );
+      setAutorizaciones(listaFiltrada);
+    } else {
+      setAutorizaciones(listaDeAutCompleta);
+    }
+  };
   return (
     <>
-      {/* <TextField 
-      label="Ingrese un DNI, o apellido" 
-      
-      /> */}
-
+      <Box display="flex" justifyContent="center">
+        <FormGroup>
+          <FormControlLabel
+            label="Ver ya registrados"
+            labelPlacement="start"
+            control={<Switch defaultChecked onChange={cambioCheck} />}
+          />
+        </FormGroup>
+      </Box>
       <TableContainer>
         <Table className={classes.table}>
           <TableHead>
