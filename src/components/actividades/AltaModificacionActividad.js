@@ -257,7 +257,9 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <FormControl style={{ minWidth: 250 }}>
-              <InputLabel id="labelCarreras">Elija una carrera</InputLabel>
+              <InputLabel id="labelCarreras">
+                Elegí una carrera o dejalo en blanco
+              </InputLabel>
               <Select
                 labelId="labelCarreras"
                 name="restriccionId"

@@ -19,7 +19,7 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
   const matches = useMediaQuery('(min-width:600px)');
   const fechaActual = DateTime.local().toISODate();
   const actividades = useRecoilValue(
-    actividadesUsuario({ desde: fechaActual, hasta: fechaActual })
+    actividadesUsuario({ desde: fechaActual })
   );
 
   const cambioDeActividad = (nombre, actividad) => {
