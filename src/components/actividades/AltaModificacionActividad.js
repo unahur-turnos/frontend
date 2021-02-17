@@ -16,7 +16,6 @@ import {
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { DateTime } from 'luxon';
-import ERRORES from '../ErroresText/Errores';
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
 import { dateFormatter } from '../../utils/dateUtils';
@@ -26,6 +25,7 @@ import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { ERRORES } from '../textos/Textos';
 
 export default function AltaActividad(props) {
   const matches = useMediaQuery('(min-width:600px)');

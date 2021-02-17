@@ -16,7 +16,7 @@ import { useApi } from '../../utils/fetchApi';
 import { useSetRecoilState } from 'recoil';
 import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import ERRORES from '../ErroresText/Errores';
+import { ERRORES } from '../textos/Textos';
 
 export default function Login() {
   const matches = useMediaQuery('(min-width:600px)');

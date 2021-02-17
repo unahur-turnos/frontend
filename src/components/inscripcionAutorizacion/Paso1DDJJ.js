@@ -1,85 +1,50 @@
 import {
   FormControl,
+  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
   Select,
-  TextField,
-  Typography,
 } from '@material-ui/core';
 
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { DateTime } from 'luxon';
+import { AYUDAS } from '../textos/Textos';
 import { PropTypes } from 'prop-types';
+import SelectorActividad from '../actividades/SelectorActividad';
 import { actividadesUsuario } from '../../state/usuario';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useRecoilValue } from 'recoil';
+import { DateTime } from 'luxon';
 
-export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
-  const matches = useMediaQuery('(min-width:600px)');
+export default function Paso1DDJJ({ handleChange, agregarActividad }) {
   const fechaActual = DateTime.local().toISODate();
   const actividades = useRecoilValue(
     actividadesUsuario({ desde: fechaActual })
   );
-
   const cambioDeActividad = (nombre, actividad) => {
-    agregarUnValor(nombre, actividad);
+    agregarActividad(nombre, actividad);
   };
 
   return (
     <>
-      <Grid container alignItems="flex-end" spacing={4}>
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Seleccione actividad:</Typography>
+      <Grid container spacing={4}>
+        <Grid item xs={12} align="center">
+          <SelectorActividad
+            actividades={actividades}
+            funcionOnChange={cambioDeActividad}
+            esAsistente={true}
+          />
         </Grid>
 
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <FormControl style={{ minWidth: 250 }}>
-            <Autocomplete
-              options={actividades}
-              noOptionsText={'No se encuentra'}
-              onChange={(event, newValue) => {
-                cambioDeActividad('actividad', newValue);
-              }}
-              getOptionDisabled={(actividad) =>
-                actividad.Espacio.aforo - actividad.autorizaciones === 0
-              }
-              getOptionLabel={(actividad) => {
-                const timeStart = DateTime.fromISO(actividad.fechaHoraInicio)
-                  .setLocale('es')
-                  .toFormat("cccc dd 'de' T 'a'");
-                const timeFinal = DateTime.fromISO(actividad.fechaHoraFin)
-                  .setLocale('es')
-                  .toFormat('T');
-
-                return `${actividad.nombre} ${timeStart} ${timeFinal}`;
-              }}
-              id="actividadId"
-              name="actividadId"
-              blurOnSelect
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Actividades disponibles:"
-                  margin="normal"
-                />
-              )}
-            />
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Medio de transporte</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <FormControl style={{ minWidth: 250 }}>
-            <InputLabel id="medioDeTransporte">Elija un transporte</InputLabel>
+        <Grid item xs={12} align="center">
+          <FormControl>
+            <InputLabel id="medioDeTransporte">
+              Elegí tu medio de transporte
+            </InputLabel>
             <Select
               labelId="medioDeTransporte"
               name="medioDeTransporte"
               onChange={handleChange}
               defaultValue={'Auto'}
+              align="left"
             >
               <MenuItem value={'Auto'}>Auto</MenuItem>
               <MenuItem value={'TransportePublico'}>
@@ -87,6 +52,9 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
               </MenuItem>
               <MenuItem value={'Bicicleta'}>Caminando/Bici</MenuItem>
             </Select>
+            <FormHelperText style={{ maxWidth: 330 }}>
+              {AYUDAS.selectorTransporte}
+            </FormHelperText>
           </FormControl>
         </Grid>
       </Grid>
@@ -96,5 +64,5 @@ export default function Paso1DDJJ({ handleChange, agregarUnValor }) {
 
 Paso1DDJJ.propTypes = {
   handleChange: PropTypes.func,
-  agregarUnValor: PropTypes.func,
+  agregarActividad: PropTypes.func,
 };

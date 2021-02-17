@@ -1,4 +1,4 @@
-const ERRORES = {
+export const ERRORES = {
   nombre: 'Ingrese su nombre.',
   apellido: 'Ingrese su apellido.',
   dni: 'Ingrese un DNI válido',
@@ -13,4 +13,9 @@ const ERRORES = {
   fechaFin: 'No puede ser anterior al inicio de la actividad',
 };
 
-export default ERRORES;
+export const AYUDAS = {
+  selectorActividad:
+    'Podés tipear el tipo de actividad a la que querés acceder.',
+  selectorTransporte:
+    'Indicá cómo pensás movilizarte hasta la universidad cuando vayas a realizar la actividad.',
+};
