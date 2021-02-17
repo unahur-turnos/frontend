@@ -10,14 +10,17 @@ import {
 import { AYUDAS } from '../textos/Textos';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from '../actividades/SelectorActividad';
-import { todasLasActividades } from '../../state/actividades';
+import { actividadesUsuario } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
+import { DateTime } from 'luxon';
 
 export default function Paso1DDJJ({ handleChange, agregarActividad }) {
-  const actividades = useRecoilValue(todasLasActividades());
-
-  const cambioDeActividad = (actividad) => {
-    agregarActividad(actividad);
+  const fechaActual = DateTime.local().toISODate();
+  const actividades = useRecoilValue(
+    actividadesUsuario({ desde: fechaActual })
+  );
+  const cambioDeActividad = (nombre, actividad) => {
+    agregarActividad(nombre, actividad);
   };
 
   return (
