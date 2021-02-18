@@ -5,6 +5,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import LocalActivityIcon from '@material-ui/icons/LocalActivity';
+import { apiIndex } from './api';
 
 const listaRutas = [
   {
@@ -54,6 +55,14 @@ export const tieneRolState = selectorFamily({
   key: 'tieneRol',
   get: (rolesPermitidos) => ({ get }) => {
     return rolesPermitidos.includes(get(usuarioState)?.rol);
+  },
+});
+
+export const todasLasAutorizacionesState = selector({
+  key: 'todasLasAutorizaciones',
+  get: async ({ get }) => {
+    const { data } = get(apiIndex('usuarios/yo/autorizaciones'));
+    return data;
   },
 });
 
