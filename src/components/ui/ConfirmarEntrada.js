@@ -31,6 +31,7 @@ export default function ConfirmarEntrada({
       )
     );
     setAutorizaciones(append(data), autorizaciones);
+
     cerrarModal();
   };
 
@@ -62,6 +63,6 @@ ConfirmarEntrada.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
   autorizacionARegistrar: PropTypes.object,
-  autorizaciones: PropTypes.object,
+  autorizaciones: PropTypes.arrayOf(PropTypes.object),
   setAutorizaciones: PropTypes.func,
 };

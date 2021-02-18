@@ -1,8 +1,12 @@
 import {
+  Box,
   Button,
   Card,
   CardContent,
+  FormControlLabel,
+  FormGroup,
   Grid,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -11,11 +15,6 @@ import {
   TableRow,
   Typography,
   makeStyles,
-  TextField,
-  Switch,
-  FormGroup,
-  FormControlLabel,
-  Box,
 } from '@material-ui/core';
 
 import ConfirmarEntrada from '../ui/ConfirmarEntrada';
@@ -23,8 +22,8 @@ import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
 import { autorizacionesPorActividad } from '../../state/autorizaciones';
-import { sort } from 'ramda';
 import { hourFormatter } from '../../utils/dateUtils';
+import { sort } from 'ramda';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
@@ -40,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 16,
   },
   card: {
-    maxWidth: 275,
+    maxWidth: 320,
     borderRadius: 20,
     borderColor: theme.palette.primary.main,
   },
@@ -97,13 +96,7 @@ export default function ControlAcceso() {
 
 function DatosActividad({ actividad }) {
   const classes = useStyles();
-  const {
-    nombre,
-    Espacio,
-    fechaHoraInicio,
-    fechaHoraFin,
-    responsable,
-  } = actividad;
+  const { Espacio, fechaHoraInicio, fechaHoraFin, responsable } = actividad;
 
   return (
     <Card className={classes.card} variant="outlined">
@@ -126,8 +119,10 @@ function ListadoAutorizaciones({ idActividad }) {
   );
   const [autorizaciones, setAutorizaciones] = useState(autorizacionesState);
   const [listaDeAutCompleta, setListaDeAutCompleta] = useState();
-  const [abrirModal, setAbrirModal] = useState(false);
+
   const [autorizacionARegistrar, setAutorizacionARegistrar] = useState();
+
+  const [abrirModal, setAbrirModal] = useState(false);
   const [check, setCheck] = useState(true);
 
   const confirmarRegistro = (autorizacion) => {
@@ -135,8 +130,8 @@ function ListadoAutorizaciones({ idActividad }) {
     setAbrirModal(true);
   };
 
-  const ordenarLista = () => {
-    const listaOrdenada = () =>
+  const listaOrdenada = () => {
+    const orden = () =>
       function (a, b) {
         if (a.fechaHoraIngreso === b.fechaHoraIngreso) {
           return 0;
@@ -151,7 +146,7 @@ function ListadoAutorizaciones({ idActividad }) {
             : -1;
         }
       };
-    return sort(listaOrdenada(false), autorizaciones);
+    return sort(orden(false), autorizaciones);
   };
 
   const cambioCheck = () => {
@@ -166,14 +161,17 @@ function ListadoAutorizaciones({ idActividad }) {
       setAutorizaciones(listaDeAutCompleta);
     }
   };
+
   return (
     <>
       <Box display="flex" justifyContent="center">
         <FormGroup>
           <FormControlLabel
-            label="Ver ya registrados"
+            label="Ver registrados"
             labelPlacement="start"
-            control={<Switch defaultChecked onChange={cambioCheck} />}
+            control={
+              <Switch defaultChecked onChange={cambioCheck} color="primary" />
+            }
           />
         </FormGroup>
       </Box>
@@ -193,7 +191,7 @@ function ListadoAutorizaciones({ idActividad }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ordenarLista().map((autorizacion) => {
+            {listaOrdenada().map((autorizacion) => {
               return (
                 <TableRow key={autorizacion.id}>
                   <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
