@@ -1,10 +1,13 @@
-import { has } from 'ramda';
 import { atom, selector, selectorFamily } from 'recoil';
-import { localStorageEffect } from './effect';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import LocalActivityIcon from '@material-ui/icons/LocalActivity';
+import { apiIndex } from './api';
+import { has } from 'ramda';
+import { localStorageEffect } from './effect';
+import { buildPath } from '../utils/queryUtils';
 
 const listaRutas = [
   {
@@ -77,3 +80,13 @@ export function rutaInicialUsuario(usuario) {
       return '/';
   }
 }
+
+export const actividadesUsuario = selectorFamily({
+  key: 'actividadesUsuario',
+  get: (filtro) => async ({ get }) => {
+    const { data } = get(
+      apiIndex(buildPath('usuarios/yo/actividades', filtro))
+    );
+    return data;
+  },
+});
