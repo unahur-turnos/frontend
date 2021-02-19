@@ -56,7 +56,7 @@ export default function ControlAcceso() {
 
   const fechaActual = DateTime.local().toISODate();
   const actividades = useRecoilValue(
-    todasLasActividades({ desde: fechaActual, hasta: fechaActual })
+    todasLasActividades({ desde: fechaActual })
   );
 
   const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
