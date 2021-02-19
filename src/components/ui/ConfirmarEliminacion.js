@@ -3,7 +3,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { DangerButton } from './Botones';
