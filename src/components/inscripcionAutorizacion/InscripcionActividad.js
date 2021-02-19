@@ -21,7 +21,7 @@ import { usuarioState } from '../../state/usuario';
 const pasos = [
   'Seleccioná la actividad',
   'Completá la declaración jurada',
-  'Confirmá tus datos',
+  'Confirmá los datos',
 ];
 
 export default function Actividad() {

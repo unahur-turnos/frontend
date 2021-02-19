@@ -14,8 +14,7 @@ export const ERRORES = {
 };
 
 export const AYUDAS = {
-  selectorActividad:
-    'Podés tipear el tipo de actividad a la que querés acceder.',
+  selectorActividad: 'Escribí el nombre de la actividad.',
   selectorTransporte:
-    'Indicá cómo pensás movilizarte hasta la universidad cuando vayas a realizar la actividad.',
+    'Indicá cómo pensás movilizarte hasta la universidad para realizar la actividad.',
 };

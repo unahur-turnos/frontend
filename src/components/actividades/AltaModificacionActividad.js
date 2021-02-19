@@ -81,7 +81,7 @@ export default function AltaActividad(props) {
   return (
     <>
       <ValidatorForm onSubmit={saveData} instantValidate={false}>
-        <Box mt={5} display="flex" justifyContent="center">
+        <Box mt={1} display="flex" justifyContent="center">
           <Typography variant="h4" color="primary">
             {titulo}
           </Typography>
@@ -133,7 +133,7 @@ export default function AltaActividad(props) {
           </Grid>
 
           <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Fecha/Hora de inicio:</Typography>
+            <Typography variant="h6">Fecha y hora de inicio:</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
@@ -148,7 +148,7 @@ export default function AltaActividad(props) {
           </Grid>
 
           <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Fecha/Hora de cierre:</Typography>
+            <Typography variant="h6">Fecha y hora de cierre:</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
@@ -258,7 +258,7 @@ export default function AltaActividad(props) {
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <FormControl style={{ minWidth: 250 }}>
               <InputLabel id="labelCarreras">
-                Elegí una carrera o dejalo en blanco
+                Elegí a qué carrera está destinada
               </InputLabel>
               <Select
                 labelId="labelCarreras"
