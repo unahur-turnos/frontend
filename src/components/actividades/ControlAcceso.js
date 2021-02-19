@@ -23,7 +23,7 @@ import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
 import { autorizacionesPorActividad } from '../../state/autorizaciones';
 import { hourFormatter } from '../../utils/dateUtils';
-import { sort } from 'ramda';
+import { compose, filter, sort, isNil } from 'ramda';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
@@ -114,16 +114,16 @@ function DatosActividad({ actividad }) {
 function ListadoAutorizaciones({ idActividad }) {
   const classes = useStyles();
 
-  const autorizacionesState = useRecoilValue(
+  const todasLasAutorizaciones = useRecoilValue(
     autorizacionesPorActividad(idActividad)
   );
-  const [autorizaciones, setAutorizaciones] = useState(autorizacionesState);
-  const [listaDeAutCompleta, setListaDeAutCompleta] = useState();
 
+  // Hay que hacer una copia sí o sí, porque lo que viene de Recoil no se puede modificar.
+  const [autorizaciones, setAutorizaciones] = useState(todasLasAutorizaciones);
   const [autorizacionARegistrar, setAutorizacionARegistrar] = useState();
 
   const [abrirModal, setAbrirModal] = useState(false);
-  const [check, setCheck] = useState(true);
+  const [mostrarRegistrados, setMostrarRegistrados] = useState(true);
 
   const confirmarRegistro = (autorizacion) => {
     setAutorizacionARegistrar(autorizacion);
@@ -146,20 +146,15 @@ function ListadoAutorizaciones({ idActividad }) {
             : -1;
         }
       };
-    return sort(orden(false), autorizaciones);
+
+    return compose(
+      sort(orden(false)),
+      filter((it) => mostrarRegistrados || isNil(it.fechaHoraIngreso))
+    )(autorizaciones);
   };
 
   const cambioCheck = () => {
-    setListaDeAutCompleta(autorizaciones);
-    setCheck(!check);
-    if (check) {
-      const listaFiltrada = autorizaciones.filter(
-        (autorizacion) => autorizacion.fechaHoraIngreso === null
-      );
-      setAutorizaciones(listaFiltrada);
-    } else {
-      setAutorizaciones(listaDeAutCompleta);
-    }
+    setMostrarRegistrados(!mostrarRegistrados);
   };
 
   return (

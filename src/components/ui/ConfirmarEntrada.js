@@ -1,16 +1,19 @@
 import { Button, Dialog } from '@material-ui/core';
-import { append, filter } from 'ramda';
+import { always, identity, propEq } from 'ramda';
 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import { useApi } from '../../utils/fetchApi';
+import { map, ifElse } from 'ramda';
+
+const reemplazarPorId = (elemento) =>
+  map(ifElse(propEq('id', elemento.id), always(elemento), identity));
 
 export default function ConfirmarEntrada({
   abrirModal,
   setAbrirModal,
   autorizacionARegistrar,
-  autorizaciones,
   setAutorizaciones,
 }) {
   const { create } = useApi(
@@ -23,15 +26,7 @@ export default function ConfirmarEntrada({
 
   const registrarIngreso = async () => {
     const { data } = await create(autorizacionARegistrar);
-
-    setAutorizaciones(
-      filter(
-        (autorizacion) => autorizacion.id !== autorizacionARegistrar.id,
-        autorizaciones
-      )
-    );
-    setAutorizaciones(append(data), autorizaciones);
-
+    setAutorizaciones(reemplazarPorId(data));
     cerrarModal();
   };
 
