@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
+import { DangerButton } from './Botones';
 
 export default function ConfirmarEliminacion({
   abrirModal,
@@ -38,9 +39,9 @@ export default function ConfirmarEliminacion({
       </DialogTitle>
       <DialogActions>
         <Button onClick={cerrarModal}>Cancelar</Button>
-        <Button variant="contained" color="primary" onClick={eliminar}>
+        <DangerButton variant="contained" onClick={eliminar}>
           Borrar
-        </Button>
+        </DangerButton>
       </DialogActions>
     </Dialog>
   );
