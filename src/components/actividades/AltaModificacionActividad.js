@@ -99,7 +99,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
-              label="Ingrese nombre"
+              label="Ingresà tu nombre"
               style={{ minWidth: 250 }}
               name="nombre"
               value={nombre}
@@ -170,7 +170,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextField
-              label="Ingrese el nombre del responsable"
+              label="Ingresá el nombre del responsable"
               style={{ minWidth: 250 }}
               name="responsable"
               value={responsable}
@@ -184,7 +184,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextField
-              label="Ingrese DNI del responsable"
+              label="Ingresá el DNI del responsable"
               style={{ minWidth: 250 }}
               name="dniResponsable"
               value={dniResponsable}

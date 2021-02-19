@@ -99,7 +99,7 @@ export default function Registro() {
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="nombreUsuario"
-              label="Ingrese su nombre/s"
+              label="Ingresá tu nombre/s"
               name="nombre"
               value={informacionDelUsuario.nombre}
               onChange={handleChange}
@@ -123,7 +123,7 @@ export default function Registro() {
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="apellidoUsuario"
-              label="Ingrese su apellido/s"
+              label="Ingresá tu apellido/s"
               name="apellido"
               onChange={handleChange}
               value={informacionDelUsuario.apellido}
@@ -147,7 +147,7 @@ export default function Registro() {
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="dniUsuario"
-              label="Ingrese su DNI"
+              label="Ingresá tu DNI"
               name="dni"
               onChange={handleChange}
               value={informacionDelUsuario.dni}
@@ -175,7 +175,7 @@ export default function Registro() {
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="emailUsuario"
-              label="Ingrese una correo electrónico"
+              label="Ingresá un correo electrónico"
               name="email"
               onChange={handleChange}
               value={informacionDelUsuario.email}
@@ -230,7 +230,7 @@ export default function Registro() {
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
               id="contraseniaUsuario"
-              label="Ingrese una contraseña"
+              label="Ingresá una contraseña"
               name="contrasenia"
               type="password"
               helperText="Mínimo 8 caracteres, con minúsculas, mayúsculas y números"
