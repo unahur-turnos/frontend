@@ -15,8 +15,8 @@ export default function Paso2DDJJ({ handleChange }) {
       <Grid container alignItems="flex-end" spacing={4}>
         <Grid item xs={12} align="center">
           <Typography variant="h6">
-            ¿Es persona de riesgo? (Padece una enfermedad respiratoria o es
-            mayor de 60 años)
+            ¿Sos persona de riesgo? (Padeces de alguna enfermedad respiratoria o
+            sos mayor de 60 años)
           </Typography>
         </Grid>
 
@@ -45,7 +45,7 @@ export default function Paso2DDJJ({ handleChange }) {
 
         <Grid item xs={12} align="center">
           <Typography variant="h6">
-            ¿Estuvo en contacto con alguna persona sospechoso de COVID-19
+            ¿Estuviste en contacto con alguna persona sospechosa de COVID-19
             positivo en los últimos 15 días?
           </Typography>
         </Grid>
@@ -75,7 +75,7 @@ export default function Paso2DDJJ({ handleChange }) {
 
         <Grid item xs={12} align="center">
           <Typography variant="h6">
-            ¿Tiene autorización de la aplicación Cuidar?
+            ¿Tenes autorización de la aplicación Cuidar?
           </Typography>
         </Grid>
 
@@ -104,7 +104,7 @@ export default function Paso2DDJJ({ handleChange }) {
 
         <Grid item xs={12} align="center">
           <Typography variant="h6">
-            ¿Completó la capacitación virtual de UNAHUR?
+            ¿Completaste la capacitación virtual de UNAHUR?
           </Typography>
         </Grid>
 

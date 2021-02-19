@@ -37,7 +37,7 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
         <Grid item xs={12} align="center">
           <FormControl>
             <InputLabel id="medioDeTransporte">
-              Elegí tu medio de transporte
+              Seleccioná tu medio de transporte
             </InputLabel>
             <Select
               labelId="medioDeTransporte"
@@ -46,11 +46,11 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
               defaultValue={'Auto'}
               align="left"
             >
-              <MenuItem value={'Auto'}>Auto</MenuItem>
+              <MenuItem value={'Auto'}>Movilidad propia</MenuItem>
               <MenuItem value={'TransportePublico'}>
                 Transporte público
               </MenuItem>
-              <MenuItem value={'Bicicleta'}>Caminando/Bici</MenuItem>
+              <MenuItem value={'Caminando'}>Caminando</MenuItem>
             </Select>
             <FormHelperText style={{ maxWidth: 330 }}>
               {AYUDAS.selectorTransporte}

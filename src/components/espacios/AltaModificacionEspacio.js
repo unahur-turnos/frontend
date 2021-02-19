@@ -54,7 +54,7 @@ export default function Espacio(props) {
 
   return (
     <>
-      <Box mt={5} display="flex" justifyContent="center">
+      <Box mt={1} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
           {titulo}
         </Typography>
