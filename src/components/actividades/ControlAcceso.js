@@ -23,10 +23,13 @@ import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
 import { autorizacionesPorActividad } from '../../state/autorizaciones';
 import { hourFormatter } from '../../utils/dateUtils';
-import { compose, filter, sort, isNil } from 'ramda';
+import { compose, filter, prop, isNil, sortWith, ascend, propOr } from 'ramda';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { path } from 'ramda';
+
+const minDate = new Date(-1000000000).toISOString();
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -130,28 +133,13 @@ function ListadoAutorizaciones({ idActividad }) {
     setAbrirModal(true);
   };
 
-  const listaOrdenada = () => {
-    const orden = () =>
-      function (a, b) {
-        if (a.fechaHoraIngreso === b.fechaHoraIngreso) {
-          return 0;
-        } else if (a.fechaHoraIngreso === null) {
-          return -1;
-        } else if (b.fechaHoraIngreso === null) {
-          return 1;
-        } else {
-          return a.fechaHoraIngreso < b.fechaHoraIngreso ||
-            a.Usuario.apellido < b.Usuario.apellido
-            ? 1
-            : -1;
-        }
-      };
-
-    return compose(
-      sort(orden(false)),
-      filter((it) => mostrarRegistrados || isNil(it.fechaHoraIngreso))
-    )(autorizaciones);
-  };
+  const filtrarYOrdenar = compose(
+    sortWith([
+      ascend(propOr(minDate, 'fechaHoraIngreso')),
+      ascend(path(['Usuario', 'apellido'])),
+    ]),
+    filter((it) => mostrarRegistrados || isNil(it.fechaHoraIngreso))
+  );
 
   const cambioCheck = () => {
     setMostrarRegistrados(!mostrarRegistrados);
@@ -186,7 +174,7 @@ function ListadoAutorizaciones({ idActividad }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {listaOrdenada().map((autorizacion) => {
+            {filtrarYOrdenar(autorizaciones).map((autorizacion) => {
               return (
                 <TableRow key={autorizacion.id}>
                   <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
