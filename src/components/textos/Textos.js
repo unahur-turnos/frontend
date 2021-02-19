@@ -16,5 +16,5 @@ export const ERRORES = {
 export const AYUDAS = {
   selectorActividad: 'Escribí el nombre de la actividad.',
   selectorTransporte:
-    'Indicá como pensás movilizarte hasta la universidad para realizar la actividad.',
+    'Indicá cómo pensás movilizarte hasta la universidad para realizar la actividad.',
 };

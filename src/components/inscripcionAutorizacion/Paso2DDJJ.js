@@ -15,7 +15,7 @@ export default function Paso2DDJJ({ handleChange }) {
       <Grid container alignItems="flex-end" spacing={4}>
         <Grid item xs={12} align="center">
           <Typography variant="h6">
-            ¿Sos persona de riesgo? (Padeces de alguna enfermedad respiratoria o
+            ¿Sos persona de riesgo? (Padecés de alguna enfermedad respiratoria o
             sos mayor de 60 años)
           </Typography>
         </Grid>
@@ -75,7 +75,7 @@ export default function Paso2DDJJ({ handleChange }) {
 
         <Grid item xs={12} align="center">
           <Typography variant="h6">
-            ¿Tenes autorización de la aplicación Cuidar?
+            ¿Tenés autorización de la aplicación Cuidar?
           </Typography>
         </Grid>
 

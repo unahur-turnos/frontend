@@ -33,8 +33,8 @@ export default function ConfirmarEliminacion({
       open={abrirModal}
     >
       <DialogTitle id="alert-dialog-slide-title">
-        ¿Confirma que desea eliminar la actividad{' '}
-        <strong>{entidadAEliminar?.nombre}</strong>?
+        ¿Confirma que desea eliminar <strong>{entidadAEliminar?.nombre}</strong>
+        ?
       </DialogTitle>
       <DialogActions>
         <Button onClick={cerrarModal}>Cancelar</Button>
