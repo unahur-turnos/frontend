@@ -28,6 +28,7 @@ import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { path } from 'ramda';
+import { useMemo } from 'react';
 
 const minDate = new Date(-1000000000).toISOString();
 
@@ -121,29 +122,30 @@ function ListadoAutorizaciones({ idActividad }) {
     autorizacionesPorActividad(idActividad)
   );
 
-  // Hay que hacer una copia sí o sí, porque lo que viene de Recoil no se puede modificar.
-  const [autorizaciones, setAutorizaciones] = useState(todasLasAutorizaciones);
   const [autorizacionARegistrar, setAutorizacionARegistrar] = useState();
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [mostrarRegistrados, setMostrarRegistrados] = useState(true);
+
+  // El useMemo evita que esto se recalcule a cada rato, solo lo hace si cambian sus dependencias.
+  const autorizacionesFiltradas = useMemo(
+    () =>
+      compose(
+        sortWith([
+          ascend(propOr(minDate, 'fechaHoraIngreso')),
+          ascend(path(['Usuario', 'apellido'])),
+        ]),
+        filter((it) => mostrarRegistrados || isNil(it.fechaHoraIngreso))
+      )(todasLasAutorizaciones),
+    [todasLasAutorizaciones, mostrarRegistrados]
+  );
 
   const confirmarRegistro = (autorizacion) => {
     setAutorizacionARegistrar(autorizacion);
     setAbrirModal(true);
   };
 
-  const filtrarYOrdenar = compose(
-    sortWith([
-      ascend(propOr(minDate, 'fechaHoraIngreso')),
-      ascend(path(['Usuario', 'apellido'])),
-    ]),
-    filter((it) => mostrarRegistrados || isNil(it.fechaHoraIngreso))
-  );
-
-  const cambioCheck = () => {
-    setMostrarRegistrados(!mostrarRegistrados);
-  };
+  const cambioCheck = () => setMostrarRegistrados(!mostrarRegistrados);
 
   return (
     <>
@@ -174,7 +176,7 @@ function ListadoAutorizaciones({ idActividad }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filtrarYOrdenar(autorizaciones).map((autorizacion) => {
+            {autorizacionesFiltradas.map((autorizacion) => {
               return (
                 <TableRow key={autorizacion.id}>
                   <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
@@ -202,8 +204,7 @@ function ListadoAutorizaciones({ idActividad }) {
           abrirModal={abrirModal}
           setAbrirModal={setAbrirModal}
           autorizacionARegistrar={autorizacionARegistrar}
-          autorizaciones={autorizaciones}
-          setAutorizaciones={setAutorizaciones}
+          idActividad={idActividad}
         />
       </TableContainer>
     </>

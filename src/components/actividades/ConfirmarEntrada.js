@@ -1,23 +1,22 @@
 import { Button, Dialog } from '@material-ui/core';
-import { always, identity, propEq } from 'ramda';
-
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import { useApi } from '../../utils/fetchApi';
-import { map, ifElse } from 'ramda';
-
-const reemplazarPorId = (elemento) =>
-  map(ifElse(propEq('id', elemento.id), always(elemento), identity));
+import { useNotificarActualizacion } from '../../state/actualizaciones';
 
 export default function ConfirmarEntrada({
   abrirModal,
   setAbrirModal,
   autorizacionARegistrar,
-  setAutorizaciones,
+  idActividad,
 }) {
   const { create } = useApi(
     `autorizaciones/${autorizacionARegistrar?.id}/ingreso`
+  );
+
+  const notificarActualizacion = useNotificarActualizacion(
+    `actividades/${idActividad}/autorizaciones`
   );
 
   const cerrarModal = () => {
@@ -25,8 +24,8 @@ export default function ConfirmarEntrada({
   };
 
   const registrarIngreso = async () => {
-    const { data } = await create(autorizacionARegistrar);
-    setAutorizaciones(reemplazarPorId(data));
+    await create(autorizacionARegistrar);
+    notificarActualizacion();
     cerrarModal();
   };
 
@@ -58,6 +57,5 @@ ConfirmarEntrada.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
   autorizacionARegistrar: PropTypes.object,
-  autorizaciones: PropTypes.arrayOf(PropTypes.object),
-  setAutorizaciones: PropTypes.func,
+  idActividad: PropTypes.number,
 };
