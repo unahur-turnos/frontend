@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   IconButton,
   Table,
   TableBody,
@@ -8,9 +9,10 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Grid,
 } from '@material-ui/core';
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -21,19 +23,18 @@ import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
-export default function ListadoActividades() {
-  const useStyles = makeStyles({
-    icon: {
-      width: '30px',
-      height: '30px',
-      color: '#000',
-    },
-    add: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-    },
-  });
+const useStyles = makeStyles({
+  icon: {
+    width: '30px',
+    height: '30px',
+    color: '#000',
+  },
+  floatRight: {
+    marginLeft: 'auto',
+  },
+});
 
+export default function ListadoActividades() {
   const classes = useStyles();
 
   const actividades = useRecoilValue(todasLasActividades());
@@ -48,11 +49,24 @@ export default function ListadoActividades() {
 
   return (
     <>
-      <Box mt={5}>
-        <Typography variant="h4" color="primary">
-          Actividades
-        </Typography>
-      </Box>
+      <Grid container alignItems="center">
+        <Grid item>
+          <Typography variant="h4" color="primary">
+            Actividades
+          </Typography>
+        </Grid>
+        <Grid item className={classes.floatRight}>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to={`/actividades/nueva`}
+            startIcon={<AddIcon />}
+          >
+            Nueva actividad
+          </Button>
+        </Grid>
+      </Grid>
       <Box mt={2}>
         <TableContainer>
           <Table size="medium">
@@ -94,18 +108,6 @@ export default function ListadoActividades() {
             </TableBody>
           </Table>
         </TableContainer>
-      </Box>
-      <Box className={classes.add} mt={2}>
-        <Typography
-          color="primary"
-          style={{ textDecoration: 'none' }}
-          aria-label="add"
-          component={Link}
-          to={`/actividades/nueva`}
-        >
-          Agregar actividad
-        </Typography>
-        <AddCircleIcon color="primary" />
       </Box>
       <ConfirmarEliminacion
         abrirModal={abrirModal}
