@@ -99,7 +99,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
-              label="Ingresà tu nombre"
+              label="Ingresá tu nombre"
               style={{ minWidth: 250 }}
               name="nombre"
               value={nombre}
