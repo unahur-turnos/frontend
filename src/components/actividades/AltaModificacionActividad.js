@@ -99,7 +99,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
-              label="Ingresá tu nombre"
+              label="Ingresá el nombre"
               style={{ minWidth: 250 }}
               name="nombre"
               value={nombre}
@@ -115,7 +115,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <FormControl style={{ minWidth: 250 }}>
-              <InputLabel id="labelEspacios">Elija un espacio</InputLabel>
+              <InputLabel id="labelEspacios">Elegí un espacio</InputLabel>
               <Select
                 labelId="labelEspacios"
                 name="espacioId"
