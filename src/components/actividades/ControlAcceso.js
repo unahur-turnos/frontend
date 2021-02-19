@@ -17,13 +17,13 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import ConfirmarEntrada from '../ui/ConfirmarEntrada';
+import ConfirmarEntrada from './ConfirmarEntrada';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
 import { autorizacionesPorActividad } from '../../state/autorizaciones';
 import { hourFormatter } from '../../utils/dateUtils';
-import { compose, filter, prop, isNil, sortWith, ascend, propOr } from 'ramda';
+import { compose, filter, isNil, sortWith, ascend, propOr } from 'ramda';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
