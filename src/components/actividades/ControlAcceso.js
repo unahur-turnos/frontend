@@ -152,8 +152,7 @@ function ListadoAutorizaciones({ idActividad }) {
       <Box display="flex" justifyContent="center">
         <FormGroup>
           <FormControlLabel
-            label="Ver registrados"
-            labelPlacement="start"
+            label="Mostrar asistentes ya registrados"
             control={
               <Switch defaultChecked onChange={cambioCheck} color="primary" />
             }
