@@ -51,7 +51,6 @@ export default function Tarjeta(props) {
             <CardActions>
               <Button
                 size="small"
-                //style={{ color: 'red' }} ES LO MISMO
                 color="secondary"
                 onClick={() => autorizacionAEliminar(autorizacion)}
               >
