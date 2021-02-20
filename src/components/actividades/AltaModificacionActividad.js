@@ -55,6 +55,7 @@ export default function AltaActividad(props) {
     fechaHoraFin,
     responsable,
     dniResponsable,
+    activa,
     restriccionId,
   } = actividad;
 
@@ -235,7 +236,7 @@ export default function AltaActividad(props) {
                 row
                 aria-label="activa"
                 name="activa"
-                defaultValue={'true'}
+                value={activa.toString()}
                 onChange={handleChange}
               >
                 <FormControlLabel
