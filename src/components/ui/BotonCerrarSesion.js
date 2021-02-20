@@ -1,11 +1,10 @@
-import { Box, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { DefaultValue, useSetRecoilState } from 'recoil';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import { Avatar, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { DefaultValue, useRecoilState } from 'recoil';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
 
 export default function BotonCerrarSesion() {
-  const setUsuario = useSetRecoilState(usuarioState);
+  const [usuario, setUsuario] = useRecoilState(usuarioState);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -31,7 +30,10 @@ export default function BotonCerrarSesion() {
         onClick={handleMenu}
         color="inherit"
       >
-        <AccountCircle fontSize="large" />
+        <Avatar fontSize="large" style={{ backgroundColor: '#009688' }}>
+          {usuario.nombre.charAt(0)}
+          {usuario.apellido.charAt(0)}
+        </Avatar>
       </IconButton>
       <Menu
         id="menu-appbar"

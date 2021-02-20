@@ -1,158 +1,184 @@
 import {
   Button,
   Grid,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Table,
   Typography,
-  TableBody,
-  TableCell,
-  Fab,
   makeStyles,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Divider,
-  AccordionActions,
+  Card,
+  CardContent,
+  CardActions,
 } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
+import AddIcon from '@material-ui/icons/Add';
 import { PropTypes } from 'prop-types';
 import { todasLasAutorizacionesState } from '../../state/usuario';
 import { DateTime } from 'luxon';
-import AddIcon from '@material-ui/icons/Add';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link } from 'react-router-dom';
+import { fechaHoraActividad } from '../../utils/dateUtils';
+import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
+import { useState } from 'react';
+import ConfirmarCancelacionTurno from './ConfirmarCancelacionTurno';
 
 export default function MisActividades() {
   const autorizaciones = useRecoilValue(todasLasAutorizacionesState);
   const classes = useStyles();
+  const [autorizacionesFuturas, setAutorizacionesFuturas] = useState(
+    autorizaciones.filter(
+      (autorizacion) =>
+        DateTime.fromISO(autorizacion.Actividad.fechaHoraInicio) >
+        DateTime.local()
+    )
+  );
 
-  const autorizacionesFuturas = (futuro) =>
-    autorizaciones.filter((autorizacion) =>
-      futuro
-        ? DateTime.fromISO(autorizacion.Actividad.fechaHoraInicio) >
-          DateTime.local()
-        : DateTime.fromISO(autorizacion.Actividad.fechaHoraInicio) <
-          DateTime.local()
-    );
+  const [autorizacionesPasadas, setAutorizacionesPasadas] = useState(
+    autorizaciones.filter(
+      (autorizacion) =>
+        DateTime.fromISO(autorizacion.Actividad.fechaHoraInicio) <
+        DateTime.local()
+    )
+  );
 
   return (
     <>
-      <Grid style={{ width: '100%', height: '100%' }}>
-        <Fab color="primary" aria-label="add" className={classes.fab}>
-          <AddIcon />
-        </Fab>
-      </Grid>
       <Grid container spacing={4}>
         <Grid item xs={12} align="center">
           <Typography variant="h4" color="primary">
-            Mis actividades
+            Mis turnos
           </Typography>
         </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6">Futuras actividades</Typography>
+        <Grid item xs={6}>
+          <Typography variant="h6">Futuros turnos</Typography>
         </Grid>
-        <Acordion data={autorizacionesFuturas(true)} />
-        <Grid item xs={12}>
-          <Typography variant="h6">Actividades pasadas</Typography>
+        <Grid item className={classes.floatRight}>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to={`/autorizaciones/nueva`}
+            startIcon={<AddIcon />}
+          >
+            Nuevo turno
+          </Button>
         </Grid>
-        <Acordion data={autorizacionesFuturas(false)} />
+
+        {autorizacionesFuturas.length !== 0 ? (
+          <Tarjeta
+            data={autorizacionesFuturas}
+            setAutorizacionesPasadas={setAutorizacionesFuturas}
+            soyFuturasActividades={true}
+          />
+        ) : (
+          <Grid item xs={12}>
+            <Typography>No hay futuros turnos</Typography>
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <Typography variant="h6">Turnos pasados</Typography>
+        </Grid>
+        {autorizacionesPasadas.length !== 0 ? (
+          <Tarjeta
+            data={autorizacionesPasadas}
+            setAutorizacionesPasadas={setAutorizacionesPasadas}
+            soyFuturasActividades={false}
+          />
+        ) : (
+          <Grid item xs={12}>
+            <Typography>No hay turnos pasados</Typography>
+          </Grid>
+        )}
       </Grid>
     </>
   );
 }
 
-function Acordion(props) {
-  const { data } = props;
+function Tarjeta(props) {
+  const { data, soyFuturasActividades, setAutorizacionesPasadas } = props;
   const classes = useStyles();
+  const [abrirModal, setAbrirModal] = useState(false);
+  const [entidad, setEntidad] = useState('');
+
+  const autorizacionAEliminar = (entidad) => {
+    setEntidad({
+      id: entidad.id,
+      nombre: entidad.Actividad.nombre,
+    });
+    setAbrirModal(true);
+  };
 
   return (
     <>
-      <Divider />
-      {data.map((autorizacion) => (
-        <Grid container key={autorizacion.id}>
-          <Grid item xs={12}>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <div className={classes.column}>
-                  <Typography className={classes.heading}>
-                    {autorizacion.Actividad.nombre}{' '}
-                  </Typography>
-                </div>
-                <div className={classes.column}>
-                  <Typography className={classes.secondaryHeading}>
-                    {`${DateTime.fromISO(autorizacion.Actividad.fechaHoraInicio)
-                      .setLocale('es')
-                      .toFormat("D 'de' t 'a'")}
-                    ${DateTime.fromISO(autorizacion.Actividad.fechaHoraFin)
-                      .setLocale('es')
-                      .toFormat('t')}
-                    `}
-                  </Typography>
-                </div>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className={classes.column}>
-                  <Typography className={classes.heading}>
-                    Responsable: {autorizacion.Actividad.responsable}
-                  </Typography>
-                </div>
-              </AccordionDetails>
-              <Divider />
-              <AccordionActions>
-                <Button size="medium" variant="contained" color="secondary">
-                  Cancelar actividad
-                </Button>
-              </AccordionActions>
-            </Accordion>
+      <Grid container spacing={2}>
+        {data.map((autorizacion) => (
+          <Grid item xs={12} sm={6} md={4} key={autorizacion.id}>
+            <Card>
+              <CardContent>
+                <Typography className={classes.title}>
+                  {autorizacion.Actividad.nombre}{' '}
+                </Typography>
+                <Typography className={classes.subtitle}>
+                  {fechaHoraActividad(
+                    autorizacion.Actividad.fechaHoraInicio,
+                    autorizacion.Actividad.fechaHoraFin
+                  )}
+                </Typography>
+                <Typography className={classes.subtitle}>
+                  {autorizacion.Actividad.Espacio.nombre} -{' '}
+                  {autorizacion.Actividad.Espacio.Edificio.nombre}
+                </Typography>
+                <Typography className={classes.subtitle} color="textSecondary">
+                  {autorizacion.Actividad.responsable}
+                </Typography>
+              </CardContent>
+              {soyFuturasActividades && (
+                <>
+                  <Divider />
+                  <CardActions>
+                    <Button
+                      size="small"
+                      //style={{ color: 'red' }} ES LO MISMO
+                      color="secondary"
+                      onClick={() => autorizacionAEliminar(autorizacion)}
+                    >
+                      Cancelar turno
+                    </Button>
+                  </CardActions>
+                </>
+              )}
+            </Card>
           </Grid>
-        </Grid>
-      ))}
-      {/* <TableContainer>
-        <Table>          
-          <TableBody>
-            {data.map((autorizacion) => (
-              <TableRow key={autorizacion.id}>
-                <TableCell>{autorizacion.Actividad.nombre}</TableCell>
-                <TableCell>{autorizacion.Actividad.responsable}</TableCell>
-                <TableCell>
-                  {DateTime.fromISO(autorizacion.Actividad.fechaHoraInicio)
-                    .setLocale('es')
-                    .toFormat('dd/LL HH:mm')}
-                </TableCell>
-                <TableCell>
-                  {DateTime.fromISO(autorizacion.Actividad.fechaHoraFin)
-                    .setLocale('es')
-                    .toFormat('dd/LL HH:mm')}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer> */}
+        ))}
+      </Grid>
+      <ConfirmarEliminacion
+        abrirModal={abrirModal}
+        setAbrirModal={setAbrirModal}
+        ruta={'autorizaciones'}
+        entidadAEliminar={entidad}
+      />
+      <ConfirmarCancelacionTurno
+        abrirModal={abrirModal}
+        setAbrirModal={setAbrirModal}
+        listaAutorizaciones={data}
+        setListaAutorizaciones={setAutorizacionesPasadas}
+        entidadAEliminar={entidad}
+      />
     </>
   );
 }
 
-Acordion.propTypes = {
+Tarjeta.propTypes = {
   data: PropTypes.obj,
+  setAutorizacionesPasadas: PropTypes.func,
+  soyFuturasActividades: PropTypes.bool,
 };
 
-const useStyles = makeStyles((theme) => ({
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
+const useStyles = makeStyles(() => ({
+  floatRight: {
+    marginLeft: 'auto',
   },
-  column: {
-    flexBasis: '33.33%',
+  title: {
+    fontSize: 25,
   },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
+  subtitle: {
+    fontSize: 15,
   },
 }));
