@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Grid,
   IconButton,
   Table,
   TableBody,
@@ -9,7 +10,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Grid,
 } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 export default function ListadoActividades() {
   const classes = useStyles();
 
-  const actividades = useRecoilValue(todasLasActividades());
+  const actividades = useRecoilValue(todasLasActividades({ inactivas: true }));
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
