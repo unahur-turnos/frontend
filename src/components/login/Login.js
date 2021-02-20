@@ -3,6 +3,7 @@ import {
   Button,
   Grid,
   InputAdornment,
+  makeStyles,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
@@ -22,6 +23,7 @@ export default function Login() {
   const matches = useMediaQuery('(min-width:600px)');
   const history = useHistory();
   const { create } = useApi('usuarios/login');
+  const classes = useStyles();
 
   const [showPassword, setshowPassword] = useState(false);
   const [tengoErrorEn, setTengoErrorEn] = useState({
@@ -95,7 +97,7 @@ export default function Login() {
             value={valoresUsuario.dni}
             validators={['required', 'minNumber:1000000', 'maxNumber:99999999']}
             errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
-            style={{ minWidth: 250 }}
+            className={classes.numberTextField}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">
@@ -167,3 +169,12 @@ export default function Login() {
     </ValidatorForm>
   );
 }
+
+const useStyles = makeStyles({
+  numberTextField: {
+    minWidth: 250,
+    '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+      display: 'none',
+    },
+  },
+});

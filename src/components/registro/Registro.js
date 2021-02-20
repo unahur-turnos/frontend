@@ -149,6 +149,8 @@ export default function Registro() {
               id="dniUsuario"
               label="Ingresá tu DNI"
               name="dni"
+              type="number"
+              className={classes.numberTextField}
               onChange={handleChange}
               value={informacionDelUsuario.dni}
               validators={[
@@ -164,7 +166,6 @@ export default function Registro() {
                   </InputAdornment>
                 ),
               }}
-              style={{ minWidth: 250 }}
             />
           </Grid>
 
@@ -201,6 +202,7 @@ export default function Registro() {
               id="telefono"
               label="Número de celular"
               name="telefono"
+              type="number"
               onChange={handleChange}
               value={informacionDelUsuario.telefono}
               validators={['required']}
@@ -212,7 +214,7 @@ export default function Registro() {
                   </InputAdornment>
                 ),
               }}
-              style={{ minWidth: 250 }}
+              className={classes.numberTextField}
             />
           </Grid>
 
@@ -318,5 +320,11 @@ export default function Registro() {
 const useStyles = makeStyles(() => ({
   loading: {
     marginRight: '10px',
+  },
+  numberTextField: {
+    minWidth: 250,
+    '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+      display: 'none',
+    },
   },
 }));

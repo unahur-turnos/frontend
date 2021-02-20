@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   Grid,
   InputLabel,
+  makeStyles,
   MenuItem,
   Radio,
   RadioGroup,
@@ -30,6 +31,7 @@ import { ERRORES } from '../textos/Textos';
 export default function AltaActividad(props) {
   const matches = useMediaQuery('(min-width:600px)');
   const { id } = useParams();
+  const classes = useStyles();
   const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
   const notificarActualizacion = useNotificarActualizacion('actividades');
@@ -186,7 +188,9 @@ export default function AltaActividad(props) {
             <TextField
               label="Ingresá el DNI del responsable"
               style={{ minWidth: 250 }}
+              type="number"
               name="dniResponsable"
+              className={classes.numberTextField}
               value={dniResponsable}
               onChange={handleChange}
             />
@@ -296,3 +300,15 @@ export default function AltaActividad(props) {
 AltaActividad.propTypes = {
   titulo: PropTypes.string,
 };
+
+const useStyles = makeStyles(() => ({
+  loading: {
+    marginRight: '10px',
+  },
+  numberTextField: {
+    minWidth: 250,
+    '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+      display: 'none',
+    },
+  },
+}));
