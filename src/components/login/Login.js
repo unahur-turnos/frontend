@@ -88,7 +88,7 @@ export default function Login() {
         <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextValidator
             id="dni"
-            label="Ingrese su documento"
+            label="Ingresá tu documento"
             onChange={handleChange}
             name="dni"
             type="number"
@@ -113,14 +113,14 @@ export default function Login() {
         <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextValidator
             id="contrasenia"
-            label="Ingrese una contraseña"
+            label="Ingresá una contraseña"
             name="contrasenia"
             type={showPassword ? 'text' : 'password'}
             onChange={handleChange}
-            style={{ minWidth: 250 }}
+            style={{ maxWidth: 250 }}
             value={valoresUsuario.contrasenia}
-            validators={['required', 'minStringLength:6']}
-            errorMessages={[ERRORES.requerido, ERRORES.contrasenia]}
+            validators={['required']}
+            errorMessages={[ERRORES.requerido]}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -138,9 +138,9 @@ export default function Login() {
         </Grid>
 
         {tengoErrorEn.mandarError && (
-          <Grid item xs={12} sm={6} align="center">
+          <Grid item xs={12} align="center">
             <Typography color="secondary">
-              El DNI y/o contraseña ingresados son inválidos, por favor vuelva a
+              El DNI y/o contraseña ingresados son inválidos, por favor volvé a
               intentar.
             </Typography>
           </Grid>

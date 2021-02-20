@@ -45,7 +45,7 @@ export default function FinalDDJJ() {
               variant="h6"
               className={classes.colorTexto}
             >
-              Su solicitud se ha registrado con éxito.
+              Tu solicitud se registró con éxito.
             </Typography>
           </Grid>
         </Grid>
@@ -68,7 +68,7 @@ export default function FinalDDJJ() {
               <PeopleIcon fontSize="large"></PeopleIcon>
             </Grid>
             <Typography align="center" variant="h6">
-              Lleve registro de las personas con las que estará los próximos 3
+              Llevá registro de las personas con las que estarás los próximos 3
               días.
             </Typography>
           </Grid>

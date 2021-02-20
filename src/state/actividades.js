@@ -2,27 +2,16 @@ import { apiById, apiIndex } from './api';
 
 import { DateTime } from 'luxon';
 import { dateFormatter } from '../utils/dateUtils';
-import queryString from 'query-string';
+import { buildPath } from '../utils/queryUtils';
 import { selectorFamily } from 'recoil';
 
 export const todasLasActividades = selectorFamily({
   key: 'todasLasActividades',
   get: (filtro) => async ({ get }) => {
-    const { data } = get(apiIndex(buildPath(filtro)));
+    const { data } = get(apiIndex(buildPath('actividades', filtro)));
     return data;
   },
 });
-
-const buildPath = ({ desde, hasta } = {}) => {
-  const query = queryString.stringify(
-    {
-      desde,
-      hasta,
-    },
-    { skipNull: true }
-  );
-  return query ? `actividades/?${query}` : 'actividades';
-};
 
 export const actividadPorId = selectorFamily({
   key: 'actividadPorId',

@@ -54,7 +54,7 @@ export default function Espacio(props) {
 
   return (
     <>
-      <Box mt={5} display="flex" justifyContent="center">
+      <Box mt={1} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
           {titulo}
         </Typography>
@@ -73,7 +73,7 @@ export default function Espacio(props) {
         <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextField
             id="nombre"
-            label="Ingrese nombre"
+            label="Ingresá el nombre"
             name="nombre"
             style={{ minWidth: 250 }}
             onChange={handleChange}
@@ -132,7 +132,7 @@ export default function Espacio(props) {
         <Grid item xs={12} sm={6} align={!matches && 'center'}>
           <TextField
             id="aforo"
-            label="Ingrese el aforo"
+            label="Ingresá el aforo"
             style={{ minWidth: 250 }}
             defaultValue={espacio.aforo}
             name="aforo"

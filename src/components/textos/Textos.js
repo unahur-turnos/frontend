@@ -1,9 +1,9 @@
 export const ERRORES = {
-  nombre: 'Ingrese su nombre.',
-  apellido: 'Ingrese su apellido.',
-  dni: 'Ingrese un DNI válido',
-  email: 'Ingrese un email válido.',
-  telefono: 'Ingrese un número válido',
+  nombre: 'Ingresá tu nombre.',
+  apellido: 'Ingresá tu apellido.',
+  dni: 'Ingresá un DNI válido',
+  email: 'Ingresá un email válido.',
+  telefono: 'Ingresá un número válido',
   contrasenia:
     'Contraseña inválida, debe tener un mínimo de 8 caracteres, con minúsculas, mayúsculas y números',
   contraseniasNoCoinciden: 'Las contraseñas no coinciden.',
@@ -14,8 +14,7 @@ export const ERRORES = {
 };
 
 export const AYUDAS = {
-  selectorActividad:
-    'Podés tipear el tipo de actividad a la que querés acceder.',
+  selectorActividad: 'Escribí el nombre de la actividad.',
   selectorTransporte:
-    'Indicá cómo pensás movilizarte hasta la universidad cuando vayas a realizar la actividad.',
+    'Indicá cómo pensás movilizarte hasta la universidad para realizar la actividad.',
 };

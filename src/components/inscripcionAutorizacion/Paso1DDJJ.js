@@ -10,14 +10,17 @@ import {
 import { AYUDAS } from '../textos/Textos';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from '../actividades/SelectorActividad';
-import { todasLasActividades } from '../../state/actividades';
+import { actividadesUsuario } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
+import { DateTime } from 'luxon';
 
 export default function Paso1DDJJ({ handleChange, agregarActividad }) {
-  const actividades = useRecoilValue(todasLasActividades());
-
-  const cambioDeActividad = (actividad) => {
-    agregarActividad(actividad);
+  const fechaActual = DateTime.local().toISODate();
+  const actividades = useRecoilValue(
+    actividadesUsuario({ desde: fechaActual })
+  );
+  const cambioDeActividad = (nombre, actividad) => {
+    agregarActividad(nombre, actividad);
   };
 
   return (
@@ -34,7 +37,7 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
         <Grid item xs={12} align="center">
           <FormControl>
             <InputLabel id="medioDeTransporte">
-              Elegí tu medio de transporte
+              Seleccioná tu medio de transporte
             </InputLabel>
             <Select
               labelId="medioDeTransporte"
@@ -43,11 +46,11 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
               defaultValue={'Auto'}
               align="left"
             >
-              <MenuItem value={'Auto'}>Auto</MenuItem>
+              <MenuItem value={'Auto'}>Movilidad propia</MenuItem>
               <MenuItem value={'TransportePublico'}>
                 Transporte público
               </MenuItem>
-              <MenuItem value={'Bicicleta'}>Caminando/Bici</MenuItem>
+              <MenuItem value={'Caminando'}>Caminando</MenuItem>
             </Select>
             <FormHelperText style={{ maxWidth: 330 }}>
               {AYUDAS.selectorTransporte}

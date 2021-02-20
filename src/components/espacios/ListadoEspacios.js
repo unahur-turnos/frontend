@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 import {
   IconButton,
   Table,
@@ -7,10 +7,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Grid,
 } from '@material-ui/core';
 import React, { useState } from 'react';
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -20,19 +21,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import { todosLosEspacios } from '../../state/espacios';
 import { useRecoilValue } from 'recoil';
 
-export default function PantallaEspacios() {
-  const useStyles = makeStyles({
-    icon: {
-      width: '30px',
-      height: '30px',
-      color: '#000',
-    },
-    add: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-    },
-  });
+const useStyles = makeStyles({
+  icon: {
+    width: '30px',
+    height: '30px',
+    color: '#000',
+  },
+  floatRight: {
+    marginLeft: 'auto',
+  },
+});
 
+export default function PantallaEspacios() {
   const classes = useStyles();
 
   const espacios = useRecoilValue(todosLosEspacios);
@@ -47,11 +47,24 @@ export default function PantallaEspacios() {
 
   return (
     <>
-      <Box mt={5}>
-        <Typography variant="h4" color="primary">
-          Espacios
-        </Typography>
-      </Box>
+      <Grid container alignItems="center">
+        <Grid item>
+          <Typography variant="h4" color="primary">
+            Espacios
+          </Typography>
+        </Grid>
+        <Grid item className={classes.floatRight}>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to={`/espacios/nuevo`}
+            startIcon={<AddIcon />}
+          >
+            Nuevo espacio
+          </Button>
+        </Grid>
+      </Grid>
       <Box mt={2}>
         <TableContainer>
           <Table size="medium">
@@ -97,18 +110,6 @@ export default function PantallaEspacios() {
             </TableBody>
           </Table>
         </TableContainer>
-      </Box>
-      <Box className={classes.add} mt={2}>
-        <Typography
-          color="primary"
-          style={{ textDecoration: 'none' }}
-          aria-label="add"
-          component={Link}
-          to={`/espacios/nuevo`}
-        >
-          Agregar espacio
-        </Typography>
-        <AddCircleIcon color="primary" />
       </Box>
       <ConfirmarEliminacion
         abrirModal={abrirModal}

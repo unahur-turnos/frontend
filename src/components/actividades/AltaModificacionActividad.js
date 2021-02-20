@@ -13,15 +13,16 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { useApi } from '../../utils/fetchApi';
-import { PropTypes } from 'prop-types';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { actividadPorId } from '../../state/actividades';
-import { useNotificarActualizacion } from '../../state/actualizaciones';
-import { dateFormatter } from '../../utils/dateUtils';
-import { todosLosEspacios } from '../../state/espacios';
-import { DateTime } from 'luxon';
 import { Link, useHistory, useParams } from 'react-router-dom';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
+import { DateTime } from 'luxon';
+import { PropTypes } from 'prop-types';
+import { actividadPorId } from '../../state/actividades';
+import { dateFormatter } from '../../utils/dateUtils';
+import { todasLasCarreras } from '../../state/carreras';
+import { todosLosEspacios } from '../../state/espacios';
+import { useApi } from '../../utils/fetchApi';
+import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { ERRORES } from '../textos/Textos';
@@ -53,6 +54,7 @@ export default function AltaActividad(props) {
     fechaHoraFin,
     responsable,
     dniResponsable,
+    restriccionId,
   } = actividad;
 
   const handleChange = (e) => {
@@ -74,11 +76,12 @@ export default function AltaActividad(props) {
   };
 
   const espacios = useRecoilValue(todosLosEspacios);
+  const carreras = useRecoilValue(todasLasCarreras);
 
   return (
     <>
       <ValidatorForm onSubmit={saveData} instantValidate={false}>
-        <Box mt={5} display="flex" justifyContent="center">
+        <Box mt={1} display="flex" justifyContent="center">
           <Typography variant="h4" color="primary">
             {titulo}
           </Typography>
@@ -96,7 +99,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextValidator
-              label="Ingrese nombre"
+              label="Ingresá el nombre"
               style={{ minWidth: 250 }}
               name="nombre"
               value={nombre}
@@ -112,7 +115,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <FormControl style={{ minWidth: 250 }}>
-              <InputLabel id="labelEspacios">Elija un espacio</InputLabel>
+              <InputLabel id="labelEspacios">Elegí un espacio</InputLabel>
               <Select
                 labelId="labelEspacios"
                 name="espacioId"
@@ -130,7 +133,7 @@ export default function AltaActividad(props) {
           </Grid>
 
           <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Fecha/Hora de inicio:</Typography>
+            <Typography variant="h6">Fecha y hora de inicio:</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
@@ -145,7 +148,7 @@ export default function AltaActividad(props) {
           </Grid>
 
           <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Fecha/Hora de cierre:</Typography>
+            <Typography variant="h6">Fecha y hora de cierre:</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
@@ -167,7 +170,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextField
-              label="Ingrese el nombre del responsable"
+              label="Ingresá el nombre del responsable"
               style={{ minWidth: 250 }}
               name="responsable"
               value={responsable}
@@ -181,7 +184,7 @@ export default function AltaActividad(props) {
 
           <Grid item xs={12} sm={6} align={!matches && 'center'}>
             <TextField
-              label="Ingrese DNI del responsable"
+              label="Ingresá el DNI del responsable"
               style={{ minWidth: 250 }}
               name="dniResponsable"
               value={dniResponsable}
@@ -245,6 +248,30 @@ export default function AltaActividad(props) {
                   label="Inactivo"
                 />
               </RadioGroup>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
+            <Typography variant="h6">Carrera:</Typography>
+          </Grid>
+
+          <Grid item xs={12} sm={6} align={!matches && 'center'}>
+            <FormControl style={{ minWidth: 250 }}>
+              <InputLabel id="labelCarreras">
+                Elegí a qué carrera está destinada
+              </InputLabel>
+              <Select
+                labelId="labelCarreras"
+                name="restriccionId"
+                value={restriccionId}
+                onChange={handleChange}
+              >
+                {carreras.map((carrera) => (
+                  <MenuItem value={carrera.id} key={carrera.id}>
+                    {carrera.nombre}
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
           </Grid>
 
