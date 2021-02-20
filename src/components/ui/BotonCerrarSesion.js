@@ -2,6 +2,7 @@ import { Avatar, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { DefaultValue, useRecoilState } from 'recoil';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
+import { take } from 'ramda';
 
 export default function BotonCerrarSesion() {
   const [usuario, setUsuario] = useRecoilState(usuarioState);
@@ -31,8 +32,8 @@ export default function BotonCerrarSesion() {
         color="inherit"
       >
         <Avatar fontSize="large" style={{ backgroundColor: '#009688' }}>
-          {usuario.nombre.charAt(0)}
-          {usuario.apellido.charAt(0)}
+          {take(1, usuario.nombre).toUpperCase()}
+          {take(1, usuario.apellido).toUpperCase()}
         </Avatar>
       </IconButton>
       <Menu
