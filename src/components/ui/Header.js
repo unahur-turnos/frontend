@@ -46,7 +46,7 @@ export default function Header(props) {
     <>
       <Box>
         <AppBar position="static" className={classes.header}>
-          <Toolbar>
+          <Toolbar id="back-to-top-anchor">
             {mobileView ? (
               <PantallaMobile
                 estadosPantalla={estadosPantalla}
@@ -71,6 +71,7 @@ export default function Header(props) {
 function ScrollTop(props) {
   const { children, window } = props;
   const classes = useStyles();
+
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
     disableHysteresis: true,
@@ -98,7 +99,9 @@ function ScrollTop(props) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
   menuButton: {
     marginRight: theme.spacing(2),
