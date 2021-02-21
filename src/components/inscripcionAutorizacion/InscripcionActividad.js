@@ -46,7 +46,12 @@ export default function Actividad() {
           />
         );
       case 1:
-        return <Paso2DDJJ handleChange={handleChange} />;
+        return (
+          <Paso2DDJJ
+            handleChange={handleChange}
+            informacionSeleccionada={informacionSeleccionada}
+          />
+        );
       case 2:
         return <Paso3DDJJ informacionSeleccionada={informacionSeleccionada} />;
       default:
@@ -79,7 +84,7 @@ export default function Actividad() {
   const guardarInscripcion = async () => {
     await create({
       actividadId: informacionSeleccionada.actividad.id,
-      estuvoEnContacto: informacionSeleccionada.estuvoEnContacto,
+      medioDeTransporte: informacionSeleccionada.medioDeTransporte,
       usuarioId: usuario.id,
     });
 
@@ -148,8 +153,5 @@ const useStyles = makeStyles({
 
 const ESTADOINICIAL = {
   medioDeTransporte: 'Auto',
-  personaDeRiesgo: false,
-  estuvoEnContacto: false,
-  autorizacionCuidar: false,
-  capacitacionUNAHUR: false,
+  capacitacionUNAHUR: 'false',
 };
