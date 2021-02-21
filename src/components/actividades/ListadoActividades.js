@@ -22,6 +22,7 @@ import { toString } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { fechaHoraActividad } from '../../utils/dateUtils';
 
 const useStyles = makeStyles({
   icon: {
@@ -45,6 +46,23 @@ export default function ListadoActividades() {
   const eliminarActividad = (actividad) => {
     setActividadAEliminar(actividad);
     setAbrirModal(true);
+  };
+
+  const cuposConSuColor = (anotados, cantidadMax) => {
+    const porcentaje = (anotados * 100) / cantidadMax;
+    let color = '';
+
+    if (porcentaje < 30) color = 'success.main';
+    else if (porcentaje >= 30 && porcentaje <= 80) color = 'warning.main';
+    else color = 'error.main';
+
+    return (
+      <Typography component="div">
+        <Box color={color}>
+          {anotados} / {cantidadMax}
+        </Box>
+      </Typography>
+    );
   };
 
   return (
@@ -75,19 +93,35 @@ export default function ListadoActividades() {
                 <TableCell>Nombre</TableCell>
                 <TableCell>Espacio</TableCell>
                 <TableCell>Responsable</TableCell>
-                <TableCell>Fecha/Hora Inicio</TableCell>
-                <TableCell>Fecha/Hora Fin</TableCell>
+                <TableCell>Fecha/Hora Inicio-Fin</TableCell>
+                <TableCell>Cupos</TableCell>
                 <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {actividades.map((actividad) => (
                 <TableRow key={actividad.id}>
-                  <TableCell>{actividad.nombre}</TableCell>
-                  <TableCell>{actividad.Espacio.nombre}</TableCell>
-                  <TableCell>{actividad.responsable}</TableCell>
-                  <TableCell>{toString(actividad.fechaHoraInicio)}</TableCell>
-                  <TableCell>{toString(actividad.fechaHoraFin)}</TableCell>
+                  <TableCell>
+                    <Typography>{actividad.nombre}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{actividad.Espacio.nombre}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{actividad.responsable}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    {fechaHoraActividad(
+                      actividad.fechaHoraInicio,
+                      actividad.fechaHoraFin
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {cuposConSuColor(
+                      actividad.autorizaciones,
+                      actividad.Espacio.aforo
+                    )}
+                  </TableCell>
                   <TableCell>
                     <IconButton
                       className={classes.icon}
