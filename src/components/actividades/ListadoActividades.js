@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography,
   Grid,
+  Chip,
 } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -50,18 +51,31 @@ export default function ListadoActividades() {
 
   const cuposConSuColor = (anotados, cantidadMax) => {
     const porcentaje = (anotados * 100) / cantidadMax;
-    let color = '';
+    let background = '';
+    let textColor = '';
 
-    if (porcentaje < 30) color = 'success.main';
-    else if (porcentaje >= 30 && porcentaje <= 80) color = 'warning.main';
-    else color = 'error.main';
+    if (porcentaje < 30) {
+      background = '#009673';
+      textColor = 'white';
+    } else if (porcentaje >= 30 && porcentaje <= 80) {
+      background = 'orange';
+      textColor = 'black';
+    } else {
+      background = 'red';
+      textColor = 'white';
+    }
 
     return (
-      <Typography component="div">
-        <Box color={color}>
-          {anotados} / {cantidadMax}
-        </Box>
-      </Typography>
+      <Chip
+        label={`${anotados} / ${cantidadMax}`}
+        style={{ backgroundColor: background, color: textColor }}
+      />
+
+      // <Typography component="div">
+      //   <Box color={color}>
+      //     {anotados} / {cantidadMax}
+      //   </Box>
+      // </Typography>
     );
   };
 
