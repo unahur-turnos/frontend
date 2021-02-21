@@ -4,6 +4,7 @@ import {
   Typography,
   makeStyles,
   useMediaQuery,
+  Box,
 } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
 import AddIcon from '@material-ui/icons/Add';
@@ -12,6 +13,7 @@ import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 import { filter } from 'ramda';
 import Tarjeta from '../ui/Tarjeta';
+import Acordion from '../ui/Acordion';
 
 export default function MisActividades() {
   const autorizaciones = useRecoilValue(todasLasAutorizacionesState);
@@ -45,7 +47,7 @@ export default function MisActividades() {
           </Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="h6">Futuros turnos</Typography>
+          <Typography variant="h6">Próximos turnos</Typography>
         </Grid>
         <Grid item className={classes.floatRight}>
           <Button
@@ -74,22 +76,8 @@ export default function MisActividades() {
             </Grid>
           )}
         </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6">Turnos pasados</Typography>
-        </Grid>
-        <Grid container spacing={2}>
-          {autorizacionesPasadas().map((autorizacion) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} key={autorizacion.id}>
-                <Tarjeta autorizacion={autorizacion} mostrarBoton={false} />
-              </Grid>
-            );
-          })}
-          {autorizacionesPasadas().length === 0 && (
-            <Grid item xs={12}>
-              <Typography>No hay pasados turnos</Typography>
-            </Grid>
-          )}
+        <Grid component={Box} container mt={2}>
+          {<Acordion data={autorizacionesPasadas()} />}
         </Grid>
       </Grid>
     </>
