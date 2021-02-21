@@ -47,7 +47,7 @@ export default function MisActividades() {
           </Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="h6">Próximos turnos</Typography>
+          <Typography variant="h6">Próximas actividades</Typography>
         </Grid>
         <Grid item className={classes.floatRight}>
           <Button

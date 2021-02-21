@@ -24,13 +24,13 @@ export default function Acordion(props) {
 
   return (
     <>
-      <Accordion style={{ width: '100%' }}>
+      <Accordion style={{ width: '100%', backgroundColor: '#fafafa' }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel4bh-content"
           id="panel4bh-header"
         >
-          <Typography variant="h6">Turnos pasados</Typography>
+          <Typography variant="h6">Actividades anteriores</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={2}>

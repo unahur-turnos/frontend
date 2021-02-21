@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardActions,
+  withStyles,
 } from '@material-ui/core';
 import { PropTypes } from 'prop-types';
 import { fechaHoraActividad } from '../../utils/dateUtils';
@@ -28,9 +29,7 @@ export default function Tarjeta(props) {
     <>
       <Card>
         <CardContent>
-          <Typography variant="body1">
-            {autorizacion.Actividad.nombre}{' '}
-          </Typography>
+          <Typography variant="h6">{autorizacion.Actividad.nombre} </Typography>
           <Typography variant="body2">
             {fechaHoraActividad(
               autorizacion.Actividad.fechaHoraInicio,
@@ -38,8 +37,8 @@ export default function Tarjeta(props) {
             )}
           </Typography>
           <Typography variant="body2">
-            {autorizacion.Actividad.Espacio.nombre} -{' '}
-            {autorizacion.Actividad.Espacio.Edificio.nombre}
+            {autorizacion.Actividad.Espacio.nombre} (
+            {autorizacion.Actividad.Espacio.Edificio.nombre})
           </Typography>
           <Typography variant="body2" color="textSecondary">
             {autorizacion.Actividad.responsable}
@@ -49,13 +48,12 @@ export default function Tarjeta(props) {
           <>
             <Divider />
             <CardActions>
-              <Button
+              <CancelButton
                 size="small"
-                color="secondary"
                 onClick={() => autorizacionAEliminar(autorizacion)}
               >
                 Cancelar turno
-              </Button>
+              </CancelButton>
             </CardActions>
           </>
         )}
@@ -75,3 +73,13 @@ Tarjeta.propTypes = {
   autorizacion: PropTypes.obj,
   mostrarBoton: PropTypes.bool,
 };
+
+const CancelButton = withStyles(({ palette }) => ({
+  root: {
+    color: palette.error.main,
+    // backgroundColor: palette.error.main,
+    '&:hover': {
+      color: palette.error.dark,
+    },
+  },
+}))(Button);
