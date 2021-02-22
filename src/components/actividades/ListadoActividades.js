@@ -70,12 +70,6 @@ export default function ListadoActividades() {
         label={`${anotados} / ${cantidadMax}`}
         style={{ backgroundColor: background, color: textColor }}
       />
-
-      // <Typography component="div">
-      //   <Box color={color}>
-      //     {anotados} / {cantidadMax}
-      //   </Box>
-      // </Typography>
     );
   };
 
@@ -107,8 +101,8 @@ export default function ListadoActividades() {
                 <TableCell>Nombre</TableCell>
                 <TableCell>Espacio</TableCell>
                 <TableCell>Responsable</TableCell>
-                <TableCell>Fecha/Hora Inicio-Fin</TableCell>
-                <TableCell>Cupos</TableCell>
+                <TableCell>Fecha y hora</TableCell>
+                <TableCell>Cupo</TableCell>
                 <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
