@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { filter } from 'ramda';
 import TarjetaTurno from '../ui/TarjetaTurno';
 import AcordionTurno from '../ui/AcordionTurno';
+import Alert from '@material-ui/lab/Alert';
 
 export default function MisActividades() {
   const autorizaciones = useRecoilValue(autorizacionesUsuarioState);
@@ -71,10 +72,11 @@ export default function MisActividades() {
             );
           })}
           {autorizacionesFuturas().length === 0 && (
-            <Grid item>
-              <Grid item xs={12} className={classes.tarjetaMarginLeft}>
-                <Typography>No hay próximo turnos</Typography>
-              </Grid>
+            <Grid item xs={12} className={classes.root}>
+              <Alert severity="info">
+                Aún no tenés ningún turno. Podés pedir uno haciendo{' '}
+                <Link to="/autorizaciones/nueva">clic aquí.</Link>
+              </Alert>
             </Grid>
           )}
         </Grid>
@@ -90,7 +92,7 @@ const useStyles = makeStyles(() => ({
   floatRight: {
     marginLeft: 'auto',
   },
-  tarjetaMarginLeft: {
-    marginLeft: 16,
+  root: {
+    width: '100%',
   },
 }));

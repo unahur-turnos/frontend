@@ -10,7 +10,6 @@ import { DefaultValue, useRecoilState } from 'recoil';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
 import { take } from 'ramda';
-import teal from '@material-ui/core/colors/teal';
 
 export default function BotonCerrarSesion() {
   const [usuario, setUsuario] = useRecoilState(usuarioState);
@@ -66,8 +65,8 @@ export default function BotonCerrarSesion() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ palette }) => ({
   backgroundAvatar: {
-    backgroundColor: teal[500],
+    backgroundColor: palette.secondary.dark,
   },
 }));
