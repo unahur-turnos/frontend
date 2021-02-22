@@ -20,7 +20,6 @@ export default function NavBar() {
               [classes.linkActivo]: location.pathname === ruta,
               [classes.linkInactivo]: location.pathname !== ruta,
             })}
-            color="inherit"
             component={Link}
             to={ruta}
           >
@@ -34,7 +33,7 @@ export default function NavBar() {
 
 const useStyles = makeStyles(({ palette }) => ({
   button: {
-    padding: '15px 40px',
+    padding: '10px 40px',
     color: '#FFF',
     marginLeft: '30px',
   },
