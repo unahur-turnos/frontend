@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { menuNavegacionState } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
 import { Link, useLocation } from 'react-router-dom';
+import clsx from 'clsx';
 
 export default function NavBar() {
   const menuNavegacion = useRecoilValue(menuNavegacionState);
@@ -15,13 +16,10 @@ export default function NavBar() {
         return (
           <Button
             key={id}
-            className={classes.button}
-            color="inherit"
-            style={{
-              marginLeft: '30px',
-              backgroundColor:
-                location.pathname === ruta ? '#009688' : '#4DB6AD',
-            }}
+            className={clsx(classes.button, {
+              [classes.linkActivo]: location.pathname === ruta,
+              [classes.linkInactivo]: location.pathname !== ruta,
+            })}
             component={Link}
             to={ruta}
           >
@@ -33,9 +31,16 @@ export default function NavBar() {
   );
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(({ palette }) => ({
   button: {
-    padding: '15px 40px',
+    padding: '10px 40px',
     color: '#FFF',
+    marginLeft: '30px',
+  },
+  linkActivo: {
+    backgroundColor: palette.secondary.dark,
+  },
+  linkInactivo: {
+    backgroundColor: palette.secondary.main,
   },
 }));
