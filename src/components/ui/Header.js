@@ -68,12 +68,10 @@ export default function Header(props) {
   );
 }
 
-function ScrollTop(props) {
-  const { children, window } = props;
+function ScrollTop({ children }) {
   const classes = useStyles();
 
   const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
     disableHysteresis: true,
     threshold: 100,
   });
@@ -116,5 +114,4 @@ const useStyles = makeStyles((theme) => ({
 
 ScrollTop.propTypes = {
   children: PropTypes.element.isRequired,
-  window: PropTypes.func,
 };
