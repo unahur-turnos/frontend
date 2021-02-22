@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
-import { Box, Container } from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
 import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
 import Header from './components/ui/Header';
@@ -103,12 +103,19 @@ function Rutas() {
   );
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(4),
+  },
+}));
+
 export default function App() {
+  const classes = useStyles();
   return (
     <Box>
       <Router>
         <Header />
-        <Container>
+        <Container className={classes.root}>
           <Suspense fallback={<Cargando />}>
             <ErrorBoundary fallback={<ErrorInesperado />}>
               <Rutas />
