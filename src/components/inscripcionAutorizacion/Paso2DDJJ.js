@@ -12,7 +12,6 @@ import { PropTypes } from 'prop-types';
 export default function Paso2DDJJ({ handleChange, informacionSeleccionada }) {
   return (
     <>
-      {console.log(informacionSeleccionada)}
       <Grid container alignItems="flex-end" spacing={4}>
         <Grid item xs={12} align="center">
           <Typography variant="h6">
@@ -24,10 +23,10 @@ export default function Paso2DDJJ({ handleChange, informacionSeleccionada }) {
           <FormControl>
             <RadioGroup
               row
-              aria-label="capacitacionUNAHUR"
-              name="capacitacionUNAHUR"
+              aria-label="completoCapacitacion"
+              name="completoCapacitacion"
               onChange={handleChange}
-              value={informacionSeleccionada.capacitacionUNAHUR}
+              value={informacionSeleccionada.completoCapacitacion}
             >
               <FormControlLabel
                 value={'true'}

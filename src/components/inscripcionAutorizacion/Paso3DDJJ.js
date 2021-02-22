@@ -29,12 +29,12 @@ const AlertMessage = () => {
 
 export default function Paso3DDJJ({ informacionSeleccionada }) {
   const matches = useMediaQuery('(min-width:600px)');
-  const { actividad, capacitacionUNAHUR } = informacionSeleccionada;
+  const { actividad, completoCapacitacion } = informacionSeleccionada;
 
   return (
     <>
       <Grid container component={Box} justifyContent="center">
-        {capacitacionUNAHUR === 'false' && <AlertMessage />}
+        {completoCapacitacion === 'false' && <AlertMessage />}
       </Grid>
 
       <Grid container alignItems="flex-end" spacing={4}>

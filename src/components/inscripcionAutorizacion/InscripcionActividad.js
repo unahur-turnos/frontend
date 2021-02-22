@@ -152,6 +152,6 @@ const useStyles = makeStyles({
 });
 
 const ESTADOINICIAL = {
-  medioDeTransporte: 'Auto',
-  capacitacionUNAHUR: 'false',
+  medioDeTransporte: 'Movilidad propia',
+  completoCapacitacion: false,
 };
