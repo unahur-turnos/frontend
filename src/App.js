@@ -25,7 +25,7 @@ import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import Cargando from './components/ui/Cargando';
 import ErrorInesperado from './components/ui/ErrorInesperado';
-import MisActividades from './components/misActividades/MisActividades';
+import MisActividades from './components/actividades/MisActividades';
 
 function Rutas() {
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
@@ -53,10 +53,7 @@ function Rutas() {
         <AltaModificacionEspacio titulo={'Modificar espacio'} />
       </PrivateRoute>
 
-      <PrivateRoute
-        path="/misActividades"
-        rolesPermitidos={['asistente', 'admin']}
-      >
+      <PrivateRoute path="/turnos" rolesPermitidos={['asistente', 'admin']}>
         <MisActividades />
       </PrivateRoute>
 

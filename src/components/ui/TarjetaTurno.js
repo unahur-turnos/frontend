@@ -9,10 +9,10 @@ import {
 } from '@material-ui/core';
 import { PropTypes } from 'prop-types';
 import { fechaHoraActividad } from '../../utils/dateUtils';
-import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
+import ConfirmarEliminacion from './ConfirmarEliminacion';
 import { useState } from 'react';
 
-export default function Tarjeta(props) {
+export default function TarjetaTurno(props) {
   const { autorizacion, mostrarBoton } = props;
   const [abrirModal, setAbrirModal] = useState(false);
   const [entidad, setEntidad] = useState('');
@@ -69,7 +69,7 @@ export default function Tarjeta(props) {
   );
 }
 
-Tarjeta.propTypes = {
+TarjetaTurno.propTypes = {
   autorizacion: PropTypes.obj,
   mostrarBoton: PropTypes.bool,
 };
@@ -77,7 +77,6 @@ Tarjeta.propTypes = {
 const CancelButton = withStyles(({ palette }) => ({
   root: {
     color: palette.error.main,
-    // backgroundColor: palette.error.main,
     '&:hover': {
       color: palette.error.dark,
     },

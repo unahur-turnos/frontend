@@ -1,12 +1,21 @@
-import { Avatar, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
+import {
+  Avatar,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  makeStyles,
+} from '@material-ui/core';
 import { DefaultValue, useRecoilState } from 'recoil';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
 import { take } from 'ramda';
+import teal from '@material-ui/core/colors/teal';
 
 export default function BotonCerrarSesion() {
   const [usuario, setUsuario] = useRecoilState(usuarioState);
   const [anchorEl, setAnchorEl] = useState(null);
+  const classes = useStyles();
   const open = Boolean(anchorEl);
 
   const handleMenu = (event) => {
@@ -31,7 +40,7 @@ export default function BotonCerrarSesion() {
         onClick={handleMenu}
         color="inherit"
       >
-        <Avatar fontSize="large" style={{ backgroundColor: '#009688' }}>
+        <Avatar fontSize="large" className={classes.backgroundAvatar}>
           {take(1, usuario.nombre).toUpperCase()}
           {take(1, usuario.apellido).toUpperCase()}
         </Avatar>
@@ -56,3 +65,9 @@ export default function BotonCerrarSesion() {
     </Box>
   );
 }
+
+const useStyles = makeStyles((theme) => ({
+  backgroundAvatar: {
+    backgroundColor: teal[500],
+  },
+}));

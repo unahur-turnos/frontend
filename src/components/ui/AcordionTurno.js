@@ -8,7 +8,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { PropTypes } from 'prop-types';
-import Tarjeta from '../ui/Tarjeta';
+import TarjetaTurno from './TarjetaTurno';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -18,9 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Acordion(props) {
+export default function AcordionTurno(props) {
   const { data } = props;
-  const classes = useStyles();
 
   return (
     <>
@@ -30,14 +29,14 @@ export default function Acordion(props) {
           aria-controls="panel4bh-content"
           id="panel4bh-header"
         >
-          <Typography variant="h6">Actividades anteriores</Typography>
+          <Typography variant="h6">Turnos anteriores</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={2}>
             {data.map((autorizacion) => {
               return (
                 <Grid item xs={12} sm={6} md={4} key={autorizacion.id}>
-                  <Tarjeta autorizacion={autorizacion} />
+                  <TarjetaTurno autorizacion={autorizacion} />
                 </Grid>
               );
             })}
@@ -48,6 +47,6 @@ export default function Acordion(props) {
   );
 }
 
-Acordion.propTypes = {
+AcordionTurno.propTypes = {
   data: PropTypes.obj,
 };

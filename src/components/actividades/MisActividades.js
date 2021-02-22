@@ -8,15 +8,15 @@ import {
 } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
 import AddIcon from '@material-ui/icons/Add';
-import { todasLasAutorizacionesState } from '../../state/usuario';
+import { autorizacionesUsuarioState } from '../../state/usuario';
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 import { filter } from 'ramda';
-import Tarjeta from '../ui/Tarjeta';
-import Acordion from '../ui/Acordion';
+import TarjetaTurno from '../ui/TarjetaTurno';
+import AcordionTurno from '../ui/AcordionTurno';
 
 export default function MisActividades() {
-  const autorizaciones = useRecoilValue(todasLasAutorizacionesState);
+  const autorizaciones = useRecoilValue(autorizacionesUsuarioState);
   const classes = useStyles();
   const matches = useMediaQuery('(min-width:380px)');
 
@@ -46,7 +46,7 @@ export default function MisActividades() {
             Mis turnos
           </Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={5} sm={6}>
           <Typography variant="h6">Próximas actividades</Typography>
         </Grid>
         <Grid item className={classes.floatRight}>
@@ -66,18 +66,20 @@ export default function MisActividades() {
           {autorizacionesFuturas().map((autorizacion) => {
             return (
               <Grid item xs={12} sm={6} md={4} key={autorizacion.id}>
-                <Tarjeta autorizacion={autorizacion} mostrarBoton={true} />
+                <TarjetaTurno autorizacion={autorizacion} mostrarBoton={true} />
               </Grid>
             );
           })}
           {autorizacionesFuturas().length === 0 && (
-            <Grid item xs={12}>
-              <Typography>No hay futuros turnos</Typography>
+            <Grid item>
+              <Grid item xs={12} className={classes.tarjetaMarginLeft}>
+                <Typography>No hay próximo turnos</Typography>
+              </Grid>
             </Grid>
           )}
         </Grid>
         <Grid component={Box} container mt={2}>
-          {<Acordion data={autorizacionesPasadas()} />}
+          <AcordionTurno data={autorizacionesPasadas()} />
         </Grid>
       </Grid>
     </>
@@ -87,5 +89,8 @@ export default function MisActividades() {
 const useStyles = makeStyles(() => ({
   floatRight: {
     marginLeft: 'auto',
+  },
+  tarjetaMarginLeft: {
+    marginLeft: 16,
   },
 }));

@@ -11,8 +11,8 @@ import { buildPath } from '../utils/queryUtils';
 
 const listaRutas = [
   {
-    nombre: 'Mis actividades',
-    ruta: '/misActividades',
+    nombre: 'Mis turnos',
+    ruta: '/turnos',
     rolesPermitidos: ['asistente'],
     icono: <LocalActivityIcon />,
   },
@@ -60,8 +60,8 @@ export const tieneRolState = selectorFamily({
   },
 });
 
-export const todasLasAutorizacionesState = selector({
-  key: 'todasLasAutorizaciones',
+export const autorizacionesUsuarioState = selector({
+  key: 'autorizacionesUsuario',
   get: async ({ get }) => {
     const { data } = get(apiIndex('usuarios/yo/autorizaciones'));
     return data;
@@ -85,7 +85,7 @@ export const rutaInicialUsuarioState = selector({
 export function rutaInicialUsuario(usuario) {
   switch (usuario.rol) {
     case 'asistente':
-      return '/misActividades';
+      return '/turnos';
     case 'bedel':
       return '/actividades/hoy';
     case 'admin':
