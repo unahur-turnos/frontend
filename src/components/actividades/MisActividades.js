@@ -7,7 +7,7 @@ import {
   Box,
 } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
-import AddIcon from '@material-ui/icons/Add';
+import PostAddIcon from '@material-ui/icons/PostAdd';
 import { autorizacionesUsuarioState } from '../../state/usuario';
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ import Alert from '@material-ui/lab/Alert';
 export default function MisActividades() {
   const autorizaciones = useRecoilValue(autorizacionesUsuarioState);
   const classes = useStyles();
-  const matches = useMediaQuery('(min-width:380px)');
+  const matches = useMediaQuery((theme) => theme.breakpoints.down('xs'));
 
   const autorizacionesFuturas = () => {
     return filter(
@@ -47,21 +47,37 @@ export default function MisActividades() {
             Mis turnos
           </Typography>
         </Grid>
-        <Grid item xs={5} sm={6}>
+        {matches && (
+          <Grid item xs={12}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              component={Link}
+              to={`/autorizaciones/nueva`}
+              startIcon={<PostAddIcon />}
+            >
+              Pedir turno
+            </Button>
+          </Grid>
+        )}
+        <Grid item xs={12} sm={6}>
           <Typography variant="h6">Próximas actividades</Typography>
         </Grid>
-        <Grid item className={classes.floatRight}>
-          <Button
-            size={matches ? 'medium' : 'small'}
-            variant="contained"
-            color="primary"
-            component={Link}
-            to={`/autorizaciones/nueva`}
-            startIcon={<AddIcon />}
-          >
-            Nuevo turno
-          </Button>
-        </Grid>
+        {!matches && (
+          <Grid item className={classes.floatRight}>
+            <Button
+              size={'medium'}
+              variant="contained"
+              color="primary"
+              component={Link}
+              to={`/autorizaciones/nueva`}
+              startIcon={<PostAddIcon />}
+            >
+              Pedir turno
+            </Button>
+          </Grid>
+        )}
 
         <Grid container spacing={2}>
           {autorizacionesFuturas().map((autorizacion) => {
@@ -72,7 +88,7 @@ export default function MisActividades() {
             );
           })}
           {autorizacionesFuturas().length === 0 && (
-            <Grid item xs={12} className={classes.root}>
+            <Grid item className={classes.root}>
               <Alert severity="info">
                 Aún no tenés ningún turno. Podés pedir uno haciendo{' '}
                 <Link to="/autorizaciones/nueva">clic aquí.</Link>
@@ -91,8 +107,5 @@ export default function MisActividades() {
 const useStyles = makeStyles(() => ({
   floatRight: {
     marginLeft: 'auto',
-  },
-  root: {
-    width: '100%',
   },
 }));
