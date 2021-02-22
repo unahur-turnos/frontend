@@ -13,11 +13,18 @@ const defaultProps = {
   style: { width: '40rem', height: '9rem' },
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(({ palette }) => ({
   colorTexto: {
     color: 'white',
   },
-});
+  gridRedondeado: {
+    borderRadius: 16,
+  },
+  gridExitoso: {
+    backgroundColor: palette.secondary.dark,
+    borderColor: palette.secondary.dark,
+  },
+}));
 
 export default function FinalDDJJ() {
   const classes = useStyles();
@@ -28,10 +35,8 @@ export default function FinalDDJJ() {
       <Grid direction="column" justifyContent="center" alignItems="center">
         <Grid mt={matches ? 9 : 4} display="flex" justifyContent="center">
           <Grid
-            borderRadius={16}
+            className={[classes.gridExitoso, classes.gridRedondeado]}
             {...defaultProps}
-            bgcolor="#009688"
-            borderColor="#009688"
           >
             <Grid items xs={12} align="center" mt={matches ? 2 : 1}>
               <EventAvailableIcon
@@ -51,7 +56,7 @@ export default function FinalDDJJ() {
         </Grid>
 
         <Grid display="flex" justifyContent="center">
-          <Grid borderRadius={16} {...defaultProps}>
+          <Grid className={classes.gridRedondeado} {...defaultProps}>
             <Grid items xs={12} align="center" mt={matches ? 2 : 1}>
               <WarningIcon fontSize="large" align="center"></WarningIcon>
             </Grid>
@@ -63,7 +68,7 @@ export default function FinalDDJJ() {
         </Grid>
 
         <Grid display="flex" justifyContent="center">
-          <Grid borderRadius={16} {...defaultProps}>
+          <Grid className={classes.gridRedondeado} {...defaultProps}>
             <Grid items xs={12} align="center" mt={matches ? 2 : 1}>
               <PeopleIcon fontSize="large"></PeopleIcon>
             </Grid>

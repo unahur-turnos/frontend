@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   header: {
-    backgroundColor: '#4DB6AD',
+    backgroundColor: theme.palette.secondary.main,
   },
 }));
 
