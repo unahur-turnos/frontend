@@ -1,5 +1,5 @@
 import { Box, makeStyles } from '@material-ui/core';
-import isologo from '../../assets/isologo-blanco.svg';
+import isologo from '../../assets/isologo-gris.svg';
 import { Link } from 'react-router-dom';
 import NavBar from './NavBar';
 import PropTypes from 'prop-types';
