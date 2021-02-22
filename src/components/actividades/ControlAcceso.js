@@ -36,9 +36,6 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: 16,
   },
-  autocomplete: {
-    width: 400,
-  },
   icon: {
     marginRight: 16,
   },

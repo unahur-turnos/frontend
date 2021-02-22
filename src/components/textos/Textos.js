@@ -11,10 +11,12 @@ export const ERRORES = {
   requerido: 'Este campo es requerido',
   fechaInicio: 'Debe ser posterior a la fecha y hora actual',
   fechaFin: 'No puede ser anterior al inicio de la actividad',
+  responsable: 'Ingresá información del responsable',
 };
 
 export const AYUDAS = {
   selectorActividad: 'Escribí el nombre de la actividad.',
+  selectorCarreras: 'Escribí el nombre de la carrera.',
   selectorTransporte:
     'Indicá cómo pensás movilizarte hasta la universidad para realizar la actividad.',
 };

@@ -3,9 +3,7 @@ import {
   Grid,
   Typography,
   InputAdornment,
-  Box,
   CircularProgress,
-  useMediaQuery,
 } from '@material-ui/core';
 
 import { useState } from 'react';
@@ -23,7 +21,6 @@ import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
 import { ERRORES } from '../textos/Textos';
 
 export default function Registro() {
-  const matches = useMediaQuery('(min-width:600px)');
   const history = useHistory();
   const classes = useStyles();
   const { create } = useApi('usuarios/registro');
@@ -80,201 +77,175 @@ export default function Registro() {
   return (
     <>
       <ValidatorForm onSubmit={validarRegistro} instantValidate={false}>
-        <Box mt={5} display="flex" justifyContent="center">
+        <Grid item align="center" xs={12}>
           <Typography variant="h4" color="primary">
             Registrarse
           </Typography>
-        </Box>
+        </Grid>
 
-        <Grid
-          container
-          alignItems="flex-end"
-          spacing={matches ? 4 : 2}
-          style={{ marginTop: '8px' }}
-        >
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Nombre/s:</Typography>
+        <Grid container spacing={4} xs={12} align="center">
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
+              <TextValidator
+                id="nombreUsuario"
+                label="Ingresá tu nombre/s"
+                name="nombre"
+                value={informacionDelUsuario.nombre}
+                fullWidth
+                onChange={handleChange}
+                validators={['required']}
+                errorMessages={[ERRORES.requerido, ERRORES.nombre]}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <AccountCircleIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              id="nombreUsuario"
-              label="Ingresá tu nombre/s"
-              name="nombre"
-              value={informacionDelUsuario.nombre}
-              onChange={handleChange}
-              style={{ minWidth: 250 }}
-              validators={['required']}
-              errorMessages={[ERRORES.requerido, ERRORES.nombre]}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <AccountCircleIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                id="apellidoUsuario"
+                label="Ingresá tu apellido/s"
+                name="apellido"
+                onChange={handleChange}
+                fullWidth
+                value={informacionDelUsuario.apellido}
+                validators={['required']}
+                errorMessages={[ERRORES.requerido, ERRORES.apellido]}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <AccountCircleIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Apellido/s:</Typography>
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                id="dniUsuario"
+                label="Ingresá tu DNI"
+                name="dni"
+                fullWidth
+                onChange={handleChange}
+                value={informacionDelUsuario.dni}
+                validators={[
+                  'required',
+                  'minNumber:1000000',
+                  'maxNumber:99999999',
+                ]}
+                errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <AssignmentIndIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              id="apellidoUsuario"
-              label="Ingresá tu apellido/s"
-              name="apellido"
-              onChange={handleChange}
-              value={informacionDelUsuario.apellido}
-              validators={['required']}
-              errorMessages={[ERRORES.requerido, ERRORES.apellido]}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <AccountCircleIcon />
-                  </InputAdornment>
-                ),
-              }}
-              style={{ minWidth: 250 }}
-            />
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                id="emailUsuario"
+                label="Ingresá un correo electrónico"
+                name="email"
+                onChange={handleChange}
+                fullWidth
+                value={informacionDelUsuario.email}
+                validators={['required', 'isEmail']}
+                errorMessages={[ERRORES.requerido, ERRORES.email]}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <EmailIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">DNI:</Typography>
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                id="telefono"
+                label="Número de celular"
+                name="telefono"
+                onChange={handleChange}
+                fullWidth
+                value={informacionDelUsuario.telefono}
+                validators={['required']}
+                errorMessages={[ERRORES.requerido, ERRORES.telefono]}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <PhoneEnabledIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              id="dniUsuario"
-              label="Ingresá tu DNI"
-              name="dni"
-              onChange={handleChange}
-              value={informacionDelUsuario.dni}
-              validators={[
-                'required',
-                'minNumber:1000000',
-                'maxNumber:99999999',
-              ]}
-              errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <AssignmentIndIcon />
-                  </InputAdornment>
-                ),
-              }}
-              style={{ minWidth: 250 }}
-            />
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                id="contraseniaUsuario"
+                label="Ingresá una contraseña"
+                name="contrasenia"
+                type="password"
+                fullWidth
+                helperText="Mínimo 8 caracteres, con minúsculas, mayúsculas y números"
+                onChange={handleChange}
+                value={informacionDelUsuario.contrasenia}
+                validators={['required', 'contraseñaValida']}
+                errorMessages={[ERRORES.requerido, ERRORES.contrasenia]}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <LockIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Correo electrónico:</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              id="emailUsuario"
-              label="Ingresá un correo electrónico"
-              name="email"
-              onChange={handleChange}
-              value={informacionDelUsuario.email}
-              validators={['required', 'isEmail']}
-              errorMessages={[ERRORES.requerido, ERRORES.email]}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <EmailIcon />
-                  </InputAdornment>
-                ),
-              }}
-              style={{ minWidth: 250 }}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Número de celular:</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              id="telefono"
-              label="Número de celular"
-              name="telefono"
-              onChange={handleChange}
-              value={informacionDelUsuario.telefono}
-              validators={['required']}
-              errorMessages={[ERRORES.requerido, ERRORES.telefono]}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <PhoneEnabledIcon />
-                  </InputAdornment>
-                ),
-              }}
-              style={{ minWidth: 250 }}
-            />
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            align={matches ? 'right' : 'center'}
-            component={Box}
-            alignSelf="center"
-          >
-            <Typography variant="h6">Contraseña:</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              id="contraseniaUsuario"
-              label="Ingresá una contraseña"
-              name="contrasenia"
-              type="password"
-              helperText="Mínimo 8 caracteres, con minúsculas, mayúsculas y números"
-              onChange={handleChange}
-              value={informacionDelUsuario.contrasenia}
-              validators={['required', 'contraseñaValida']}
-              errorMessages={[ERRORES.requerido, ERRORES.contrasenia]}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <LockIcon />
-                  </InputAdornment>
-                ),
-              }}
-              style={{ maxWidth: 250, minWidth: 249 }}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Confirmar contraseña:</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              id="confirmarContraseña"
-              label="Confirme la contraseña"
-              name="confirmarContraseña"
-              type="password"
-              onChange={handleChange}
-              value={informacionDelUsuario.confirmarContraseña}
-              validators={['required', 'isPasswordMatch']}
-              errorMessages={[
-                ERRORES.requerido,
-                ERRORES.contraseniasNoCoinciden,
-              ]}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <LockIcon />
-                  </InputAdornment>
-                ),
-              }}
-              style={{ minWidth: 250 }}
-            />
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                id="confirmarContraseña"
+                label="Confirme la contraseña"
+                name="confirmarContraseña"
+                type="password"
+                fullWidth
+                onChange={handleChange}
+                value={informacionDelUsuario.confirmarContraseña}
+                validators={['required', 'isPasswordMatch']}
+                errorMessages={[
+                  ERRORES.requerido,
+                  ERRORES.contraseniasNoCoinciden,
+                ]}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <LockIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
           </Grid>
 
           {tengoErrorEn.global && (
@@ -284,30 +255,29 @@ export default function Registro() {
               </Typography>
             </Grid>
           )}
-
-          <Grid container item xs={12} spacing={1}>
-            <Grid item xs={6} align="right">
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={iconoCargando}
-              >
-                {iconoCargando && (
-                  <CircularProgress
-                    color="white"
-                    className={classes.loading}
-                    size={25}
-                  />
-                )}
-                Guardar
-              </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button component={Link} to="/">
-                Cancelar
-              </Button>
-            </Grid>
+        </Grid>
+        <Grid container item xs={12} spacing={1} style={{ marginTop: 20 }}>
+          <Grid item xs={6} align="right">
+            <Button component={Link} to="/">
+              Cancelar
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={iconoCargando}
+            >
+              {iconoCargando && (
+                <CircularProgress
+                  color="white"
+                  className={classes.loading}
+                  size={25}
+                />
+              )}
+              Guardar
+            </Button>
           </Grid>
         </Grid>
       </ValidatorForm>
