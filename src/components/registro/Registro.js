@@ -21,9 +21,11 @@ import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
 import { ERRORES } from '../textos/Textos';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
 export default function Registro() {
   const matches = useMediaQuery('(min-width:600px)');
+  const inputClasses = useInputStyles();
   const history = useHistory();
   const classes = useStyles();
   const { create } = useApi('usuarios/registro');
@@ -150,7 +152,7 @@ export default function Registro() {
               label="Ingresá tu DNI"
               name="dni"
               type="number"
-              className={classes.numberTextField}
+              className={inputClasses.numberFieldWithoutArrows}
               onChange={handleChange}
               value={informacionDelUsuario.dni}
               validators={[
@@ -205,6 +207,7 @@ export default function Registro() {
               type="number"
               onChange={handleChange}
               value={informacionDelUsuario.telefono}
+              className={inputClasses.numberFieldWithoutArrows}
               validators={['required']}
               errorMessages={[ERRORES.requerido, ERRORES.telefono]}
               InputProps={{
@@ -214,7 +217,6 @@ export default function Registro() {
                   </InputAdornment>
                 ),
               }}
-              className={classes.numberTextField}
             />
           </Grid>
 
@@ -318,11 +320,5 @@ export default function Registro() {
 const useStyles = makeStyles(() => ({
   loading: {
     marginRight: '10px',
-  },
-  numberTextField: {
-    minWidth: 250,
-    '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-      display: 'none',
-    },
   },
 }));

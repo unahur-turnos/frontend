@@ -5,7 +5,6 @@ import {
   FormControlLabel,
   Grid,
   InputLabel,
-  makeStyles,
   MenuItem,
   Radio,
   RadioGroup,
@@ -30,7 +29,6 @@ export default function Espacio(props) {
   const espacioDB = useRecoilValue(espacioPorId(id)).data;
   const edificiosDB = useRecoilValue(todosLosEdificios);
   const history = useHistory();
-  const classes = useStyles();
   const notificarActualizacion = useNotificarActualizacion('espacios');
   const { create, update } = useApi('espacios');
 
@@ -139,7 +137,6 @@ export default function Espacio(props) {
             defaultValue={espacio.aforo}
             name="aforo"
             type="number"
-            className={classes.numberTextField}
             onChange={handleChange}
           />
         </Grid>
@@ -191,12 +188,3 @@ export default function Espacio(props) {
 Espacio.propTypes = {
   titulo: PropTypes.string,
 };
-
-const useStyles = makeStyles(() => ({
-  numberTextField: {
-    minWidth: 250,
-    '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-      display: 'none',
-    },
-  },
-}));

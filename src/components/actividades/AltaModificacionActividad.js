@@ -27,11 +27,12 @@ import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { ERRORES } from '../textos/Textos';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
 export default function AltaActividad(props) {
   const matches = useMediaQuery('(min-width:600px)');
+  const inputClasses = useInputStyles();
   const { id } = useParams();
-  const classes = useStyles();
   const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
   const notificarActualizacion = useNotificarActualizacion('actividades');
@@ -190,7 +191,7 @@ export default function AltaActividad(props) {
               style={{ minWidth: 250 }}
               type="number"
               name="dniResponsable"
-              className={classes.numberTextField}
+              className={inputClasses.numberFieldWithoutArrows}
               value={dniResponsable}
               onChange={handleChange}
             />
