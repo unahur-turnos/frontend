@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Grid,
   IconButton,
   Table,
   TableBody,
@@ -9,21 +10,23 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Grid,
+  Chip,
 } from '@material-ui/core';
-
+import { PropTypes } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { toString } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { fechaHoraActividad } from '../../utils/dateUtils';
+import clsx from 'clsx';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(({ palette }) => ({
   icon: {
     width: '30px',
     height: '30px',
@@ -32,12 +35,30 @@ const useStyles = makeStyles({
   floatRight: {
     marginLeft: 'auto',
   },
-});
+  activa: {
+    color: palette.success.main,
+  },
+  inactiva: {
+    color: palette.error.main,
+  },
+  error: {
+    backgroundColor: palette.error.main,
+    color: palette.error.contrastText,
+  },
+  warning: {
+    backgroundColor: palette.warning.main,
+    color: palette.warning.contrastText,
+  },
+  success: {
+    backgroundColor: palette.success.main,
+    color: palette.success.contrastText,
+  },
+}));
 
 export default function ListadoActividades() {
   const classes = useStyles();
 
-  const actividades = useRecoilValue(todasLasActividades());
+  const actividades = useRecoilValue(todasLasActividades({ inactivas: true }));
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
@@ -75,19 +96,43 @@ export default function ListadoActividades() {
                 <TableCell>Nombre</TableCell>
                 <TableCell>Espacio</TableCell>
                 <TableCell>Responsable</TableCell>
-                <TableCell>Fecha/Hora Inicio</TableCell>
-                <TableCell>Fecha/Hora Fin</TableCell>
+                <TableCell>Estado</TableCell>
+                <TableCell>Fecha y hora</TableCell>
+                <TableCell>Cupo</TableCell>
                 <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {actividades.map((actividad) => (
                 <TableRow key={actividad.id}>
-                  <TableCell>{actividad.nombre}</TableCell>
-                  <TableCell>{actividad.Espacio.nombre}</TableCell>
-                  <TableCell>{actividad.responsable}</TableCell>
-                  <TableCell>{toString(actividad.fechaHoraInicio)}</TableCell>
-                  <TableCell>{toString(actividad.fechaHoraFin)}</TableCell>
+                  <TableCell>
+                    <Typography>{actividad.nombre}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{actividad.Espacio.nombre}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{actividad.responsable}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    {actividad.activa ? (
+                      <FiberManualRecordIcon className={classes.activa} />
+                    ) : (
+                      <FiberManualRecordIcon className={classes.inactiva} />
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {fechaHoraActividad(
+                      actividad.fechaHoraInicio,
+                      actividad.fechaHoraFin
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Cupo
+                      anotados={actividad.autorizaciones}
+                      cantidadMax={actividad.Espacio.aforo}
+                    />
+                  </TableCell>
                   <TableCell>
                     <IconButton
                       className={classes.icon}
@@ -118,3 +163,24 @@ export default function ListadoActividades() {
     </>
   );
 }
+
+function Cupo({ anotados, cantidadMax }) {
+  const porcentaje = (anotados * 100) / cantidadMax;
+  const classes = useStyles();
+
+  return (
+    <Chip
+      label={`${anotados} / ${cantidadMax}`}
+      className={clsx({
+        [classes.error]: porcentaje >= 80,
+        [classes.warning]: porcentaje >= 30 && porcentaje < 80,
+        [classes.success]: porcentaje < 30,
+      })}
+    />
+  );
+}
+
+Cupo.propTypes = {
+  anotados: PropTypes.int,
+  cantidadMax: PropTypes.int,
+};
