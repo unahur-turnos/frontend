@@ -136,7 +136,7 @@ export default function Login() {
 
         {tengoErrorEn.mandarError && (
           <Grid item xs={12} align="center">
-            <Typography color="secondary">
+            <Typography color="error">
               El DNI y/o contraseña ingresados son inválidos, por favor volvé a
               intentar.
             </Typography>

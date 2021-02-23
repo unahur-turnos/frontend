@@ -250,9 +250,7 @@ export default function Registro() {
 
           {tengoErrorEn.global && (
             <Grid item xs={12} align="center">
-              <Typography color="secondary">
-                {ERRORES.mensajeDeError}
-              </Typography>
+              <Typography color="error">{ERRORES.mensajeDeError}</Typography>
             </Grid>
           )}
         </Grid>

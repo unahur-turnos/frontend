@@ -13,7 +13,7 @@ import {
   menuNavegacionState,
 } from '../../state/usuario';
 import { Link } from 'react-router-dom';
-import logoCovid from '../../assets/logoCovid.png';
+import isotipo from '../../assets/iso.svg';
 
 export default function PantallaMobile(props) {
   const { estadosPantalla, setEstadosPantalla } = props;
@@ -84,7 +84,7 @@ export default function PantallaMobile(props) {
 
       <Grid item xs={8} sm={10} align="center">
         <Link to={menuNavegacion[0] ? menuNavegacion[0].ruta : '/login'}>
-          <img src={logoCovid} alt="" className={classes.tamanioLogo} />
+          <img src={isotipo} alt="" className={classes.tamanioLogo} />
         </Link>
       </Grid>
     </>
@@ -93,8 +93,7 @@ export default function PantallaMobile(props) {
 
 const useStyles = makeStyles(() => ({
   tamanioLogo: {
-    width: '55px',
-    height: '46px',
+    height: '36px',
   },
   drawerContainer: {
     padding: '20px 30px',
