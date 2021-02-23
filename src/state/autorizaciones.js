@@ -1,5 +1,5 @@
 import { apiIndex } from './api';
-import { selectorFamily } from 'recoil';
+import { selector, selectorFamily } from 'recoil';
 
 export const autorizacionesPorActividad = selectorFamily({
   key: 'autorizacionesPorActividad',

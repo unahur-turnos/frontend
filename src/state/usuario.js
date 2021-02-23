@@ -10,6 +10,12 @@ import { localStorageEffect } from './effect';
 
 const listaRutas = [
   {
+    nombre: 'Mis turnos',
+    ruta: '/turnos',
+    rolesPermitidos: ['asistente'],
+    icono: <LocalActivityIcon />,
+  },
+  {
     nombre: 'Actividades',
     ruta: '/actividades',
     rolesPermitidos: ['admin'],
@@ -53,6 +59,14 @@ export const tieneRolState = selectorFamily({
   },
 });
 
+export const autorizacionesUsuarioState = selector({
+  key: 'autorizacionesUsuario',
+  get: async ({ get }) => {
+    const { data } = get(apiIndex('usuarios/yo/autorizaciones'));
+    return data;
+  },
+});
+
 export const menuNavegacionState = selector({
   key: 'menuNavegacion',
   get: ({ get }) => {
@@ -70,7 +84,7 @@ export const rutaInicialUsuarioState = selector({
 export function rutaInicialUsuario(usuario) {
   switch (usuario.rol) {
     case 'asistente':
-      return '/autorizaciones/nueva';
+      return '/turnos';
     case 'bedel':
       return '/actividades/hoy';
     case 'admin':

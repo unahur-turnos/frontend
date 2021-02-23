@@ -11,9 +11,12 @@ export default function ConfirmarEliminacion({
   abrirModal,
   setAbrirModal,
   ruta,
+  rutaActualizacion,
   entidadAEliminar,
 }) {
-  const notificarActualizacion = useNotificarActualizacion(ruta);
+  const notificarActualizacion = useNotificarActualizacion(
+    rutaActualizacion || ruta
+  );
   const { deleteById } = useApi(ruta);
 
   const cerrarModal = () => {
@@ -50,6 +53,7 @@ ConfirmarEliminacion.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
   ruta: PropTypes.string,
+  rutaActualizacion: PropTypes.string,
   entidadAEliminar: PropTypes.shape({
     id: PropTypes.number,
     nombre: PropTypes.string,
