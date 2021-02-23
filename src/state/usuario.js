@@ -7,7 +7,6 @@ import LocalActivityIcon from '@material-ui/icons/LocalActivity';
 import { apiIndex } from './api';
 import { has } from 'ramda';
 import { localStorageEffect } from './effect';
-import { buildPath } from '../utils/queryUtils';
 
 const listaRutas = [
   {
@@ -84,9 +83,7 @@ export function rutaInicialUsuario(usuario) {
 export const actividadesUsuario = selectorFamily({
   key: 'actividadesUsuario',
   get: (filtro) => async ({ get }) => {
-    const { data } = get(
-      apiIndex(buildPath('usuarios/yo/actividades', filtro))
-    );
+    const { data } = get(apiIndex({ path: 'usuarios/yo/actividades', filtro }));
     return data;
   },
 });

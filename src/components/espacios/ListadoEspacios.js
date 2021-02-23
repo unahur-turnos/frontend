@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@material-ui/core';
 import {
+  Grid,
   IconButton,
   Table,
   TableBody,
@@ -7,7 +8,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Grid,
 } from '@material-ui/core';
 import React, { useState } from 'react';
 
@@ -21,7 +21,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { todosLosEspacios } from '../../state/espacios';
 import { useRecoilValue } from 'recoil';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(({ palette }) => ({
   icon: {
     width: '30px',
     height: '30px',
@@ -30,7 +30,13 @@ const useStyles = makeStyles({
   floatRight: {
     marginLeft: 'auto',
   },
-});
+  activo: {
+    color: palette.success.main,
+  },
+  inactivo: {
+    color: palette.error.main,
+  },
+}));
 
 export default function PantallaEspacios() {
   const classes = useStyles();
@@ -86,9 +92,9 @@ export default function PantallaEspacios() {
                   <TableCell>{espacio.piso}</TableCell>
                   <TableCell>
                     {espacio.habilitado ? (
-                      <FiberManualRecordIcon style={{ color: 'green' }} />
+                      <FiberManualRecordIcon className={classes.activo} />
                     ) : (
-                      <FiberManualRecordIcon style={{ color: 'red' }} />
+                      <FiberManualRecordIcon className={classes.inactivo} />
                     )}
                   </TableCell>
                   <TableCell>{espacio.aforo}</TableCell>
