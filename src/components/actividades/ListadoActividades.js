@@ -12,20 +12,20 @@ import {
   Grid,
   Chip,
 } from '@material-ui/core';
-
+import { PropTypes } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { toString } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { fechaHoraActividad } from '../../utils/dateUtils';
+import clsx from 'clsx';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(({ palette }) => ({
   icon: {
     width: '30px',
     height: '30px',
@@ -34,7 +34,19 @@ const useStyles = makeStyles({
   floatRight: {
     marginLeft: 'auto',
   },
-});
+  error: {
+    backgroundColor: palette.error.main,
+    color: palette.error.contrastText,
+  },
+  warning: {
+    backgroundColor: palette.warning.main,
+    color: palette.warning.contrastText,
+  },
+  succsess: {
+    backgroundColor: palette.success.main,
+    color: palette.success.contrastText,
+  },
+}));
 
 export default function ListadoActividades() {
   const classes = useStyles();
@@ -47,30 +59,6 @@ export default function ListadoActividades() {
   const eliminarActividad = (actividad) => {
     setActividadAEliminar(actividad);
     setAbrirModal(true);
-  };
-
-  const cuposConSuColor = (anotados, cantidadMax) => {
-    const porcentaje = (anotados * 100) / cantidadMax;
-    let background = '';
-    let textColor = '';
-
-    if (porcentaje < 30) {
-      background = '#009673';
-      textColor = 'white';
-    } else if (porcentaje >= 30 && porcentaje <= 80) {
-      background = 'orange';
-      textColor = 'black';
-    } else {
-      background = 'red';
-      textColor = 'white';
-    }
-
-    return (
-      <Chip
-        label={`${anotados} / ${cantidadMax}`}
-        style={{ backgroundColor: background, color: textColor }}
-      />
-    );
   };
 
   return (
@@ -125,10 +113,10 @@ export default function ListadoActividades() {
                     )}
                   </TableCell>
                   <TableCell>
-                    {cuposConSuColor(
-                      actividad.autorizaciones,
-                      actividad.Espacio.aforo
-                    )}
+                    <Cupo
+                      anotados={actividad.autorizaciones}
+                      cantidadMax={actividad.Espacio.aforo}
+                    />
                   </TableCell>
                   <TableCell>
                     <IconButton
@@ -160,3 +148,24 @@ export default function ListadoActividades() {
     </>
   );
 }
+
+function Cupo({ anotados, cantidadMax }) {
+  const porcentaje = (anotados * 100) / cantidadMax;
+  const classes = useStyles();
+
+  return (
+    <Chip
+      label={`${anotados} / ${cantidadMax}`}
+      className={clsx({
+        [classes.error]: porcentaje >= 80,
+        [classes.warning]: porcentaje >= 30 && porcentaje < 80,
+        [classes.succsess]: porcentaje < 30,
+      })}
+    />
+  );
+}
+
+Cupo.propTypes = {
+  anotados: PropTypes.int,
+  cantidadMax: PropTypes.int,
+};
