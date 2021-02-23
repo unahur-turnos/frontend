@@ -15,7 +15,9 @@ import {
 } from '@material-ui/core';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
+
 import { DateTime } from 'luxon';
+import { ERRORES } from '../textos/Textos';
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
 import { dateFormatter } from '../../utils/dateUtils';
@@ -25,7 +27,6 @@ import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { ERRORES } from '../textos/Textos';
 
 export default function AltaActividad(props) {
   const matches = useMediaQuery('(min-width:600px)');
@@ -54,6 +55,7 @@ export default function AltaActividad(props) {
     fechaHoraFin,
     responsable,
     dniResponsable,
+    activa,
     restriccionId,
   } = actividad;
 
@@ -232,9 +234,9 @@ export default function AltaActividad(props) {
             <FormControl>
               <RadioGroup
                 row
-                aria-label="estado"
-                name="estado"
-                defaultValue={'true'}
+                aria-label="activa"
+                name="activa"
+                value={activa.toString()}
                 onChange={handleChange}
               >
                 <FormControlLabel

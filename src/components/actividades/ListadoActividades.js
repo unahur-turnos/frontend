@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Grid,
   IconButton,
   Table,
   TableBody,
@@ -9,7 +10,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Grid,
   Chip,
 } from '@material-ui/core';
 import { PropTypes } from 'prop-types';
@@ -17,6 +17,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { todasLasActividades } from '../../state/actividades';
@@ -33,6 +34,12 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   floatRight: {
     marginLeft: 'auto',
+  },
+  activa: {
+    color: palette.success.main,
+  },
+  inactiva: {
+    color: palette.error.main,
   },
   error: {
     backgroundColor: palette.error.main,
@@ -51,7 +58,7 @@ const useStyles = makeStyles(({ palette }) => ({
 export default function ListadoActividades() {
   const classes = useStyles();
 
-  const actividades = useRecoilValue(todasLasActividades());
+  const actividades = useRecoilValue(todasLasActividades({ inactivas: true }));
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
@@ -89,6 +96,7 @@ export default function ListadoActividades() {
                 <TableCell>Nombre</TableCell>
                 <TableCell>Espacio</TableCell>
                 <TableCell>Responsable</TableCell>
+                <TableCell>Estado</TableCell>
                 <TableCell>Fecha y hora</TableCell>
                 <TableCell>Cupo</TableCell>
                 <TableCell>Acciones</TableCell>
@@ -105,6 +113,13 @@ export default function ListadoActividades() {
                   </TableCell>
                   <TableCell>
                     <Typography>{actividad.responsable}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    {actividad.activa ? (
+                      <FiberManualRecordIcon className={classes.activa} />
+                    ) : (
+                      <FiberManualRecordIcon className={classes.inactiva} />
+                    )}
                   </TableCell>
                   <TableCell>
                     {fechaHoraActividad(

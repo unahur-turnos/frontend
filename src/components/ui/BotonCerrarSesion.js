@@ -1,12 +1,20 @@
-import { Box, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { DefaultValue, useSetRecoilState } from 'recoil';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import {
+  Avatar,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  makeStyles,
+} from '@material-ui/core';
+import { DefaultValue, useRecoilState } from 'recoil';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
+import { take } from 'ramda';
 
 export default function BotonCerrarSesion() {
-  const setUsuario = useSetRecoilState(usuarioState);
+  const [usuario, setUsuario] = useRecoilState(usuarioState);
   const [anchorEl, setAnchorEl] = useState(null);
+  const classes = useStyles();
   const open = Boolean(anchorEl);
 
   const handleMenu = (event) => {
@@ -31,7 +39,10 @@ export default function BotonCerrarSesion() {
         onClick={handleMenu}
         color="inherit"
       >
-        <AccountCircle fontSize="large" />
+        <Avatar fontSize="large" className={classes.backgroundAvatar}>
+          {take(1, usuario.nombre).toUpperCase()}
+          {take(1, usuario.apellido).toUpperCase()}
+        </Avatar>
       </IconButton>
       <Menu
         id="menu-appbar"
@@ -53,3 +64,9 @@ export default function BotonCerrarSesion() {
     </Box>
   );
 }
+
+const useStyles = makeStyles(({ palette }) => ({
+  backgroundAvatar: {
+    backgroundColor: palette.secondary.dark,
+  },
+}));

@@ -1,13 +1,14 @@
-import { selectorFamily } from 'recoil';
-import { getData } from '../utils/fetchApi';
+import { buildPath } from '../utils/queryUtils';
 import { contadorActualizacionesState } from './actualizaciones';
+import { getData } from '../utils/fetchApi';
+import { selectorFamily } from 'recoil';
 import { usuarioState } from './usuario';
 
 export const apiIndex = selectorFamily({
   key: 'apiIndex',
-  get: (path) => ({ get }) => {
+  get: ({ path, filtro }) => ({ get }) => {
     get(contadorActualizacionesState(path));
-    return getData(path, get(usuarioState));
+    return getData(buildPath(path, filtro), get(usuarioState));
   },
 });
 

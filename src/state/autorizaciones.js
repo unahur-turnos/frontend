@@ -1,10 +1,12 @@
 import { apiIndex } from './api';
-import { selectorFamily } from 'recoil';
+import { selector, selectorFamily } from 'recoil';
 
 export const autorizacionesPorActividad = selectorFamily({
   key: 'autorizacionesPorActividad',
   get: (id) => async ({ get }) => {
-    const { data } = get(apiIndex(`actividades/${id}/autorizaciones`));
+    const { data } = get(
+      apiIndex({ path: `actividades/${id}/autorizaciones` })
+    );
     return data;
   },
 });

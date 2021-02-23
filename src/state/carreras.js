@@ -4,7 +4,7 @@ import { selector } from 'recoil';
 export const todasLasCarreras = selector({
   key: 'todasLasCarreras',
   get: async ({ get }) => {
-    const { data } = get(apiIndex('carreras'));
+    const { data } = get(apiIndex({ path: 'carreras' }));
     return data;
   },
 });
