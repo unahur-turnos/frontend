@@ -42,7 +42,7 @@ const useStyles = makeStyles(({ palette }) => ({
     backgroundColor: palette.warning.main,
     color: palette.warning.contrastText,
   },
-  succsess: {
+  success: {
     backgroundColor: palette.success.main,
     color: palette.success.contrastText,
   },
@@ -159,7 +159,7 @@ function Cupo({ anotados, cantidadMax }) {
       className={clsx({
         [classes.error]: porcentaje >= 80,
         [classes.warning]: porcentaje >= 30 && porcentaje < 80,
-        [classes.succsess]: porcentaje < 30,
+        [classes.success]: porcentaje < 30,
       })}
     />
   );
