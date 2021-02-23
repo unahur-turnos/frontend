@@ -28,6 +28,7 @@ import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { ERRORES, AYUDAS } from '../textos/Textos';
+import { find, propEq } from 'ramda';
 
 export default function AltaActividad(props) {
   const { id } = useParams();
@@ -37,6 +38,20 @@ export default function AltaActividad(props) {
   const history = useHistory();
   const { create, update } = useApi('actividades');
 
+  const espacios = useRecoilValue(todosLosEspacios);
+  const carreras = useRecoilValue(todasLasCarreras);
+  const [actividad, setActividad] = useState(actividadDB.data);
+  const {
+    espacioId,
+    nombre,
+    fechaHoraInicio,
+    fechaHoraFin,
+    responsable,
+    telefonoResponsable,
+    restriccionId,
+  } = actividad;
+
+  const carreraSeleccionada = find(propEq('id', restriccionId))(carreras);
   ValidatorForm.addValidationRule(
     'fechaInicioValida',
     (value) => DateTime.fromISO(value) > DateTime.local()
@@ -46,16 +61,6 @@ export default function AltaActividad(props) {
     'fechaFinValida',
     (value) => value > actividad.fechaHoraInicio
   );
-
-  const [actividad, setActividad] = useState(actividadDB.data);
-  const {
-    espacioId,
-    nombre,
-    fechaHoraInicio,
-    fechaHoraFin,
-    responsable,
-    restriccionId,
-  } = actividad;
 
   const handleChange = (e) => {
     setActividad({
@@ -74,9 +79,6 @@ export default function AltaActividad(props) {
     notificarActualizacion();
     history.push('/actividades');
   };
-
-  const espacios = useRecoilValue(todosLosEspacios);
-  const carreras = useRecoilValue(todasLasCarreras);
 
   return (
     <>
@@ -133,8 +135,8 @@ export default function AltaActividad(props) {
                 value={dateFormatter(fechaHoraInicio)}
                 fullWidth
                 onChange={handleChange}
-                validators={['fechaInicioValida']}
-                errorMessages={[ERRORES.fechaInicio]}
+                validators={['required', 'fechaInicioValida']}
+                errorMessages={[ERRORES.requerido, ERRORES.fechaInicio]}
               />
             </Grid>
           </Grid>
@@ -148,8 +150,8 @@ export default function AltaActividad(props) {
                 label="Fecha y hora de cierre"
                 fullWidth
                 onChange={handleChange}
-                validators={['fechaFinValida']}
-                errorMessages={[ERRORES.fechaFin]}
+                validators={['required', 'fechaFinValida']}
+                errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
               />
             </Grid>
           </Grid>
@@ -157,12 +159,27 @@ export default function AltaActividad(props) {
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4}>
               <TextValidator
-                label="Ingresá información del responsable"
+                label="Responsable"
                 fullWidth
                 name="responsable"
                 value={responsable}
                 validators={['required']}
-                errorMessages={[ERRORES.responsable]}
+                errorMessages={[ERRORES.requerido]}
+                onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                label="Teléfono de contacto responsable"
+                fullWidth
+                type="number"
+                name="telefonoResponsable"
+                value={telefonoResponsable}
+                validators={['minNumber:100000']}
+                errorMessages={[ERRORES.telefono]}
                 onChange={handleChange}
               />
             </Grid>
@@ -202,25 +219,25 @@ export default function AltaActividad(props) {
               </FormControl>
             </Grid>
           </Grid>
-
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4}>
               <Autocomplete
                 fullWidth
                 options={carreras}
+                inputValue={carreraSeleccionada?.nombre}
                 getOptionLabel={(carrera) => carrera.nombre}
                 noOptionsText="No hay carreras que coincidan con la búsqueda"
-                value={restriccionId}
                 onChange={(event, carrera) => {
                   setActividad({
                     ...actividad,
-                    restriccionId: carrera.id,
+                    restriccionId: carrera?.id,
                   });
                 }}
                 renderInput={(params) => (
                   <TextValidator
                     {...params}
                     validators={['required']}
+                    value={carreraSeleccionada?.nombre}
                     errorMessages={[ERRORES.requerido]}
                     label="Buscá a qué carrera está destinada"
                     helperText={AYUDAS.selectorCarreras}
