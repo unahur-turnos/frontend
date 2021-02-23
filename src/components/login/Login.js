@@ -17,9 +17,11 @@ import { useSetRecoilState } from 'recoil';
 import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { ERRORES } from '../textos/Textos';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
 export default function Login() {
   const matches = useMediaQuery('(min-width:600px)');
+  const inputClasses = useInputStyles();
   const history = useHistory();
   const { create } = useApi('usuarios/login');
 
@@ -95,7 +97,7 @@ export default function Login() {
             value={valoresUsuario.dni}
             validators={['required', 'minNumber:1000000', 'maxNumber:99999999']}
             errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
-            style={{ minWidth: 250 }}
+            className={inputClasses.numberFieldWithoutArrows}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">
@@ -117,7 +119,6 @@ export default function Login() {
             name="contrasenia"
             type={showPassword ? 'text' : 'password'}
             onChange={handleChange}
-            style={{ maxWidth: 250 }}
             value={valoresUsuario.contrasenia}
             validators={['required']}
             errorMessages={[ERRORES.requerido]}

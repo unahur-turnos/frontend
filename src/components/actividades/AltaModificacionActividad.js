@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   Grid,
   InputLabel,
+  makeStyles,
   MenuItem,
   Radio,
   RadioGroup,
@@ -27,9 +28,11 @@ import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
 export default function AltaActividad(props) {
   const matches = useMediaQuery('(min-width:600px)');
+  const inputClasses = useInputStyles();
   const { id } = useParams();
   const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
@@ -188,7 +191,9 @@ export default function AltaActividad(props) {
             <TextField
               label="Ingresá el DNI del responsable"
               style={{ minWidth: 250 }}
+              type="number"
               name="dniResponsable"
+              className={inputClasses.numberFieldWithoutArrows}
               value={dniResponsable}
               onChange={handleChange}
             />
