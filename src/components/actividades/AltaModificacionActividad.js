@@ -301,15 +301,3 @@ export default function AltaActividad(props) {
 AltaActividad.propTypes = {
   titulo: PropTypes.string,
 };
-
-const useStyles = makeStyles(() => ({
-  loading: {
-    marginRight: '10px',
-  },
-  numberTextField: {
-    minWidth: 250,
-    '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-      display: 'none',
-    },
-  },
-}));
