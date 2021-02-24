@@ -118,28 +118,30 @@ export default function Actividad() {
       </Grid>
       {getComponenteDelPaso(numeroPaso)}
 
-      <Grid align="center" className={classes.marginBotonYTexto}>
-        <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
-          Volver
-        </Button>
-        {numeroPaso === 2 ? (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={guardarInscripcion}
-          >
-            Guardar
+      <Grid container spacing={10}>
+        <Grid item xs={12} align="center" spacing={4}>
+          <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
+            Volver
           </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={siguientePaso}
-            disabled={informacionSeleccionada.actividad ? false : true}
-          >
-            Siguiente
-          </Button>
-        )}
+          {numeroPaso === 2 ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={guardarInscripcion}
+            >
+              Guardar
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={siguientePaso}
+              disabled={informacionSeleccionada.actividad ? false : true}
+            >
+              Siguiente
+            </Button>
+          )}
+        </Grid>
       </Grid>
     </>
   );

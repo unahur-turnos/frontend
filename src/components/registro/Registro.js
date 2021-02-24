@@ -89,7 +89,7 @@ export default function Registro() {
           </Typography>
         </Grid>
 
-        <Grid container spacing={4} xs={12} align="center">
+        <Grid container spacing={4} align="center">
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
               <TextValidator

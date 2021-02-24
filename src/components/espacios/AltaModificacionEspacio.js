@@ -5,13 +5,12 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
-  makeStyles,
   MenuItem,
   Radio,
   RadioGroup,
   Typography,
 } from '@material-ui/core';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useApi } from '../../utils/fetchApi';
 import PropTypes from 'prop-types';
 import { espacioPorId } from '../../state/espacios';
@@ -25,16 +24,17 @@ import {
   SelectValidator,
 } from 'react-material-ui-form-validator';
 import { ERRORES } from '../textos/Textos';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
 export default function Espacio(props) {
   const { id } = useParams();
+  const inputClasses = useInputStyles();
   const { titulo } = props;
   const espacioDB = useRecoilValue(espacioPorId(id)).data;
   const edificiosDB = useRecoilValue(todosLosEdificios);
   const history = useHistory();
   const notificarActualizacion = useNotificarActualizacion('espacios');
   const { create, update } = useApi('espacios');
-  const classes = useStyles();
   const [espacio, setEspacio] = useState(espacioDB);
 
   const handleChange = (e) => {
@@ -80,7 +80,6 @@ export default function Espacio(props) {
                 errorMessages={[ERRORES.requerido]}
                 fullWidth
                 onChange={handleChange}
-                defaultValue={espacio.nombre}
               />
             </Grid>
           </Grid>
@@ -95,7 +94,6 @@ export default function Espacio(props) {
                 validators={['required']}
                 align="left"
                 errorMessages={[ERRORES.requerido]}
-                defaultValue={espacio.edificioId}
                 name="edificioId"
                 onChange={handleChange}
               >
@@ -117,7 +115,6 @@ export default function Espacio(props) {
                 id="inputIDPiso"
                 validators={['required']}
                 errorMessages={[ERRORES.requerido]}
-                defaultValue={espacio.piso}
                 value={espacio.piso}
                 name="piso"
                 onChange={handleChange}
@@ -137,10 +134,9 @@ export default function Espacio(props) {
                 label="Ingresá el aforo"
                 fullWidth
                 value={espacio.aforo}
-                defaultValue={espacio.aforo}
                 name="aforo"
                 type="number"
-                className={`${classes.numberTextField}`}
+                className={inputClasses.numberFieldWithoutArrows}
                 onChange={handleChange}
                 validators={['required']}
                 errorMessages={[ERRORES.requerido]}
@@ -197,11 +193,3 @@ export default function Espacio(props) {
 Espacio.propTypes = {
   titulo: PropTypes.string,
 };
-
-const useStyles = makeStyles(() => ({
-  numberTextField: {
-    '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-      display: 'none',
-    },
-  },
-}));

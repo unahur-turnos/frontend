@@ -240,9 +240,7 @@ export default function AltaActividad(props) {
                 renderInput={(params) => (
                   <TextValidator
                     {...params}
-                    validators={['required']}
                     value={carreraSeleccionada?.nombre}
-                    errorMessages={[ERRORES.requerido]}
                     label="Buscá a qué carrera está destinada"
                     helperText={AYUDAS.selectorCarreras}
                   />
