@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 const defaultProps = {
   m: 2,
   border: 1,
-  style: { width: '40rem', height: '9rem' },
+  style: { width: '30rem' },
 };
 
 const useStyles = makeStyles(({ palette }) => ({
@@ -45,13 +45,15 @@ export default function FinalDDJJ() {
                 style={{ color: 'white' }}
               />
             </Grid>
-            <Typography
-              align="center"
-              variant="h6"
-              className={classes.colorTexto}
-            >
-              Tu solicitud se registró con éxito.
-            </Typography>
+            <Grid item xs={12} mb={matches ? 2 : 1}>
+              <Typography
+                align="center"
+                variant="h6"
+                className={classes.colorTexto}
+              >
+                Tu solicitud se registró con éxito.
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
 
@@ -60,22 +62,12 @@ export default function FinalDDJJ() {
             <Grid items xs={12} align="center" mt={matches ? 2 : 1}>
               <WarningIcon fontSize="large" align="center"></WarningIcon>
             </Grid>
-            <Typography align="center" variant="h6">
-              Recordá ingresar al establecimiento con cubrebocas y respetar el
-              distanciamiento social.
-            </Typography>
-          </Grid>
-        </Grid>
-
-        <Grid display="flex" justifyContent="center">
-          <Grid className={classes.gridRedondeado} {...defaultProps}>
-            <Grid items xs={12} align="center" mt={matches ? 2 : 1}>
-              <PeopleIcon fontSize="large"></PeopleIcon>
+            <Grid item xs={12} mb={matches ? 2 : 1}>
+              <Typography align="center" variant="h6">
+                Recordá ingresar al establecimiento con cubrebocas y respetar el
+                distanciamiento social.
+              </Typography>
             </Grid>
-            <Typography align="center" variant="h6">
-              Llevá registro de las personas con las que estarás los próximos 3
-              días.
-            </Typography>
           </Grid>
         </Grid>
 

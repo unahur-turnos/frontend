@@ -53,7 +53,7 @@ export default function AltaActividad(props) {
     restriccionId,
   } = actividad;
 
-  const carreraSeleccionada = find(propEq('id', restriccionId))(carreras);
+  const carreraSeleccionada = find(propEq('id', restriccionId), carreras);
   ValidatorForm.addValidationRule(
     'fechaInicioValida',
     (value) => DateTime.fromISO(value) > DateTime.local()
@@ -165,7 +165,7 @@ export default function AltaActividad(props) {
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4}>
               <TextValidator
-                label="Responsable"
+                label="Persona responsable"
                 fullWidth
                 name="responsable"
                 value={responsable || ''}
@@ -185,9 +185,33 @@ export default function AltaActividad(props) {
                 className={inputClasses.numberFieldWithoutArrows}
                 name="telefonoDeContactoResponsable"
                 value={telefonoDeContactoResponsable || ''}
-                validators={['minNumber:100000']}
-                errorMessages={[ERRORES.telefono]}
                 onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <Autocomplete
+                fullWidth
+                options={carreras}
+                inputValue={carreraSeleccionada?.nombre}
+                getOptionLabel={(carrera) => carrera.nombre}
+                noOptionsText="No hay carreras que coincidan con la búsqueda"
+                onChange={(event, carrera) => {
+                  setActividad({
+                    ...actividad,
+                    restriccionId: carrera?.id,
+                  });
+                }}
+                renderInput={(params) => (
+                  <TextValidator
+                    {...params}
+                    value={carreraSeleccionada?.nombre}
+                    label="Buscá a qué carrera está destinada"
+                    helperText={AYUDAS.selectorCarreras}
+                  />
+                )}
               />
             </Grid>
           </Grid>
@@ -222,31 +246,6 @@ export default function AltaActividad(props) {
                 />
               </RadioGroup>
             </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid item xs={12} sm={7} md={4}>
-              <Autocomplete
-                fullWidth
-                options={carreras}
-                inputValue={carreraSeleccionada?.nombre}
-                getOptionLabel={(carrera) => carrera.nombre}
-                noOptionsText="No hay carreras que coincidan con la búsqueda"
-                onChange={(event, carrera) => {
-                  setActividad({
-                    ...actividad,
-                    restriccionId: carrera?.id,
-                  });
-                }}
-                renderInput={(params) => (
-                  <TextValidator
-                    {...params}
-                    value={carreraSeleccionada?.nombre}
-                    label="Buscá a qué carrera está destinada"
-                    helperText={AYUDAS.selectorCarreras}
-                  />
-                )}
-              />
-            </Grid>
           </Grid>
         </Grid>
         <Grid container spacing={1} style={{ marginTop: 20 }}>

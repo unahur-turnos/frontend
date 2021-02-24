@@ -81,11 +81,31 @@ export default function MisActividades() {
 
         <Grid container spacing={2}>
           {autorizacionesFuturas().map((autorizacion) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} key={autorizacion.id}>
-                <TarjetaTurno autorizacion={autorizacion} mostrarBoton={true} />
-              </Grid>
-            );
+            {
+              return !matches ? (
+                <Grid item xs={11} sm={6} md={4} key={autorizacion.id}>
+                  <TarjetaTurno
+                    autorizacion={autorizacion}
+                    mostrarBoton={true}
+                  />
+                </Grid>
+              ) : (
+                <Grid
+                  container
+                  component={Box}
+                  display="flex"
+                  justifyContent="center"
+                  margin={1}
+                >
+                  <Grid item xs={11}>
+                    <TarjetaTurno
+                      autorizacion={autorizacion}
+                      mostrarBoton={true}
+                    />
+                  </Grid>
+                </Grid>
+              );
+            }
           })}
           {autorizacionesFuturas().length === 0 && (
             <Grid item className={classes.root}>

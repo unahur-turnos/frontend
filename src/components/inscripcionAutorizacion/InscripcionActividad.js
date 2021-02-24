@@ -11,12 +11,12 @@ import {
 import Paso1DDJJ from './Paso1DDJJ';
 import Paso2DDJJ from './Paso2DDJJ';
 import Paso3DDJJ from './Paso3DDJJ';
-import { makeStyles } from '@material-ui/core/styles';
 import { useApi } from '../../utils/fetchApi';
 import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
+import { useNotificarActualizacion } from '../../state/actualizaciones';
 
 const pasos = [
   'Seleccioná la actividad',
@@ -26,12 +26,13 @@ const pasos = [
 
 export default function Actividad() {
   const history = useHistory();
-  const classes = useStyles();
   const { create } = useApi('autorizaciones');
   const usuario = useRecoilValue(usuarioState);
 
   const [numeroPaso, setNumeroPaso] = useState(0);
-
+  const notificarActualizacion = useNotificarActualizacion(
+    'usuarios/yo/autorizaciones'
+  );
   const [informacionSeleccionada, setInformacionSeleccionada] = useState(
     ESTADOINICIAL
   );
@@ -87,7 +88,7 @@ export default function Actividad() {
       medioDeTransporte: informacionSeleccionada.medioDeTransporte,
       usuarioId: usuario.id,
     });
-
+    notificarActualizacion();
     history.push('/autorizaciones/confirmacion');
   };
 
@@ -146,12 +147,6 @@ export default function Actividad() {
     </>
   );
 }
-
-const useStyles = makeStyles({
-  marginBotonYTexto: {
-    marginTop: '50px',
-  },
-});
 
 const ESTADOINICIAL = {
   medioDeTransporte: 'Movilidad propia',

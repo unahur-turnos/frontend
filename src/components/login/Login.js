@@ -107,7 +107,7 @@ export default function Login() {
           <Grid item xs={9} sm={7} md={4}>
             <TextValidator
               id="contrasenia"
-              label="Ingresá una contraseña"
+              label="Ingresá tu contraseña"
               name="contrasenia"
               type={showPassword ? 'text' : 'password'}
               onChange={handleChange}

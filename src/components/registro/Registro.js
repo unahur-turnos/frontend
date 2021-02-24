@@ -94,7 +94,7 @@ export default function Registro() {
             <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
               <TextValidator
                 id="nombreUsuario"
-                label="Ingresá tu nombre/s"
+                label="Ingresá tu/s nombre/s"
                 name="nombre"
                 value={informacionDelUsuario.nombre}
                 fullWidth
@@ -116,7 +116,7 @@ export default function Registro() {
             <Grid item xs={12} sm={7} md={4}>
               <TextValidator
                 id="apellidoUsuario"
-                label="Ingresá tu apellido/s"
+                label="Ingresá tu/s apellido/s"
                 name="apellido"
                 onChange={handleChange}
                 fullWidth
@@ -236,7 +236,7 @@ export default function Registro() {
             <Grid item xs={12} sm={7} md={4}>
               <TextValidator
                 id="confirmarContraseña"
-                label="Confirme la contraseña"
+                label="Repetí tu contraseña"
                 name="confirmarContraseña"
                 type="password"
                 fullWidth
