@@ -5,6 +5,7 @@ import {
   InputAdornment,
   Typography,
   useMediaQuery,
+  makeStyles,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
@@ -19,7 +20,14 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { ERRORES } from '../textos/Textos';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
+const useStyles = makeStyles(() => ({
+  footer: {
+    marginTop: '12px',
+  },
+}));
+
 export default function Login() {
+  const classes = useStyles();
   const matches = useMediaQuery('(min-width:600px)');
   const inputClasses = useInputStyles();
   const history = useHistory();
@@ -164,6 +172,13 @@ export default function Login() {
             </Button>
           </Grid>
         </Grid>
+      </Grid>
+      <Grid item xs={12} align="center">
+        <Link to="/recuperar">
+          <Typography className={classes.footer}>
+            ¿Olvidaste tu contraseña?
+          </Typography>
+        </Link>
       </Grid>
     </ValidatorForm>
   );

@@ -8,6 +8,7 @@ import AltaModificacionActividad from './components/actividades/AltaModificacion
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import { Box, Container, makeStyles } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
+import RecuperarContrasenia from './components/login/RecuperarContrasenia';
 import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
 import Header from './components/ui/Header';
 import InscripcionActividad from './components/inscripcionAutorizacion/InscripcionActividad';
@@ -35,6 +36,10 @@ function Rutas() {
     <Switch>
       <Route path="/login">
         <Login />
+      </Route>
+
+      <Route path="/recuperar">
+        <RecuperarContrasenia />
       </Route>
 
       <Route path="/registro">
