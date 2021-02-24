@@ -52,6 +52,10 @@ export default function Espacio(props) {
     }
 
     notificarActualizacion();
+    irListaEspacios();
+  };
+
+  const irListaEspacios = () => {
     history.push('/espacios');
   };
 
@@ -64,7 +68,7 @@ export default function Espacio(props) {
           </Typography>
         </Grid>
 
-        <Grid container spacing={4} xs={12} align="center">
+        <Grid container spacing={4} align="center">
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
               <TextValidator
@@ -85,7 +89,6 @@ export default function Espacio(props) {
             <Grid item xs={12} sm={7} md={4}>
               <SelectValidator
                 fullWidth
-                labelId="labelIdEdificio"
                 label="Elegí un edificio"
                 id="selectIDEdificio"
                 value={espacio.edificioId}
@@ -111,7 +114,6 @@ export default function Espacio(props) {
                 fullWidth
                 align="left"
                 label="Elegí un piso"
-                labelId="labelIdPiso"
                 id="inputIDPiso"
                 validators={['required']}
                 errorMessages={[ERRORES.requerido]}
@@ -145,47 +147,41 @@ export default function Espacio(props) {
               />
             </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Grid
-              component={Box}
-              display="flex"
-              item
-              xs={12}
-              sm={7}
-              md={4}
-              alignItems="center"
-            >
-              <FormLabel component="legend">Estado:</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-label="estado"
-                  name="habilitado"
-                  value={espacio.habilitado.toString()}
-                  onChange={handleChange}
-                  style={{ marginLeft: 20 }}
-                >
-                  <FormControlLabel
-                    value={'true'}
-                    control={<Radio color="primary" />}
-                    label="Activo"
-                  />
-                  <FormControlLabel
-                    value={'false'}
-                    control={<Radio color="primary" />}
-                    label="Inactivo"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
+          <Grid
+            container
+            component={Box}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <FormLabel component="legend">Estado:</FormLabel>
+            <FormControl>
+              <RadioGroup
+                row
+                aria-label="estado"
+                name="habilitado"
+                value={espacio.habilitado.toString()}
+                onChange={handleChange}
+                style={{ marginLeft: 20 }}
+              >
+                <FormControlLabel
+                  value={'true'}
+                  control={<Radio color="primary" />}
+                  label="Activo"
+                />
+                <FormControlLabel
+                  value={'false'}
+                  control={<Radio color="primary" />}
+                  label="Inactivo"
+                />
+              </RadioGroup>
+            </FormControl>
           </Grid>
         </Grid>
 
         <Grid container spacing={1} style={{ marginTop: 20 }}>
           <Grid item xs={6} align="right">
-            <Button component={Link} to="/espacios">
-              Cancelar
-            </Button>
+            <Button onClick={irListaEspacios}>Cancelar</Button>
           </Grid>
           <Grid item xs={6}>
             <Button variant="contained" color="primary" type="submit">

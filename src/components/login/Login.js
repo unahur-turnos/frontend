@@ -75,16 +75,17 @@ export default function Login() {
         </Typography>
       </Box>
 
-      <Grid container spacing={4} xs={12} align="center">
+      <Grid container spacing={4} align="center">
         <Grid item xs={12}>
-          <Grid item xs={11} sm={7} md={4} style={{ marginTop: 20 }}>
+          <Grid item xs={9} sm={7} md={4} style={{ marginTop: 20 }}>
             <TextValidator
               id="dni"
               label="Ingresá tu documento"
               onChange={handleChange}
               name="dni"
-              fullWidth
               type="number"
+              className={inputClasses.numberFieldWithoutArrows}
+              fullWidth
               value={valoresUsuario.dni}
               validators={[
                 'required',
@@ -92,7 +93,6 @@ export default function Login() {
                 'maxNumber:99999999',
               ]}
               errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
-              style={{ minWidth: 250 }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
@@ -104,7 +104,7 @@ export default function Login() {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Grid item xs={11} sm={7} md={4}>
+          <Grid item xs={9} sm={7} md={4}>
             <TextValidator
               id="contrasenia"
               label="Ingresá una contraseña"
@@ -153,12 +153,7 @@ export default function Login() {
           </Button>
         </Grid>
         <Grid item xs={6}>
-          <Button
-            variant="contained"
-            color="inherit"
-            component={Link}
-            onClick={irARegistro}
-          >
+          <Button variant="contained" color="inherit" onClick={irARegistro}>
             Registrarse
           </Button>
         </Grid>

@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     borderColor: theme.palette.primary.main,
   },
   table: {
-    maxWidth: '50%',
+    maxWidth: '100%',
   },
   tableCell: {
     width: '33%',
@@ -63,7 +63,7 @@ export default function ControlAcceso() {
 
   return (
     <Grid container className={classes.container} spacing={4}>
-      <Grid item md={12} align="center">
+      <Grid item xs={12} align="center">
         <Typography variant="h4" color="primary">
           Control de acceso
         </Typography>
@@ -83,7 +83,7 @@ export default function ControlAcceso() {
           )}
         </Grid>
       </Grid>
-      <Grid item md={12} align="center">
+      <Grid item xs={12} align="center">
         {actividadSeleccionada && (
           <ListadoAutorizaciones idActividad={actividadSeleccionada.id} />
         )}
@@ -151,53 +151,55 @@ function ListadoAutorizaciones({ idActividad }) {
           />
         </FormGroup>
       </Box>
-      <TableContainer>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell className={classes.tableCell} align="center">
-                Asistente
-              </TableCell>
-              <TableCell className={classes.tableCell} align="center">
-                DNI
-              </TableCell>
-              <TableCell className={classes.tableCell} align="center">
-                Ingreso
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {autorizacionesFiltradas.map((autorizacion) => {
-              return (
-                <TableRow key={autorizacion.id}>
-                  <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
-                  <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
-                  <TableCell align="center">
-                    {!autorizacion.fechaHoraIngreso ? (
-                      <Button
-                        color="primary"
-                        onClick={() => confirmarRegistro(autorizacion)}
-                      >
-                        Registrar
-                      </Button>
-                    ) : (
-                      <Typography>
-                        {hourFormatter(autorizacion.fechaHoraIngreso)}
-                      </Typography>
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-        <ConfirmarEntrada
-          abrirModal={abrirModal}
-          setAbrirModal={setAbrirModal}
-          autorizacionARegistrar={autorizacionARegistrar}
-          idActividad={idActividad}
-        />
-      </TableContainer>
+      <Grid item xs={12} sm={9} md={7}>
+        <TableContainer>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell className={classes.tableCell} align="center">
+                  Asistente
+                </TableCell>
+                <TableCell className={classes.tableCell} align="center">
+                  DNI
+                </TableCell>
+                <TableCell className={classes.tableCell} align="center">
+                  Ingreso
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {autorizacionesFiltradas.map((autorizacion) => {
+                return (
+                  <TableRow key={autorizacion.id}>
+                    <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
+                    <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
+                    <TableCell align="center">
+                      {!autorizacion.fechaHoraIngreso ? (
+                        <Button
+                          color="primary"
+                          onClick={() => confirmarRegistro(autorizacion)}
+                        >
+                          Registrar
+                        </Button>
+                      ) : (
+                        <Typography>
+                          {hourFormatter(autorizacion.fechaHoraIngreso)}
+                        </Typography>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+          <ConfirmarEntrada
+            abrirModal={abrirModal}
+            setAbrirModal={setAbrirModal}
+            autorizacionARegistrar={autorizacionARegistrar}
+            idActividad={idActividad}
+          />
+        </TableContainer>
+      </Grid>
     </>
   );
 }

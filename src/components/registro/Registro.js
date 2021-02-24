@@ -60,6 +60,10 @@ export default function Registro() {
     });
   };
 
+  const volverAlLogin = () => {
+    history.push('/login');
+  };
+
   const validarRegistro = async () => {
     setIconoCargando(true);
     setTengoErrorEn({ ...tengoErrorEn, global: false });
@@ -96,7 +100,7 @@ export default function Registro() {
                 fullWidth
                 onChange={handleChange}
                 validators={['required']}
-                errorMessages={[ERRORES.requerido, ERRORES.nombre]}
+                errorMessages={[ERRORES.requerido]}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -118,7 +122,7 @@ export default function Registro() {
                 fullWidth
                 value={informacionDelUsuario.apellido}
                 validators={['required']}
-                errorMessages={[ERRORES.requerido, ERRORES.apellido]}
+                errorMessages={[ERRORES.requerido]}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -136,6 +140,8 @@ export default function Registro() {
                 id="dniUsuario"
                 label="Ingresá tu DNI"
                 name="dni"
+                type="number"
+                className={inputClasses.numberFieldWithoutArrows}
                 fullWidth
                 onChange={handleChange}
                 value={informacionDelUsuario.dni}
@@ -184,11 +190,13 @@ export default function Registro() {
                 id="telefono"
                 label="Número de celular"
                 name="telefono"
+                type="number"
+                className={inputClasses.numberFieldWithoutArrows}
                 onChange={handleChange}
                 fullWidth
                 value={informacionDelUsuario.telefono}
                 validators={['required']}
-                errorMessages={[ERRORES.requerido, ERRORES.telefono]}
+                errorMessages={[ERRORES.requerido]}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -256,11 +264,9 @@ export default function Registro() {
             </Grid>
           )}
         </Grid>
-        <Grid container item xs={12} spacing={1} style={{ marginTop: 20 }}>
+        <Grid container spacing={1} style={{ marginTop: 20 }}>
           <Grid item xs={6} align="right">
-            <Button component={Link} to="/">
-              Cancelar
-            </Button>
+            <Button onClick={volverAlLogin}>Cancelar</Button>
           </Grid>
           <Grid item xs={6}>
             <Button
