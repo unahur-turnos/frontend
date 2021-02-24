@@ -20,6 +20,7 @@ import {
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
+import { ERRORES, AYUDAS } from '../textos/Textos';
 import { dateFormatter } from '../../utils/dateUtils';
 import { todasLasCarreras } from '../../state/carreras';
 import { todosLosEspacios } from '../../state/espacios';
@@ -27,10 +28,11 @@ import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { ERRORES, AYUDAS } from '../textos/Textos';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 import { find, propEq } from 'ramda';
 
 export default function AltaActividad(props) {
+  const inputClasses = useInputStyles();
   const { id } = useParams();
   const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
@@ -149,6 +151,7 @@ export default function AltaActividad(props) {
                 value={dateFormatter(fechaHoraFin)}
                 label="Fecha y hora de cierre"
                 fullWidth
+                className={inputClasses.numberFieldWithoutArrows}
                 onChange={handleChange}
                 validators={['required', 'fechaFinValida']}
                 errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}

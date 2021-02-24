@@ -19,8 +19,10 @@ import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
 import { ERRORES } from '../textos/Textos';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
 export default function Registro() {
+  const inputClasses = useInputStyles();
   const history = useHistory();
   const classes = useStyles();
   const { create } = useApi('usuarios/registro');

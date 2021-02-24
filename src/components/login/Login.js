@@ -16,8 +16,10 @@ import { useSetRecoilState } from 'recoil';
 import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { ERRORES } from '../textos/Textos';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
 export default function Login() {
+  const inputClasses = useInputStyles();
   const history = useHistory();
   const { create } = useApi('usuarios/login');
 
