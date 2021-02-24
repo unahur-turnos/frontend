@@ -62,7 +62,7 @@ export const tieneRolState = selectorFamily({
 export const autorizacionesUsuarioState = selector({
   key: 'autorizacionesUsuario',
   get: async ({ get }) => {
-    const { data } = get(apiIndex('usuarios/yo/autorizaciones'));
+    const { data } = get(apiIndex({ path: 'usuarios/yo/autorizaciones' }));
     return data;
   },
 });
