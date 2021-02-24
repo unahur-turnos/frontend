@@ -20,9 +20,9 @@ import {
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
-import { ERRORES, AYUDAS } from '../textos/Textos';
 import { dateFormatter } from '../../utils/dateUtils';
 import { todasLasCarreras } from '../../state/carreras';
+import { ERRORES, AYUDAS } from '../textos/Textos';
 import { todosLosEspacios } from '../../state/espacios';
 import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
@@ -49,7 +49,7 @@ export default function AltaActividad(props) {
     fechaHoraInicio,
     fechaHoraFin,
     responsable,
-    telefonoResponsable,
+    telefonoDeContactoResponsable,
     restriccionId,
   } = actividad;
 
@@ -79,6 +79,10 @@ export default function AltaActividad(props) {
     }
 
     notificarActualizacion();
+    irListaActividades();
+  };
+
+  const irListaActividades = () => {
     history.push('/actividades');
   };
 
@@ -91,14 +95,14 @@ export default function AltaActividad(props) {
           </Typography>
         </Grid>
 
-        <Grid container spacing={4} xs={12} align="center">
+        <Grid container spacing={4} align="center">
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
               <TextValidator
                 label="Ingresá el nombre"
                 fullWidth
                 name="nombre"
-                value={nombre}
+                value={nombre || ''}
                 onChange={handleChange}
                 validators={['required']}
                 errorMessages={[ERRORES.requerido]}
@@ -111,16 +115,15 @@ export default function AltaActividad(props) {
               <SelectValidator
                 fullWidth
                 label="Elegí un espacio"
-                labelId="labelEspacios"
                 name="espacioId"
-                value={espacioId}
+                value={espacioId || ''}
                 onChange={handleChange}
                 validators={['required']}
                 errorMessages={[ERRORES.requerido]}
                 align="left"
               >
-                {espacios.map((espacio) => (
-                  <MenuItem value={espacio.id} key={espacio.id}>
+                {espacios.map((espacio, id) => (
+                  <MenuItem value={espacio.id} key={id}>
                     {espacio.nombre}
                   </MenuItem>
                 ))}
@@ -134,7 +137,7 @@ export default function AltaActividad(props) {
                 type="datetime-local"
                 name="fechaHoraInicio"
                 label="Fecha y hora de inicio"
-                value={dateFormatter(fechaHoraInicio)}
+                value={dateFormatter(fechaHoraInicio) || ''}
                 fullWidth
                 onChange={handleChange}
                 validators={['required', 'fechaInicioValida']}
@@ -148,7 +151,7 @@ export default function AltaActividad(props) {
               <TextValidator
                 type="datetime-local"
                 name="fechaHoraFin"
-                value={dateFormatter(fechaHoraFin)}
+                value={dateFormatter(fechaHoraFin) || ''}
                 label="Fecha y hora de cierre"
                 fullWidth
                 className={inputClasses.numberFieldWithoutArrows}
@@ -165,7 +168,7 @@ export default function AltaActividad(props) {
                 label="Responsable"
                 fullWidth
                 name="responsable"
-                value={responsable}
+                value={responsable || ''}
                 validators={['required']}
                 errorMessages={[ERRORES.requerido]}
                 onChange={handleChange}
@@ -179,8 +182,9 @@ export default function AltaActividad(props) {
                 label="Teléfono de contacto responsable"
                 fullWidth
                 type="number"
-                name="telefonoResponsable"
-                value={telefonoResponsable}
+                className={inputClasses.numberFieldWithoutArrows}
+                name="telefonoDeContactoResponsable"
+                value={telefonoDeContactoResponsable || ''}
                 validators={['minNumber:100000']}
                 errorMessages={[ERRORES.telefono]}
                 onChange={handleChange}
@@ -188,39 +192,36 @@ export default function AltaActividad(props) {
             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
-            <Grid
-              component={Box}
-              display="flex"
-              item
-              xs={12}
-              sm={7}
-              md={4}
-              alignItems="center"
-            >
-              <FormLabel component="legend">Estado:</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-label="estado"
-                  name="estado"
-                  defaultValue={'true'}
-                  onChange={handleChange}
-                  style={{ marginLeft: 20 }}
-                >
-                  <FormControlLabel
-                    value={'true'}
-                    control={<Radio color="primary" />}
-                    label="Activo"
-                  />
-                  <FormControlLabel
-                    value={'false'}
-                    control={<Radio color="primary" />}
-                    label="Inactivo"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
+          <Grid
+            container
+            component={Box}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={3}
+          >
+            <FormLabel component="legend">Estado:</FormLabel>
+            <FormControl>
+              <RadioGroup
+                row
+                aria-label="estado"
+                name="estado"
+                defaultValue={'true'}
+                onChange={handleChange}
+                style={{ marginLeft: 20 }}
+              >
+                <FormControlLabel
+                  value={'true'}
+                  control={<Radio color="primary" />}
+                  label="Activo"
+                />
+                <FormControlLabel
+                  value={'false'}
+                  control={<Radio color="primary" />}
+                  label="Inactivo"
+                />
+              </RadioGroup>
+            </FormControl>
           </Grid>
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4}>
@@ -250,11 +251,9 @@ export default function AltaActividad(props) {
             </Grid>
           </Grid>
         </Grid>
-        <Grid container item xs={12} spacing={1} style={{ marginTop: 20 }}>
+        <Grid container spacing={1} style={{ marginTop: 20 }}>
           <Grid item xs={6} align="right">
-            <Button component={Link} to="/actividades">
-              Cancelar
-            </Button>
+            <Button onClick={irListaActividades}>Cancelar</Button>
           </Grid>
           <Grid item xs={6}>
             <Button variant="contained" color="primary" type="submit">

@@ -181,15 +181,15 @@ export default function Espacio(props) {
           </Grid>
         </Grid>
 
-        <Grid container item xs={12} spacing={1} style={{ marginTop: 20 }}>
+        <Grid container spacing={1} style={{ marginTop: 20 }}>
           <Grid item xs={6} align="right">
-            <Button variant="contained" color="primary" type="submit">
-              Guardar
+            <Button component={Link} to="/espacios">
+              Cancelar
             </Button>
           </Grid>
           <Grid item xs={6}>
-            <Button component={Link} to="/espacios">
-              Cancelar
+            <Button variant="contained" color="primary" type="submit">
+              Guardar
             </Button>
           </Grid>
         </Grid>
