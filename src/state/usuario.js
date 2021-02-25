@@ -29,7 +29,7 @@ const listaRutas = [
   },
   {
     nombre: 'Autorización',
-    ruta: '/autorizaciones/nueva',
+    ruta: '/turnos/nueva',
     rolesPermitidos: ['asistente'],
     icono: <ListAltIcon />,
   },
@@ -59,10 +59,10 @@ export const tieneRolState = selectorFamily({
   },
 });
 
-export const autorizacionesUsuarioState = selector({
-  key: 'autorizacionesUsuario',
+export const turnosUsuarioState = selector({
+  key: 'turnosUsuario',
   get: async ({ get }) => {
-    const { data } = get(apiIndex({ path: 'usuarios/yo/autorizaciones' }));
+    const { data } = get(apiIndex({ path: 'usuarios/yo/turnos' }));
     return data;
   },
 });

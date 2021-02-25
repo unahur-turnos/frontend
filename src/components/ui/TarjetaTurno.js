@@ -13,11 +13,11 @@ import ConfirmarEliminacion from './ConfirmarEliminacion';
 import { useState } from 'react';
 
 export default function TarjetaTurno(props) {
-  const { autorizacion, mostrarBoton } = props;
+  const { turno, mostrarBoton } = props;
   const [abrirModal, setAbrirModal] = useState(false);
   const [entidad, setEntidad] = useState('');
 
-  const autorizacionAEliminar = (entidad) => {
+  const turnoAEliminar = (entidad) => {
     setEntidad({
       id: entidad.id,
       nombre: entidad.Actividad.nombre,
@@ -29,29 +29,26 @@ export default function TarjetaTurno(props) {
     <>
       <Card>
         <CardContent>
-          <Typography variant="h6">{autorizacion.Actividad.nombre} </Typography>
+          <Typography variant="h6">{turno.Actividad.nombre} </Typography>
           <Typography variant="body2">
             {fechaHoraActividad(
-              autorizacion.Actividad.fechaHoraInicio,
-              autorizacion.Actividad.fechaHoraFin
+              turno.Actividad.fechaHoraInicio,
+              turno.Actividad.fechaHoraFin
             )}
           </Typography>
           <Typography variant="body2">
-            {autorizacion.Actividad.Espacio.nombre} (
-            {autorizacion.Actividad.Espacio.Edificio.nombre})
+            {turno.Actividad.Espacio.nombre} (
+            {turno.Actividad.Espacio.Edificio.nombre})
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            {autorizacion.Actividad.responsable}
+            {turno.Actividad.responsable}
           </Typography>
         </CardContent>
         {mostrarBoton && (
           <>
             <Divider />
             <CardActions>
-              <CancelButton
-                size="small"
-                onClick={() => autorizacionAEliminar(autorizacion)}
-              >
+              <CancelButton size="small" onClick={() => turnoAEliminar(turno)}>
                 Cancelar turno
               </CancelButton>
             </CardActions>
@@ -61,8 +58,8 @@ export default function TarjetaTurno(props) {
       <ConfirmarEliminacion
         abrirModal={abrirModal}
         setAbrirModal={setAbrirModal}
-        ruta={'autorizaciones'}
-        rutaActualizacion={`usuarios/yo/autorizaciones`}
+        ruta={'turnos'}
+        rutaActualizacion={`usuarios/yo/turnos`}
         entidadAEliminar={entidad}
       />
     </>
@@ -70,7 +67,7 @@ export default function TarjetaTurno(props) {
 }
 
 TarjetaTurno.propTypes = {
-  autorizacion: PropTypes.obj,
+  turno: PropTypes.obj,
   mostrarBoton: PropTypes.bool,
 };
 

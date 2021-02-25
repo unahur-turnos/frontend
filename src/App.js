@@ -8,9 +8,9 @@ import AltaModificacionActividad from './components/actividades/AltaModificacion
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import { Box, Container, makeStyles } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
-import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
+import FinalDDJJ from './components/inscripcionTurnos/FinalDDJJ';
 import Header from './components/ui/Header';
-import InscripcionActividad from './components/inscripcionAutorizacion/InscripcionActividad';
+import InscripcionActividad from './components/inscripcionTurnos/InscripcionActividad';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
@@ -83,14 +83,14 @@ function Rutas() {
       </PrivateRoute>
 
       <PrivateRoute
-        path="/autorizaciones/nueva"
+        path="/turnos/nueva"
         rolesPermitidos={['asistente', 'admin']}
       >
         <InscripcionActividad />
       </PrivateRoute>
 
       <PrivateRoute
-        path="/autorizaciones/confirmacion"
+        path="/turnos/confirmacion"
         rolesPermitidos={['asistente', 'admin']}
       >
         <FinalDDJJ />

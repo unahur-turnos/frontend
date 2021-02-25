@@ -33,10 +33,10 @@ export default function AcordionTurno(props) {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={2}>
-            {data.map((autorizacion) => {
+            {data.map((turno) => {
               return (
-                <Grid item xs={12} sm={6} md={4} key={autorizacion.id}>
-                  <TarjetaTurno autorizacion={autorizacion} />
+                <Grid item xs={12} sm={6} md={4} key={turno.id}>
+                  <TarjetaTurno turno={turno} />
                 </Grid>
               );
             })}

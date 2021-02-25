@@ -129,7 +129,7 @@ export default function ListadoActividades() {
                   </TableCell>
                   <TableCell>
                     <Cupo
-                      anotados={actividad.autorizaciones}
+                      anotados={actividad.turnos}
                       cantidadMax={actividad.Espacio.aforo}
                     />
                   </TableCell>
