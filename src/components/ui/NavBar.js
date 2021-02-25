@@ -17,8 +17,8 @@ export default function NavBar() {
           <Button
             key={id}
             className={clsx(classes.button, {
-              [classes.linkActivo]: location.pathname === ruta,
-              [classes.linkInactivo]: location.pathname !== ruta,
+              [classes.linkActivo]: location.pathname.includes(ruta),
+              [classes.linkInactivo]: !location.pathname.includes(ruta),
             })}
             component={Link}
             to={ruta}

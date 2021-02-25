@@ -3,17 +3,14 @@ import {
   Button,
   FormControl,
   FormControlLabel,
+  FormLabel,
   Grid,
-  InputLabel,
   MenuItem,
   Radio,
   RadioGroup,
-  Select,
-  TextField,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useApi } from '../../utils/fetchApi';
 import PropTypes from 'prop-types';
 import { espacioPorId } from '../../state/espacios';
@@ -21,17 +18,23 @@ import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { todosLosEdificios } from '../../state/edificio';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import {
+  TextValidator,
+  ValidatorForm,
+  SelectValidator,
+} from 'react-material-ui-form-validator';
+import { ERRORES } from '../textos/Textos';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
 export default function Espacio(props) {
-  const matches = useMediaQuery('(min-width:600px)');
   const { id } = useParams();
+  const inputClasses = useInputStyles();
   const { titulo } = props;
   const espacioDB = useRecoilValue(espacioPorId(id)).data;
   const edificiosDB = useRecoilValue(todosLosEdificios);
   const history = useHistory();
   const notificarActualizacion = useNotificarActualizacion('espacios');
   const { create, update } = useApi('espacios');
-
   const [espacio, setEspacio] = useState(espacioDB);
 
   const handleChange = (e) => {
@@ -49,138 +52,140 @@ export default function Espacio(props) {
     }
 
     notificarActualizacion();
+    irListaEspacios();
+  };
+
+  const irListaEspacios = () => {
     history.push('/espacios');
   };
 
   return (
     <>
-      <Box mt={1} display="flex" justifyContent="center">
-        <Typography variant="h4" color="primary">
-          {titulo}
-        </Typography>
-      </Box>
-
-      <Grid
-        container
-        alignItems="flex-end"
-        spacing={matches ? 4 : 2}
-        style={{ marginTop: '8px' }}
-      >
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Nombre del espacio:</Typography>
+      <ValidatorForm onSubmit={saveData} instantValidate={false}>
+        <Grid item align="center" xs={12}>
+          <Typography variant="h4" color="primary">
+            {titulo}
+          </Typography>
         </Grid>
 
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <TextField
-            id="nombre"
-            label="Ingresá el nombre"
-            name="nombre"
-            style={{ minWidth: 250 }}
-            onChange={handleChange}
-            defaultValue={espacio.nombre}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Edificio:</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <FormControl style={{ minWidth: 250 }}>
-            <InputLabel id="idEdificio">Elija un edificio</InputLabel>
-            <Select
-              labelId="labelIdEdificio"
-              id="selectIDEdificio"
-              defaultValue={espacio.edificioId}
-              name="edificioId"
-              onChange={handleChange}
-            >
-              {edificiosDB.map((edificio) => (
-                <MenuItem key={edificio.id} value={edificio.id}>
-                  {edificio.nombre}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Piso:</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <FormControl style={{ minWidth: 250 }}>
-            <InputLabel id="idPiso">Elija un piso</InputLabel>
-            <Select
-              labelId="labelIdPiso"
-              id="inputIDPiso"
-              defaultValue={espacio.piso}
-              name="piso"
-              onChange={handleChange}
-            >
-              <MenuItem value={'0'}>0</MenuItem>
-              <MenuItem value={'1'}>1</MenuItem>
-              <MenuItem value={'2'}>2</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Aforo:</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <TextField
-            id="aforo"
-            label="Ingresá el aforo"
-            style={{ minWidth: 250 }}
-            defaultValue={espacio.aforo}
-            name="aforo"
-            type="number"
-            onChange={handleChange}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Estado:</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <FormControl>
-            <RadioGroup
-              row
-              aria-label="estado"
-              name="habilitado"
-              value={espacio.habilitado.toString()}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value={'true'}
-                control={<Radio color="primary" />}
-                label="Activo"
+        <Grid container spacing={4} align="center">
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
+              <TextValidator
+                id="nombre"
+                label="Ingresá el nombre"
+                name="nombre"
+                value={espacio.nombre}
+                validators={['required']}
+                errorMessages={[ERRORES.requerido]}
+                fullWidth
+                onChange={handleChange}
               />
-              <FormControlLabel
-                value={'false'}
-                control={<Radio color="primary" />}
-                label="Inactivo"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-      </Grid>
+            </Grid>
+          </Grid>
 
-      <Grid container item xs={12} spacing={1}>
-        <Grid item xs={6} align="right">
-          <Button variant="contained" color="primary" onClick={saveData}>
-            Guardar
-          </Button>
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <SelectValidator
+                fullWidth
+                label="Elegí un edificio"
+                id="selectIDEdificio"
+                value={espacio.edificioId}
+                validators={['required']}
+                align="left"
+                errorMessages={[ERRORES.requerido]}
+                name="edificioId"
+                onChange={handleChange}
+              >
+                {edificiosDB.map((edificio) => (
+                  <MenuItem key={edificio.id} value={edificio.id}>
+                    {edificio.nombre}
+                  </MenuItem>
+                ))}
+              </SelectValidator>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <SelectValidator
+                fullWidth
+                align="left"
+                label="Elegí un piso"
+                id="inputIDPiso"
+                validators={['required']}
+                errorMessages={[ERRORES.requerido]}
+                value={espacio.piso}
+                name="piso"
+                onChange={handleChange}
+              >
+                <MenuItem value={'0'}>0</MenuItem>
+                <MenuItem value={'1'}>1</MenuItem>
+                <MenuItem value={'2'}>2</MenuItem>
+              </SelectValidator>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                align="left"
+                id="aforo"
+                label="Ingresá el aforo"
+                fullWidth
+                value={espacio.aforo}
+                name="aforo"
+                type="number"
+                className={inputClasses.numberFieldWithoutArrows}
+                onChange={handleChange}
+                validators={['required']}
+                errorMessages={[ERRORES.requerido]}
+              />
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            component={Box}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <FormLabel component="legend">Estado:</FormLabel>
+            <FormControl>
+              <RadioGroup
+                row
+                aria-label="estado"
+                name="habilitado"
+                value={espacio.habilitado.toString()}
+                onChange={handleChange}
+                style={{ marginLeft: 20 }}
+              >
+                <FormControlLabel
+                  value={'true'}
+                  control={<Radio color="primary" />}
+                  label="Activo"
+                />
+                <FormControlLabel
+                  value={'false'}
+                  control={<Radio color="primary" />}
+                  label="Inactivo"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Button component={Link} to="/espacios">
-            Cancelar
-          </Button>
+
+        <Grid container spacing={1} style={{ marginTop: 20 }}>
+          <Grid item xs={6} align="right">
+            <Button onClick={irListaEspacios}>Cancelar</Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button variant="contained" color="primary" type="submit">
+              Guardar
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+      </ValidatorForm>
     </>
   );
 }

@@ -4,7 +4,6 @@ import {
   Grid,
   InputAdornment,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
@@ -20,7 +19,6 @@ import { ERRORES } from '../textos/Textos';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 
 export default function Login() {
-  const matches = useMediaQuery('(min-width:600px)');
   const inputClasses = useInputStyles();
   const history = useHistory();
   const { create } = useApi('usuarios/login');
@@ -77,65 +75,65 @@ export default function Login() {
         </Typography>
       </Box>
 
-      <Grid
-        container
-        alignItems="flex-end"
-        spacing={matches ? 4 : 2}
-        style={{ marginTop: '8px' }}
-      >
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Número de documento:</Typography>
+      <Grid container spacing={4} align="center">
+        <Grid item xs={12}>
+          <Grid item xs={9} sm={7} md={4} style={{ marginTop: 20 }}>
+            <TextValidator
+              id="dni"
+              label="Ingresá tu documento"
+              onChange={handleChange}
+              name="dni"
+              type="number"
+              className={inputClasses.numberFieldWithoutArrows}
+              fullWidth
+              value={valoresUsuario.dni}
+              validators={[
+                'required',
+                'minNumber:1000000',
+                'maxNumber:99999999',
+              ]}
+              errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <AssignmentIndIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
         </Grid>
-
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <TextValidator
-            id="dni"
-            label="Ingresá tu documento"
-            onChange={handleChange}
-            name="dni"
-            type="number"
-            value={valoresUsuario.dni}
-            validators={['required', 'minNumber:1000000', 'maxNumber:99999999']}
-            errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
-            className={inputClasses.numberFieldWithoutArrows}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <AssignmentIndIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-          <Typography variant="h6">Contraseña:</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} align={!matches && 'center'}>
-          <TextValidator
-            id="contrasenia"
-            label="Ingresá una contraseña"
-            name="contrasenia"
-            type={showPassword ? 'text' : 'password'}
-            onChange={handleChange}
-            value={valoresUsuario.contrasenia}
-            validators={['required']}
-            errorMessages={[ERRORES.requerido]}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    style={{ color: 'black' }}
-                  >
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
+        <Grid item xs={12}>
+          <Grid item xs={9} sm={7} md={4}>
+            <TextValidator
+              id="contrasenia"
+              label="Ingresá tu contraseña"
+              name="contrasenia"
+              type={showPassword ? 'text' : 'password'}
+              onChange={handleChange}
+              fullWidth
+              value={valoresUsuario.contrasenia}
+              validators={['required']}
+              errorMessages={[ERRORES.requerido]}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      style={{ color: 'black' }}
+                    >
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
         </Grid>
 
         {tengoErrorEn.mandarError && (
@@ -146,23 +144,18 @@ export default function Login() {
             </Typography>
           </Grid>
         )}
+      </Grid>
 
-        <Grid container item xs={12} spacing={1}>
-          <Grid item xs={6} align="right">
-            <Button variant="contained" color="primary" type="submit">
-              Iniciar sesión
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              variant="contained"
-              color="inherit"
-              component={Link}
-              onClick={irARegistro}
-            >
-              Registrarse
-            </Button>
-          </Grid>
+      <Grid container item xs={12} spacing={1} style={{ marginTop: 20 }}>
+        <Grid item xs={6} align="right">
+          <Button variant="contained" color="primary" type="submit">
+            Iniciar sesión
+          </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button variant="contained" color="inherit" onClick={irARegistro}>
+            Registrarse
+          </Button>
         </Grid>
       </Grid>
     </ValidatorForm>

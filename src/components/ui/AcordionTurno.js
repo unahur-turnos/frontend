@@ -48,5 +48,5 @@ export default function AcordionTurno(props) {
 }
 
 AcordionTurno.propTypes = {
-  data: PropTypes.obj,
+  data: PropTypes.array,
 };

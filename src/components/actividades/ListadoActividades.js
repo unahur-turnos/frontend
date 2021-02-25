@@ -181,6 +181,6 @@ function Cupo({ anotados, cantidadMax }) {
 }
 
 Cupo.propTypes = {
-  anotados: PropTypes.int,
-  cantidadMax: PropTypes.int,
+  anotados: PropTypes.number,
+  cantidadMax: PropTypes.number,
 };
