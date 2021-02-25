@@ -1,15 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Typography,
-} from '@material-ui/core';
+import { Button, Grid, MenuItem, Typography } from '@material-ui/core';
 import { useHistory, useParams } from 'react-router-dom';
 import { useApi } from '../../utils/fetchApi';
 import PropTypes from 'prop-types';
@@ -142,36 +131,6 @@ export default function Espacio(props) {
                 errorMessages={[ERRORES.requerido]}
               />
             </Grid>
-          </Grid>
-          <Grid
-            container
-            component={Box}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <FormLabel component="legend">Estado:</FormLabel>
-            <FormControl>
-              <RadioGroup
-                row
-                aria-label="estado"
-                name="habilitado"
-                value={espacio.habilitado.toString()}
-                onChange={handleChange}
-                style={{ marginLeft: 20 }}
-              >
-                <FormControlLabel
-                  value={'true'}
-                  control={<Radio color="primary" />}
-                  label="Activo"
-                />
-                <FormControlLabel
-                  value={'false'}
-                  control={<Radio color="primary" />}
-                  label="Inactivo"
-                />
-              </RadioGroup>
-            </FormControl>
           </Grid>
         </Grid>
 
