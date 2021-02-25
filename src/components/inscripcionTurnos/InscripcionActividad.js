@@ -96,7 +96,7 @@ export default function Actividad() {
     <>
       <Box mt={3} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
-          Solicitar autorización
+          Solicitar turno
         </Typography>
       </Box>
 

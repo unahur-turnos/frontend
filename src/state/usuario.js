@@ -28,7 +28,7 @@ const listaRutas = [
     icono: <ApartmentIcon />,
   },
   {
-    nombre: 'Autorización',
+    nombre: 'Solicitar turno',
     ruta: '/turnos/nueva',
     rolesPermitidos: ['asistente'],
     icono: <ListAltIcon />,

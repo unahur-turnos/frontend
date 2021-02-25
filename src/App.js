@@ -53,10 +53,6 @@ function Rutas() {
         <AltaModificacionEspacio titulo={'Modificar espacio'} />
       </PrivateRoute>
 
-      <PrivateRoute path="/turnos" rolesPermitidos={['asistente']}>
-        <MisActividades />
-      </PrivateRoute>
-
       <PrivateRoute
         path="/actividades/nueva"
         rolesPermitidos={['bedel', 'admin']}
@@ -94,6 +90,9 @@ function Rutas() {
         rolesPermitidos={['asistente', 'admin']}
       >
         <FinalDDJJ />
+      </PrivateRoute>
+      <PrivateRoute path="/turnos" rolesPermitidos={['asistente']}>
+        <MisActividades />
       </PrivateRoute>
 
       <Route path="/">
