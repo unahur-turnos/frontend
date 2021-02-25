@@ -1,5 +1,5 @@
 import { apiIndex } from './api';
-import { selector, selectorFamily } from 'recoil';
+import { selectorFamily } from 'recoil';
 
 export const turnosPorActividad = selectorFamily({
   key: 'turnosPorActividad',

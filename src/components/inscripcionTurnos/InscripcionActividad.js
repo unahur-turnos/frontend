@@ -17,6 +17,8 @@ import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import { BotonGuardar } from '../ui/BotonGuardar';
 
 const pasos = [
   'Seleccioná la actividad',
@@ -28,6 +30,7 @@ export default function Actividad() {
   const history = useHistory();
   const { create } = useApi('turnos');
   const usuario = useRecoilValue(usuarioState);
+  const [iconoCargando, setIconoCargando] = useState(false);
 
   const [numeroPaso, setNumeroPaso] = useState(0);
   const notificarActualizacion = useNotificarActualizacion(
@@ -83,6 +86,7 @@ export default function Actividad() {
   };
 
   const guardarInscripcion = async () => {
+    setIconoCargando(true);
     await create({
       actividadId: informacionSeleccionada.actividad.id,
       medioDeTransporte: informacionSeleccionada.medioDeTransporte,
@@ -99,51 +103,46 @@ export default function Actividad() {
           Solicitar turno
         </Typography>
       </Box>
-
-      <Grid item xs={12} align="center">
-        <Stepper
-          activeStep={numeroPaso}
-          alternativeLabel
-          style={{
-            backgroundColor: '#fafafa',
-            maxWidth: '600px',
-            marginTop: '20px',
-          }}
-        >
-          {pasos.map((paso) => (
-            <Step key={paso}>
-              <StepLabel>{paso}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-      </Grid>
-      {getComponenteDelPaso(numeroPaso)}
-
-      <Grid container spacing={10}>
-        <Grid item xs={12} align="center" spacing={4}>
-          <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
-            Volver
-          </Button>
-          {numeroPaso === 2 ? (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={guardarInscripcion}
-            >
-              Guardar
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={siguientePaso}
-              disabled={informacionSeleccionada.actividad ? false : true}
-            >
-              Siguiente
-            </Button>
-          )}
+      <ValidatorForm onSubmit={guardarInscripcion}>
+        <Grid item xs={12} align="center">
+          <Stepper
+            activeStep={numeroPaso}
+            alternativeLabel
+            style={{
+              backgroundColor: '#fafafa',
+              maxWidth: '600px',
+              marginTop: '20px',
+            }}
+          >
+            {pasos.map((paso) => (
+              <Step key={paso}>
+                <StepLabel>{paso}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
         </Grid>
-      </Grid>
+        {getComponenteDelPaso(numeroPaso)}
+
+        <Grid container spacing={10}>
+          <Grid item xs={12} align="center" spacing={4}>
+            <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
+              Volver
+            </Button>
+            {numeroPaso === 2 ? (
+              <BotonGuardar loading={iconoCargando} />
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={siguientePaso}
+                disabled={informacionSeleccionada.actividad ? false : true}
+              >
+                Siguiente
+              </Button>
+            )}
+          </Grid>
+        </Grid>
+      </ValidatorForm>
     </>
   );
 }

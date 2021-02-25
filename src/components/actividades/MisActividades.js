@@ -91,6 +91,7 @@ export default function MisActividades() {
                   display="flex"
                   justifyContent="center"
                   margin={1}
+                  key={turno.id}
                 >
                   <Grid item xs={11}>
                     <TarjetaTurno turno={turno} mostrarBoton={true} />
