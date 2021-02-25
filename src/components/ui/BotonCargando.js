@@ -1,7 +1,7 @@
 import { CircularProgress, makeStyles, Button } from '@material-ui/core';
 import { PropTypes } from 'prop-types';
 
-export function BotonGuardar({ loading }) {
+export function BotonGuardar({ loading, texto = 'Guardar' }) {
   const classes = useStyles();
 
   return (
@@ -14,7 +14,7 @@ export function BotonGuardar({ loading }) {
       {loading ? (
         <CircularProgress color="white" className={classes.loading} size={25} />
       ) : (
-        'Guardar'
+        texto
       )}
     </Button>
   );
@@ -28,4 +28,5 @@ const useStyles = makeStyles(() => ({
 
 BotonGuardar.propTypes = {
   loading: PropTypes.bool,
+  texto: PropTypes.string,
 };
