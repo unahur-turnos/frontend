@@ -2,7 +2,6 @@ import React from 'react';
 import Grid from '@material-ui/core/Box';
 import { Typography, Button, useMediaQuery } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
-import PeopleIcon from '@material-ui/icons/People';
 import { makeStyles } from '@material-ui/core/styles';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import { Link } from 'react-router-dom';

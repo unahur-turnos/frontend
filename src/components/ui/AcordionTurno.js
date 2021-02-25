@@ -5,18 +5,9 @@ import {
   AccordionSummary,
   Typography,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { PropTypes } from 'prop-types';
 import TarjetaTurno from './TarjetaTurno';
-
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    fontSize: theme.typography.pxToRem(17),
-    flexBasis: '50%',
-    flexShrink: 0,
-  },
-}));
 
 export default function AcordionTurno(props) {
   const { data } = props;

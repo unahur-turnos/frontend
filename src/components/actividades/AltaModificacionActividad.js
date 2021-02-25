@@ -10,7 +10,7 @@ import {
   RadioGroup,
   Typography,
 } from '@material-ui/core';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Autocomplete } from '@material-ui/lab';
 import {
   SelectValidator,
