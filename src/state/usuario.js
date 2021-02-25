@@ -34,7 +34,7 @@ const listaRutas = [
     icono: <ListAltIcon />,
   },
   {
-    nombre: 'Control de acceso',
+    nombre: 'Control de turnos',
     ruta: '/actividades/hoy',
     rolesPermitidos: ['bedel'],
     icono: <AssignmentTurnedInIcon />,

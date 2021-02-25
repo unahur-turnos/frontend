@@ -65,7 +65,7 @@ export default function ControlAcceso() {
     <Grid container className={classes.container} spacing={4}>
       <Grid item xs={12} align="center">
         <Typography variant="h4" color="primary">
-          Control de acceso
+          Control de turnos
         </Typography>
       </Grid>
       <Grid container justify="center" spacing={4}>
