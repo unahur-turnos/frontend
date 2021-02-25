@@ -14,6 +14,7 @@ import {
 } from 'react-material-ui-form-validator';
 import { ERRORES } from '../textos/Textos';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
+import { BotonGuardar } from '../ui/BotonCargando';
 
 export default function Espacio(props) {
   const { id } = useParams();
@@ -25,6 +26,7 @@ export default function Espacio(props) {
   const notificarActualizacion = useNotificarActualizacion('espacios');
   const { create, update } = useApi('espacios');
   const [espacio, setEspacio] = useState(espacioDB);
+  const [iconoCargando, setIconoCargando] = useState(false);
 
   const handleChange = (e) => {
     setEspacio({
@@ -34,6 +36,7 @@ export default function Espacio(props) {
   };
 
   const saveData = async () => {
+    setIconoCargando(true);
     if (id !== undefined) {
       await update(espacio);
     } else {
@@ -139,9 +142,7 @@ export default function Espacio(props) {
             <Button onClick={irListaEspacios}>Cancelar</Button>
           </Grid>
           <Grid item xs={6}>
-            <Button variant="contained" color="primary" type="submit">
-              Guardar
-            </Button>
+            <BotonGuardar loading={iconoCargando} />
           </Grid>
         </Grid>
       </ValidatorForm>

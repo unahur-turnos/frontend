@@ -1,14 +1,7 @@
-import {
-  Button,
-  Grid,
-  Typography,
-  InputAdornment,
-  CircularProgress,
-} from '@material-ui/core';
-
+import { Button, Grid, Typography, InputAdornment } from '@material-ui/core';
+import { BotonGuardar } from '../ui/BotonCargando';
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { useApi } from '../../utils/fetchApi';
 import { useSetRecoilState } from 'recoil';
@@ -24,7 +17,6 @@ import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 export default function Registro() {
   const inputClasses = useInputStyles();
   const history = useHistory();
-  const classes = useStyles();
   const { create } = useApi('usuarios/registro');
 
   ValidatorForm.addValidationRule(
@@ -269,30 +261,10 @@ export default function Registro() {
             <Button onClick={volverAlLogin}>Cancelar</Button>
           </Grid>
           <Grid item xs={6}>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              disabled={iconoCargando}
-            >
-              {iconoCargando && (
-                <CircularProgress
-                  color="white"
-                  className={classes.loading}
-                  size={25}
-                />
-              )}
-              Guardar
-            </Button>
+            <BotonGuardar loading={iconoCargando} />
           </Grid>
         </Grid>
       </ValidatorForm>
     </>
   );
 }
-
-const useStyles = makeStyles(() => ({
-  loading: {
-    marginRight: '10px',
-  },
-}));

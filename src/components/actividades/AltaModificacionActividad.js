@@ -30,6 +30,7 @@ import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 import { find, propEq } from 'ramda';
+import { BotonGuardar } from '../ui/BotonCargando';
 
 export default function AltaActividad(props) {
   const inputClasses = useInputStyles();
@@ -39,7 +40,7 @@ export default function AltaActividad(props) {
   const notificarActualizacion = useNotificarActualizacion('actividades');
   const history = useHistory();
   const { create, update } = useApi('actividades');
-
+  const [iconoCargando, setIconoCargando] = useState(false);
   const espacios = useRecoilValue(todosLosEspacios);
   const carreras = useRecoilValue(todasLasCarreras);
   const [actividad, setActividad] = useState(actividadDB.data);
@@ -72,6 +73,7 @@ export default function AltaActividad(props) {
   };
 
   const saveData = async () => {
+    setIconoCargando(true);
     if (id !== undefined) {
       await update(actividad);
     } else {
@@ -253,9 +255,7 @@ export default function AltaActividad(props) {
             <Button onClick={irListaActividades}>Cancelar</Button>
           </Grid>
           <Grid item xs={6}>
-            <Button variant="contained" color="primary" type="submit">
-              Guardar
-            </Button>
+            <BotonGuardar loading={iconoCargando} />
           </Grid>
         </Grid>
       </ValidatorForm>
