@@ -22,8 +22,8 @@ export default function SelectorActividad({
 }) {
   const classes = useStyles();
 
-  const noHayCuposDisponibles = (aforo, autorizaciones) => {
-    return aforo - autorizaciones === 0;
+  const noHayCuposDisponibles = (aforo, turnos) => {
+    return aforo - turnos === 0;
   };
 
   return (
@@ -37,7 +37,7 @@ export default function SelectorActividad({
       }}
       getOptionDisabled={(actividad) =>
         esAsistente &&
-        noHayCuposDisponibles(actividad.Espacio.aforo, actividad.autorizaciones)
+        noHayCuposDisponibles(actividad.Espacio.aforo, actividad.turnos)
       }
       renderInput={(params) => (
         <TextField
@@ -55,7 +55,7 @@ export default function SelectorActividad({
                   esAsistente &&
                   noHayCuposDisponibles(
                     actividad.Espacio.aforo,
-                    actividad.autorizaciones
+                    actividad.turnos
                   )
                     ? 'secondary'
                     : 'primary'

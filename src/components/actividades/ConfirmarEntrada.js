@@ -8,15 +8,13 @@ import { useNotificarActualizacion } from '../../state/actualizaciones';
 export default function ConfirmarEntrada({
   abrirModal,
   setAbrirModal,
-  autorizacionARegistrar,
+  turnoARegistrar,
   idActividad,
 }) {
-  const { create } = useApi(
-    `autorizaciones/${autorizacionARegistrar?.id}/ingreso`
-  );
+  const { create } = useApi(`turnos/${turnoARegistrar?.id}/ingreso`);
 
   const notificarActualizacion = useNotificarActualizacion(
-    `actividades/${idActividad}/autorizaciones`
+    `actividades/${idActividad}/turnos`
   );
 
   const cerrarModal = () => {
@@ -24,7 +22,7 @@ export default function ConfirmarEntrada({
   };
 
   const registrarIngreso = async () => {
-    await create(autorizacionARegistrar);
+    await create(turnoARegistrar);
     notificarActualizacion();
     cerrarModal();
   };
@@ -38,8 +36,7 @@ export default function ConfirmarEntrada({
       <DialogTitle>
         ¿Confirma que desea registrar el ingreso de{' '}
         <strong>
-          {autorizacionARegistrar?.Usuario.apellido}{' '}
-          {autorizacionARegistrar?.Usuario.nombre}
+          {turnoARegistrar?.Usuario.apellido} {turnoARegistrar?.Usuario.nombre}
         </strong>
         ?
       </DialogTitle>
@@ -56,6 +53,6 @@ export default function ConfirmarEntrada({
 ConfirmarEntrada.propTypes = {
   abrirModal: PropTypes.bool,
   setAbrirModal: PropTypes.func,
-  autorizacionARegistrar: PropTypes.object,
+  turnoARegistrar: PropTypes.object,
   idActividad: PropTypes.number,
 };

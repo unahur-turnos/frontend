@@ -26,12 +26,12 @@ const pasos = [
 
 export default function Actividad() {
   const history = useHistory();
-  const { create } = useApi('autorizaciones');
+  const { create } = useApi('turnos');
   const usuario = useRecoilValue(usuarioState);
 
   const [numeroPaso, setNumeroPaso] = useState(0);
   const notificarActualizacion = useNotificarActualizacion(
-    'usuarios/yo/autorizaciones'
+    'usuarios/yo/turnos'
   );
   const [informacionSeleccionada, setInformacionSeleccionada] = useState(
     ESTADOINICIAL
@@ -89,14 +89,14 @@ export default function Actividad() {
       usuarioId: usuario.id,
     });
     notificarActualizacion();
-    history.push('/autorizaciones/confirmacion');
+    history.push('/turnos/confirmacion');
   };
 
   return (
     <>
       <Box mt={3} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
-          Solicitar autorización
+          Solicitar turno
         </Typography>
       </Box>
 

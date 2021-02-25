@@ -21,7 +21,7 @@ import ConfirmarEntrada from './ConfirmarEntrada';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
-import { autorizacionesPorActividad } from '../../state/autorizaciones';
+import { turnosPorActividad } from '../../state/turnos';
 import { hourFormatter, fechaHoraActividad } from '../../utils/dateUtils';
 import { compose, filter, isNil, sortWith, ascend, propOr } from 'ramda';
 import { todasLasActividades } from '../../state/actividades';
@@ -65,7 +65,7 @@ export default function ControlAcceso() {
     <Grid container className={classes.container} spacing={4}>
       <Grid item xs={12} align="center">
         <Typography variant="h4" color="primary">
-          Control de acceso
+          Control de turnos
         </Typography>
       </Grid>
       <Grid container justify="center" spacing={4}>
@@ -85,7 +85,7 @@ export default function ControlAcceso() {
       </Grid>
       <Grid item xs={12} align="center">
         {actividadSeleccionada && (
-          <ListadoAutorizaciones idActividad={actividadSeleccionada.id} />
+          <ListadoTurnos idActividad={actividadSeleccionada.id} />
         )}
       </Grid>
     </Grid>
@@ -109,20 +109,18 @@ function DatosActividad({ actividad }) {
   );
 }
 
-function ListadoAutorizaciones({ idActividad }) {
+function ListadoTurnos({ idActividad }) {
   const classes = useStyles();
 
-  const todasLasAutorizaciones = useRecoilValue(
-    autorizacionesPorActividad(idActividad)
-  );
+  const todosLosTurnos = useRecoilValue(turnosPorActividad(idActividad));
 
-  const [autorizacionARegistrar, setAutorizacionARegistrar] = useState();
+  const [turnoARegistrar, setTurnoARegistrar] = useState();
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [ocultarRegistrados, setOcultarRegistrados] = useState(false);
 
   // El useMemo evita que esto se recalcule a cada rato, solo lo hace si cambian sus dependencias.
-  const autorizacionesFiltradas = useMemo(
+  const turnosFiltrados = useMemo(
     () =>
       compose(
         sortWith([
@@ -130,12 +128,12 @@ function ListadoAutorizaciones({ idActividad }) {
           ascend(path(['Usuario', 'apellido'])),
         ]),
         filter((it) => !ocultarRegistrados || isNil(it.fechaHoraIngreso))
-      )(todasLasAutorizaciones),
-    [todasLasAutorizaciones, ocultarRegistrados]
+      )(todosLosTurnos),
+    [todosLosTurnos, ocultarRegistrados]
   );
 
-  const confirmarRegistro = (autorizacion) => {
-    setAutorizacionARegistrar(autorizacion);
+  const confirmarRegistro = (turno) => {
+    setTurnoARegistrar(turno);
     setAbrirModal(true);
   };
 
@@ -168,22 +166,22 @@ function ListadoAutorizaciones({ idActividad }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {autorizacionesFiltradas.map((autorizacion) => {
+              {turnosFiltrados.map((turno) => {
                 return (
-                  <TableRow key={autorizacion.id}>
-                    <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
-                    <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
+                  <TableRow key={turno.id}>
+                    <TableCell align="center">{`${turno.Usuario.apellido} ${turno.Usuario.nombre}`}</TableCell>
+                    <TableCell align="center">{`${turno.Usuario.dni}`}</TableCell>
                     <TableCell align="center">
-                      {!autorizacion.fechaHoraIngreso ? (
+                      {!turno.fechaHoraIngreso ? (
                         <Button
                           color="primary"
-                          onClick={() => confirmarRegistro(autorizacion)}
+                          onClick={() => confirmarRegistro(turno)}
                         >
                           Registrar
                         </Button>
                       ) : (
                         <Typography>
-                          {hourFormatter(autorizacion.fechaHoraIngreso)}
+                          {hourFormatter(turno.fechaHoraIngreso)}
                         </Typography>
                       )}
                     </TableCell>
@@ -195,7 +193,7 @@ function ListadoAutorizaciones({ idActividad }) {
           <ConfirmarEntrada
             abrirModal={abrirModal}
             setAbrirModal={setAbrirModal}
-            autorizacionARegistrar={autorizacionARegistrar}
+            turnoARegistrar={turnoARegistrar}
             idActividad={idActividad}
           />
         </TableContainer>
@@ -208,6 +206,6 @@ DatosActividad.propTypes = {
   actividad: PropTypes.object,
 };
 
-ListadoAutorizaciones.propTypes = {
+ListadoTurnos.propTypes = {
   idActividad: PropTypes.number,
 };
