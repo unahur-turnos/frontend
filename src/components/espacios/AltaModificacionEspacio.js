@@ -14,7 +14,7 @@ import {
 } from 'react-material-ui-form-validator';
 import { ERRORES } from '../textos/Textos';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
-import { BotonGuardar } from '../ui/BotonCargando';
+import { BotonGuardar } from '../ui/BotonGuardar';
 
 export default function Espacio(props) {
   const { id } = useParams();

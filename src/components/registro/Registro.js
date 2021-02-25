@@ -1,5 +1,5 @@
 import { Button, Grid, Typography, InputAdornment } from '@material-ui/core';
-import { BotonGuardar } from '../ui/BotonCargando';
+import { BotonGuardar } from '../ui/BotonGuardar';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';

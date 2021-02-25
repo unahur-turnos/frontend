@@ -30,7 +30,7 @@ import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 import { find, propEq } from 'ramda';
-import { BotonGuardar } from '../ui/BotonCargando';
+import { BotonGuardar } from '../ui/BotonGuardar';
 
 export default function AltaActividad(props) {
   const inputClasses = useInputStyles();

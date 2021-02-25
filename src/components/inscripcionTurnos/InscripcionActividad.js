@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { ValidatorForm } from 'react-material-ui-form-validator';
-import { BotonGuardar } from '../ui/BotonCargando';
+import { BotonGuardar } from '../ui/BotonGuardar';
 
 const pasos = [
   'Seleccioná la actividad',
