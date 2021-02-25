@@ -197,19 +197,18 @@ export default function AltaActividad(props) {
               <Autocomplete
                 fullWidth
                 options={carreras}
-                inputValue={carreraSeleccionada?.nombre}
                 getOptionLabel={(carrera) => carrera.nombre}
+                defaultValue={{ nombre: carreraSeleccionada?.nombre }}
                 noOptionsText="No hay carreras que coincidan con la búsqueda"
                 onChange={(event, carrera) => {
                   setActividad({
                     ...actividad,
-                    restriccionId: carrera?.id,
+                    restriccionId: carrera?.id || null,
                   });
                 }}
                 renderInput={(params) => (
                   <TextValidator
                     {...params}
-                    value={carreraSeleccionada?.nombre}
                     label="Buscá a qué carrera está destinada"
                     helperText={AYUDAS.selectorCarreras}
                   />
