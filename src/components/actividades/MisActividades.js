@@ -21,7 +21,7 @@ export default function MisActividades() {
   const classes = useStyles();
   const matches = useMediaQuery((theme) => theme.breakpoints.down('xs'));
 
-  const turnosFuturas = () => {
+  const turnosFuturos = () => {
     return filter(
       (turno) =>
         DateTime.fromISO(turno.Actividad.fechaHoraInicio) > DateTime.local(),
@@ -29,7 +29,7 @@ export default function MisActividades() {
     );
   };
 
-  const turnosPasadas = () => {
+  const turnosPasados = () => {
     return filter(
       (turno) =>
         DateTime.fromISO(turno.Actividad.fechaHoraInicio) < DateTime.local(),
@@ -52,7 +52,7 @@ export default function MisActividades() {
               variant="contained"
               color="primary"
               component={Link}
-              to={`/turnos/nueva`}
+              to={`/turnos/nuevo`}
               startIcon={<PostAddIcon />}
             >
               Pedir turno
@@ -69,7 +69,7 @@ export default function MisActividades() {
               variant="contained"
               color="primary"
               component={Link}
-              to={`/turnos/nueva`}
+              to={`/turnos/nuevo`}
               startIcon={<PostAddIcon />}
             >
               Pedir turno
@@ -78,7 +78,7 @@ export default function MisActividades() {
         )}
 
         <Grid container spacing={2}>
-          {turnosFuturas().map((turno) => {
+          {turnosFuturos().map((turno) => {
             {
               return !matches ? (
                 <Grid item xs={11} sm={6} md={4} key={turno.id}>
@@ -99,17 +99,17 @@ export default function MisActividades() {
               );
             }
           })}
-          {turnosFuturas().length === 0 && (
+          {turnosFuturos().length === 0 && (
             <Grid item className={classes.root}>
               <Alert severity="info">
                 Aún no tenés ningún turno. Podés pedir uno haciendo{' '}
-                <Link to="/turnos/nueva">clic aquí.</Link>
+                <Link to="/turnos/nuevo">clic aquí.</Link>
               </Alert>
             </Grid>
           )}
         </Grid>
         <Grid component={Box} container mt={2}>
-          <AcordionTurno data={turnosPasadas()} />
+          <AcordionTurno data={turnosPasados()} />
         </Grid>
       </Grid>
     </>

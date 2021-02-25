@@ -120,7 +120,7 @@ function ListadoTurnos({ idActividad }) {
   const [ocultarRegistrados, setOcultarRegistrados] = useState(false);
 
   // El useMemo evita que esto se recalcule a cada rato, solo lo hace si cambian sus dependencias.
-  const turnosFiltradas = useMemo(
+  const turnosFiltrados = useMemo(
     () =>
       compose(
         sortWith([
@@ -166,7 +166,7 @@ function ListadoTurnos({ idActividad }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {turnosFiltradas.map((turno) => {
+              {turnosFiltrados.map((turno) => {
                 return (
                   <TableRow key={turno.id}>
                     <TableCell align="center">{`${turno.Usuario.apellido} ${turno.Usuario.nombre}`}</TableCell>

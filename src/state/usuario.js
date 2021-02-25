@@ -29,7 +29,7 @@ const listaRutas = [
   },
   {
     nombre: 'Solicitar turno',
-    ruta: '/turnos/nueva',
+    ruta: '/turnos/nuevo',
     rolesPermitidos: ['asistente'],
     icono: <ListAltIcon />,
   },

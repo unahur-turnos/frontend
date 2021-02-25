@@ -79,7 +79,7 @@ function Rutas() {
       </PrivateRoute>
 
       <PrivateRoute
-        path="/turnos/nueva"
+        path="/turnos/nuevo"
         rolesPermitidos={['asistente', 'admin']}
       >
         <InscripcionActividad />
