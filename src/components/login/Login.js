@@ -5,7 +5,7 @@ import {
   InputAdornment,
   Typography,
 } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,6 +17,7 @@ import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { ERRORES } from '../textos/Textos';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
+import { BotonGuardar } from '../ui/BotonGuardar';
 
 export default function Login() {
   const inputClasses = useInputStyles();
@@ -29,6 +30,7 @@ export default function Login() {
     contrasenia: false,
     mandarError: false,
   });
+  const [cargando, setCargando] = useState(false);
 
   const [valoresUsuario, setValoresUsuario] = useState({
     dni: '',
@@ -52,19 +54,18 @@ export default function Login() {
     history.push('/registro');
   };
 
-  //VALIDAR LOGIN.
   const validarLogin = async () => {
     setTengoErrorEn({ ...tengoErrorEn, mandarError: false });
+    setCargando(true);
 
-    create(valoresUsuario)
-      .then((usuario) => {
-        setUsuario(usuario);
-        history.push(rutaInicialUsuario(usuario));
-      })
-
-      .catch(() => {
-        setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
-      });
+    try {
+      const usuario = await create(valoresUsuario);
+      setUsuario(usuario);
+      history.push(rutaInicialUsuario(usuario));
+    } catch (error) {
+      setCargando(false);
+      setTengoErrorEn({ ...tengoErrorEn, mandarError: true });
+    }
   };
 
   return (
@@ -148,9 +149,7 @@ export default function Login() {
 
       <Grid container item xs={12} spacing={1} style={{ marginTop: 20 }}>
         <Grid item xs={6} align="right">
-          <Button variant="contained" color="primary" type="submit">
-            Iniciar sesión
-          </Button>
+          <BotonGuardar texto="Iniciar sesión" loading={cargando} />
         </Grid>
         <Grid item xs={6}>
           <Button variant="contained" color="inherit" onClick={irARegistro}>
