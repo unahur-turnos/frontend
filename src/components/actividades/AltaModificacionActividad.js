@@ -3,35 +3,36 @@ import {
   Button,
   FormControl,
   FormControlLabel,
+  FormLabel,
   Grid,
-  InputLabel,
-  makeStyles,
   MenuItem,
   Radio,
   RadioGroup,
-  Select,
-  TextField,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
-
+import { useHistory, useParams } from 'react-router-dom';
+import { Autocomplete } from '@material-ui/lab';
+import {
+  SelectValidator,
+  TextValidator,
+  ValidatorForm,
+} from 'react-material-ui-form-validator';
 import { DateTime } from 'luxon';
-import { ERRORES } from '../textos/Textos';
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
 import { dateFormatter } from '../../utils/dateUtils';
 import { todasLasCarreras } from '../../state/carreras';
+import { ERRORES, AYUDAS } from '../textos/Textos';
 import { todosLosEspacios } from '../../state/espacios';
 import { useApi } from '../../utils/fetchApi';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
+import { find, propEq } from 'ramda';
+import { BotonGuardar } from '../ui/BotonGuardar';
 
 export default function AltaActividad(props) {
-  const matches = useMediaQuery('(min-width:600px)');
   const inputClasses = useInputStyles();
   const { id } = useParams();
   const { titulo } = props;
@@ -39,7 +40,21 @@ export default function AltaActividad(props) {
   const notificarActualizacion = useNotificarActualizacion('actividades');
   const history = useHistory();
   const { create, update } = useApi('actividades');
+  const [iconoCargando, setIconoCargando] = useState(false);
+  const espacios = useRecoilValue(todosLosEspacios);
+  const carreras = useRecoilValue(todasLasCarreras);
+  const [actividad, setActividad] = useState(actividadDB.data);
+  const {
+    espacioId,
+    nombre,
+    fechaHoraInicio,
+    fechaHoraFin,
+    responsable,
+    telefonoDeContactoResponsable,
+    restriccionId,
+  } = actividad;
 
+  const carreraSeleccionada = find(propEq('id', restriccionId), carreras);
   ValidatorForm.addValidationRule(
     'fechaInicioValida',
     (value) => DateTime.fromISO(value) > DateTime.local()
@@ -50,18 +65,6 @@ export default function AltaActividad(props) {
     (value) => value > actividad.fechaHoraInicio
   );
 
-  const [actividad, setActividad] = useState(actividadDB.data);
-  const {
-    espacioId,
-    nombre,
-    fechaHoraInicio,
-    fechaHoraFin,
-    responsable,
-    dniResponsable,
-    activa,
-    restriccionId,
-  } = actividad;
-
   const handleChange = (e) => {
     setActividad({
       ...actividad,
@@ -70,6 +73,7 @@ export default function AltaActividad(props) {
   };
 
   const saveData = async () => {
+    setIconoCargando(true);
     if (id !== undefined) {
       await update(actividad);
     } else {
@@ -77,172 +81,159 @@ export default function AltaActividad(props) {
     }
 
     notificarActualizacion();
-    history.push('/actividades');
+    irListaActividades();
   };
 
-  const espacios = useRecoilValue(todosLosEspacios);
-  const carreras = useRecoilValue(todasLasCarreras);
+  const irListaActividades = () => {
+    history.push('/actividades');
+  };
 
   return (
     <>
       <ValidatorForm onSubmit={saveData} instantValidate={false}>
-        <Box mt={1} display="flex" justifyContent="center">
+        <Grid item align="center" xs={12}>
           <Typography variant="h4" color="primary">
             {titulo}
           </Typography>
-        </Box>
+        </Grid>
 
-        <Grid
-          container
-          alignItems="flex-end"
-          spacing={matches ? 4 : 2}
-          style={{ marginTop: '8px' }}
-        >
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Nombre de la actividad:</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              label="Ingresá el nombre"
-              style={{ minWidth: 250 }}
-              name="nombre"
-              value={nombre}
-              onChange={handleChange}
-              validators={['required']}
-              errorMessages={[ERRORES.requerido]}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Espacio:</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <FormControl style={{ minWidth: 250 }}>
-              <InputLabel id="labelEspacios">Elegí un espacio</InputLabel>
-              <Select
-                labelId="labelEspacios"
-                name="espacioId"
-                value={espacioId}
+        <Grid container spacing={4} align="center">
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
+              <TextValidator
+                label="Ingresá el nombre"
+                fullWidth
+                name="nombre"
+                value={nombre || ''}
                 onChange={handleChange}
-                required
+                validators={['required']}
+                errorMessages={[ERRORES.requerido]}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <SelectValidator
+                fullWidth
+                label="Elegí un espacio"
+                name="espacioId"
+                value={espacioId || ''}
+                onChange={handleChange}
+                validators={['required']}
+                errorMessages={[ERRORES.requerido]}
+                align="left"
               >
-                {espacios.map((espacio) => (
-                  <MenuItem value={espacio.id} key={espacio.id}>
+                {espacios.map((espacio, id) => (
+                  <MenuItem value={espacio.id} key={id}>
                     {espacio.nombre}
                   </MenuItem>
                 ))}
-              </Select>
-            </FormControl>
+              </SelectValidator>
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Fecha y hora de inicio:</Typography>
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                type="datetime-local"
+                name="fechaHoraInicio"
+                label="Fecha y hora de inicio"
+                value={dateFormatter(fechaHoraInicio) || ''}
+                fullWidth
+                onChange={handleChange}
+                validators={['required', 'fechaInicioValida']}
+                errorMessages={[ERRORES.requerido, ERRORES.fechaInicio]}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              type="datetime-local"
-              name="fechaHoraInicio"
-              value={dateFormatter(fechaHoraInicio)}
-              onChange={handleChange}
-              validators={['fechaInicioValida']}
-              errorMessages={[ERRORES.fechaInicio]}
-            />
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                type="datetime-local"
+                name="fechaHoraFin"
+                value={dateFormatter(fechaHoraFin) || ''}
+                label="Fecha y hora de cierre"
+                fullWidth
+                className={inputClasses.numberFieldWithoutArrows}
+                onChange={handleChange}
+                validators={['required', 'fechaFinValida']}
+                errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Fecha y hora de cierre:</Typography>
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                label="Persona responsable"
+                fullWidth
+                name="responsable"
+                value={responsable || ''}
+                validators={['required']}
+                errorMessages={[ERRORES.requerido]}
+                onChange={handleChange}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextValidator
-              type="datetime-local"
-              name="fechaHoraFin"
-              value={dateFormatter(fechaHoraFin)}
-              onChange={handleChange}
-              validators={['fechaFinValida']}
-              errorMessages={[ERRORES.fechaFin]}
-            />
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <TextValidator
+                label="Teléfono de contacto responsable"
+                fullWidth
+                type="number"
+                className={inputClasses.numberFieldWithoutArrows}
+                name="telefonoDeContactoResponsable"
+                value={telefonoDeContactoResponsable || ''}
+                onChange={handleChange}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">
-              Nombre y apellido del responsable:
-            </Typography>
-          </Grid>
+          {/* <Grid item xs={12}>
+            <Grid item xs={12} sm={7} md={4}>
+              <Autocomplete
+                fullWidth
+                options={carreras}
+                getOptionLabel={(carrera) => carrera.nombre}
+                defaultValue={{ nombre: carreraSeleccionada?.nombre }}
+                noOptionsText="No hay carreras que coincidan con la búsqueda"
+                onChange={(event, carrera) => {
+                  setActividad({
+                    ...actividad,
+                    restriccionId: carrera?.id || null,
+                  });
+                }}
+                renderInput={(params) => (
+                  <TextValidator
+                    {...params}
+                    label="Buscá a qué carrera está destinada"
+                    helperText={AYUDAS.selectorCarreras}
+                  />
+                )}
+              />
+            </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextField
-              label="Ingresá el nombre del responsable"
-              style={{ minWidth: 250 }}
-              name="responsable"
-              value={responsable}
-              onChange={handleChange}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">DNI del responsable:</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <TextField
-              label="Ingresá el DNI del responsable"
-              style={{ minWidth: 250 }}
-              type="number"
-              name="dniResponsable"
-              className={inputClasses.numberFieldWithoutArrows}
-              value={dniResponsable}
-              onChange={handleChange}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">En calidad de:</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
+          <Grid
+            container
+            component={Box}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={3}
+          >
+            <FormLabel component="legend">Estado:</FormLabel>
             <FormControl>
               <RadioGroup
                 row
-                aria-label="tipoResponsable"
-                name="tipoResponsable"
-                defaultValue={'Docente'}
+                aria-label="estado"
+                name="estado"
+                defaultValue={'true'}
                 onChange={handleChange}
-              >
-                <FormControlLabel
-                  value={'Docente'}
-                  control={<Radio color="primary" />}
-                  label="Docente"
-                />
-                <FormControlLabel
-                  value={'Invitado'}
-                  control={<Radio color="primary" />}
-                  label="Invitado"
-                />
-                <FormControlLabel
-                  value={'No docente'}
-                  control={<Radio color="primary" />}
-                  label="No docente"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Estado:</Typography>
-          </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <FormControl>
-              <RadioGroup
-                row
-                aria-label="activa"
-                name="activa"
-                value={activa.toString()}
-                onChange={handleChange}
+                style={{ marginLeft: 20 }}
               >
                 <FormControlLabel
                   value={'true'}
@@ -257,42 +248,13 @@ export default function AltaActividad(props) {
               </RadioGroup>
             </FormControl>
           </Grid>
-
-          <Grid item xs={12} sm={6} align={matches ? 'right' : 'center'}>
-            <Typography variant="h6">Carrera:</Typography>
+        </Grid>
+        <Grid container spacing={1} style={{ marginTop: 20 }}>
+          <Grid item xs={6} align="right">
+            <Button onClick={irListaActividades}>Cancelar</Button>
           </Grid>
-
-          <Grid item xs={12} sm={6} align={!matches && 'center'}>
-            <FormControl style={{ minWidth: 250 }}>
-              <InputLabel id="labelCarreras">
-                Elegí a qué carrera está destinada
-              </InputLabel>
-              <Select
-                labelId="labelCarreras"
-                name="restriccionId"
-                value={restriccionId}
-                onChange={handleChange}
-              >
-                {carreras.map((carrera) => (
-                  <MenuItem value={carrera.id} key={carrera.id}>
-                    {carrera.nombre}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid container item xs={12} align="center" spacing={1}>
-            <Grid item xs={6} align="right">
-              <Button variant="contained" color="primary" type="submit">
-                Guardar
-              </Button>
-            </Grid>
-            <Grid item xs={6} align="left">
-              <Button component={Link} to="/actividades">
-                Cancelar
-              </Button>
-            </Grid>
+          <Grid item xs={6}>
+            <BotonGuardar loading={iconoCargando} />
           </Grid>
         </Grid>
       </ValidatorForm>

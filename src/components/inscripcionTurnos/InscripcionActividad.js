@@ -11,12 +11,14 @@ import {
 import Paso1DDJJ from './Paso1DDJJ';
 import Paso2DDJJ from './Paso2DDJJ';
 import Paso3DDJJ from './Paso3DDJJ';
-import { makeStyles } from '@material-ui/core/styles';
 import { useApi } from '../../utils/fetchApi';
 import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
+import { useNotificarActualizacion } from '../../state/actualizaciones';
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import { BotonGuardar } from '../ui/BotonGuardar';
 
 const pasos = [
   'Seleccioná la actividad',
@@ -26,12 +28,14 @@ const pasos = [
 
 export default function Actividad() {
   const history = useHistory();
-  const classes = useStyles();
-  const { create } = useApi('autorizaciones');
+  const { create } = useApi('turnos');
   const usuario = useRecoilValue(usuarioState);
+  const [iconoCargando, setIconoCargando] = useState(false);
 
   const [numeroPaso, setNumeroPaso] = useState(0);
-
+  const notificarActualizacion = useNotificarActualizacion(
+    'usuarios/yo/turnos'
+  );
   const [informacionSeleccionada, setInformacionSeleccionada] = useState(
     ESTADOINICIAL
   );
@@ -82,74 +86,66 @@ export default function Actividad() {
   };
 
   const guardarInscripcion = async () => {
+    setIconoCargando(true);
     await create({
       actividadId: informacionSeleccionada.actividad.id,
       medioDeTransporte: informacionSeleccionada.medioDeTransporte,
       usuarioId: usuario.id,
     });
-
-    history.push('/autorizaciones/confirmacion');
+    notificarActualizacion();
+    history.push('/turnos/confirmacion');
   };
 
   return (
     <>
       <Box mt={3} display="flex" justifyContent="center">
         <Typography variant="h4" color="primary">
-          Solicitar autorización
+          Solicitar turno
         </Typography>
       </Box>
-
-      <Grid item xs={12} align="center">
-        <Stepper
-          activeStep={numeroPaso}
-          alternativeLabel
-          style={{
-            backgroundColor: '#fafafa',
-            maxWidth: '600px',
-            marginTop: '20px',
-          }}
-        >
-          {pasos.map((paso) => (
-            <Step key={paso}>
-              <StepLabel>{paso}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-      </Grid>
-      {getComponenteDelPaso(numeroPaso)}
-
-      <Grid align="center" className={classes.marginBotonYTexto}>
-        <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
-          Volver
-        </Button>
-        {numeroPaso === 2 ? (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={guardarInscripcion}
+      <ValidatorForm onSubmit={guardarInscripcion}>
+        <Grid item xs={12} align="center">
+          <Stepper
+            activeStep={numeroPaso}
+            alternativeLabel
+            style={{
+              backgroundColor: '#fafafa',
+              maxWidth: '600px',
+              marginTop: '20px',
+            }}
           >
-            Guardar
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={siguientePaso}
-            disabled={informacionSeleccionada.actividad ? false : true}
-          >
-            Siguiente
-          </Button>
-        )}
-      </Grid>
+            {pasos.map((paso) => (
+              <Step key={paso}>
+                <StepLabel>{paso}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Grid>
+        {getComponenteDelPaso(numeroPaso)}
+
+        <Grid container spacing={10}>
+          <Grid item xs={12} align="center" spacing={4}>
+            <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
+              Volver
+            </Button>
+            {numeroPaso === 2 ? (
+              <BotonGuardar loading={iconoCargando} />
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={siguientePaso}
+                disabled={informacionSeleccionada.actividad ? false : true}
+              >
+                Siguiente
+              </Button>
+            )}
+          </Grid>
+        </Grid>
+      </ValidatorForm>
     </>
   );
 }
-
-const useStyles = makeStyles({
-  marginBotonYTexto: {
-    marginTop: '50px',
-  },
-});
 
 const ESTADOINICIAL = {
   medioDeTransporte: 'Movilidad propia',

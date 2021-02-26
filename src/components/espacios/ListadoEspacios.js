@@ -15,7 +15,6 @@ import AddIcon from '@material-ui/icons/Add';
 import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { todosLosEspacios } from '../../state/espacios';
@@ -79,7 +78,6 @@ export default function PantallaEspacios() {
                 <TableCell>Nombre</TableCell>
                 <TableCell>Edificio</TableCell>
                 <TableCell>Piso</TableCell>
-                <TableCell>Estado</TableCell>
                 <TableCell>Aforo</TableCell>
                 <TableCell>Acciones</TableCell>
               </TableRow>
@@ -90,13 +88,6 @@ export default function PantallaEspacios() {
                   <TableCell>{espacio.nombre}</TableCell>
                   <TableCell>{espacio.Edificio.nombre}</TableCell>
                   <TableCell>{espacio.piso}</TableCell>
-                  <TableCell>
-                    {espacio.habilitado ? (
-                      <FiberManualRecordIcon className={classes.activo} />
-                    ) : (
-                      <FiberManualRecordIcon className={classes.inactivo} />
-                    )}
-                  </TableCell>
                   <TableCell>{espacio.aforo}</TableCell>
                   <TableCell>
                     <IconButton

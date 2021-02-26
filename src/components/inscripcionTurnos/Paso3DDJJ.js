@@ -34,7 +34,7 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
   return (
     <>
       <Grid container component={Box} justifyContent="center">
-        {completoCapacitacion === 'false' && <AlertMessage />}
+        {completoCapacitacion !== 'true' && <AlertMessage />}
       </Grid>
 
       <Grid container alignItems="flex-end" spacing={4}>

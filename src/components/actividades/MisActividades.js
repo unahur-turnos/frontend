@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { useRecoilValue } from 'recoil';
 import PostAddIcon from '@material-ui/icons/PostAdd';
-import { autorizacionesUsuarioState } from '../../state/usuario';
+import { turnosUsuarioState } from '../../state/usuario';
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 import { filter } from 'ramda';
@@ -17,25 +17,23 @@ import AcordionTurno from '../ui/AcordionTurno';
 import Alert from '@material-ui/lab/Alert';
 
 export default function MisActividades() {
-  const autorizaciones = useRecoilValue(autorizacionesUsuarioState);
+  const turnos = useRecoilValue(turnosUsuarioState);
   const classes = useStyles();
   const matches = useMediaQuery((theme) => theme.breakpoints.down('xs'));
 
-  const autorizacionesFuturas = () => {
+  const turnosFuturos = () => {
     return filter(
-      (autorizacion) =>
-        DateTime.fromISO(autorizacion.Actividad.fechaHoraInicio) >
-        DateTime.local(),
-      autorizaciones
+      (turno) =>
+        DateTime.fromISO(turno.Actividad.fechaHoraInicio) > DateTime.local(),
+      turnos
     );
   };
 
-  const autorizacionesPasadas = () => {
+  const turnosPasados = () => {
     return filter(
-      (autorizacion) =>
-        DateTime.fromISO(autorizacion.Actividad.fechaHoraInicio) <
-        DateTime.local(),
-      autorizaciones
+      (turno) =>
+        DateTime.fromISO(turno.Actividad.fechaHoraInicio) < DateTime.local(),
+      turnos
     );
   };
 
@@ -54,7 +52,7 @@ export default function MisActividades() {
               variant="contained"
               color="primary"
               component={Link}
-              to={`/autorizaciones/nueva`}
+              to={`/turnos/nuevo`}
               startIcon={<PostAddIcon />}
             >
               Pedir turno
@@ -71,7 +69,7 @@ export default function MisActividades() {
               variant="contained"
               color="primary"
               component={Link}
-              to={`/autorizaciones/nueva`}
+              to={`/turnos/nuevo`}
               startIcon={<PostAddIcon />}
             >
               Pedir turno
@@ -80,24 +78,39 @@ export default function MisActividades() {
         )}
 
         <Grid container spacing={2}>
-          {autorizacionesFuturas().map((autorizacion) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} key={autorizacion.id}>
-                <TarjetaTurno autorizacion={autorizacion} mostrarBoton={true} />
-              </Grid>
-            );
+          {turnosFuturos().map((turno) => {
+            {
+              return !matches ? (
+                <Grid item xs={11} sm={6} md={4} key={turno.id}>
+                  <TarjetaTurno turno={turno} mostrarBoton={true} />
+                </Grid>
+              ) : (
+                <Grid
+                  container
+                  component={Box}
+                  display="flex"
+                  justifyContent="center"
+                  margin={1}
+                  key={turno.id}
+                >
+                  <Grid item xs={11}>
+                    <TarjetaTurno turno={turno} mostrarBoton={true} />
+                  </Grid>
+                </Grid>
+              );
+            }
           })}
-          {autorizacionesFuturas().length === 0 && (
+          {turnosFuturos().length === 0 && (
             <Grid item className={classes.root}>
               <Alert severity="info">
                 Aún no tenés ningún turno. Podés pedir uno haciendo{' '}
-                <Link to="/autorizaciones/nueva">clic aquí.</Link>
+                <Link to="/turnos/nuevo">clic aquí.</Link>
               </Alert>
             </Grid>
           )}
         </Grid>
         <Grid component={Box} container mt={2}>
-          <AcordionTurno data={autorizacionesPasadas()} />
+          <AcordionTurno data={turnosPasados()} />
         </Grid>
       </Grid>
     </>

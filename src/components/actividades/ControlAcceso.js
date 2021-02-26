@@ -21,7 +21,7 @@ import ConfirmarEntrada from './ConfirmarEntrada';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
-import { autorizacionesPorActividad } from '../../state/autorizaciones';
+import { turnosPorActividad } from '../../state/turnos';
 import { hourFormatter, fechaHoraActividad } from '../../utils/dateUtils';
 import { compose, filter, isNil, sortWith, ascend, propOr } from 'ramda';
 import { todasLasActividades } from '../../state/actividades';
@@ -36,9 +36,6 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: 16,
   },
-  autocomplete: {
-    width: 400,
-  },
   icon: {
     marginRight: 16,
   },
@@ -47,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     borderColor: theme.palette.primary.main,
   },
   table: {
-    maxWidth: '50%',
+    maxWidth: '100%',
   },
   tableCell: {
     width: '33%',
@@ -66,9 +63,9 @@ export default function ControlAcceso() {
 
   return (
     <Grid container className={classes.container} spacing={4}>
-      <Grid item md={12} align="center">
+      <Grid item xs={12} align="center">
         <Typography variant="h4" color="primary">
-          Control de acceso
+          Control de turnos
         </Typography>
       </Grid>
       <Grid container justify="center" spacing={4}>
@@ -86,9 +83,9 @@ export default function ControlAcceso() {
           )}
         </Grid>
       </Grid>
-      <Grid item md={12} align="center">
+      <Grid item xs={12} align="center">
         {actividadSeleccionada && (
-          <ListadoAutorizaciones idActividad={actividadSeleccionada.id} />
+          <ListadoTurnos idActividad={actividadSeleccionada.id} />
         )}
       </Grid>
     </Grid>
@@ -112,20 +109,18 @@ function DatosActividad({ actividad }) {
   );
 }
 
-function ListadoAutorizaciones({ idActividad }) {
+function ListadoTurnos({ idActividad }) {
   const classes = useStyles();
 
-  const todasLasAutorizaciones = useRecoilValue(
-    autorizacionesPorActividad(idActividad)
-  );
+  const todosLosTurnos = useRecoilValue(turnosPorActividad(idActividad));
 
-  const [autorizacionARegistrar, setAutorizacionARegistrar] = useState();
+  const [turnoARegistrar, setTurnoARegistrar] = useState();
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [ocultarRegistrados, setOcultarRegistrados] = useState(false);
 
   // El useMemo evita que esto se recalcule a cada rato, solo lo hace si cambian sus dependencias.
-  const autorizacionesFiltradas = useMemo(
+  const turnosFiltrados = useMemo(
     () =>
       compose(
         sortWith([
@@ -133,12 +128,12 @@ function ListadoAutorizaciones({ idActividad }) {
           ascend(path(['Usuario', 'apellido'])),
         ]),
         filter((it) => !ocultarRegistrados || isNil(it.fechaHoraIngreso))
-      )(todasLasAutorizaciones),
-    [todasLasAutorizaciones, ocultarRegistrados]
+      )(todosLosTurnos),
+    [todosLosTurnos, ocultarRegistrados]
   );
 
-  const confirmarRegistro = (autorizacion) => {
-    setAutorizacionARegistrar(autorizacion);
+  const confirmarRegistro = (turno) => {
+    setTurnoARegistrar(turno);
     setAbrirModal(true);
   };
 
@@ -154,53 +149,55 @@ function ListadoAutorizaciones({ idActividad }) {
           />
         </FormGroup>
       </Box>
-      <TableContainer>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell className={classes.tableCell} align="center">
-                Asistente
-              </TableCell>
-              <TableCell className={classes.tableCell} align="center">
-                DNI
-              </TableCell>
-              <TableCell className={classes.tableCell} align="center">
-                Ingreso
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {autorizacionesFiltradas.map((autorizacion) => {
-              return (
-                <TableRow key={autorizacion.id}>
-                  <TableCell align="center">{`${autorizacion.Usuario.apellido} ${autorizacion.Usuario.nombre}`}</TableCell>
-                  <TableCell align="center">{`${autorizacion.Usuario.dni}`}</TableCell>
-                  <TableCell align="center">
-                    {!autorizacion.fechaHoraIngreso ? (
-                      <Button
-                        color="primary"
-                        onClick={() => confirmarRegistro(autorizacion)}
-                      >
-                        Registrar
-                      </Button>
-                    ) : (
-                      <Typography>
-                        {hourFormatter(autorizacion.fechaHoraIngreso)}
-                      </Typography>
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-        <ConfirmarEntrada
-          abrirModal={abrirModal}
-          setAbrirModal={setAbrirModal}
-          autorizacionARegistrar={autorizacionARegistrar}
-          idActividad={idActividad}
-        />
-      </TableContainer>
+      <Grid item xs={12} sm={9} md={7}>
+        <TableContainer>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell className={classes.tableCell} align="center">
+                  Asistente
+                </TableCell>
+                <TableCell className={classes.tableCell} align="center">
+                  DNI
+                </TableCell>
+                <TableCell className={classes.tableCell} align="center">
+                  Ingreso
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {turnosFiltrados.map((turno) => {
+                return (
+                  <TableRow key={turno.id}>
+                    <TableCell align="center">{`${turno.Usuario.apellido} ${turno.Usuario.nombre}`}</TableCell>
+                    <TableCell align="center">{`${turno.Usuario.dni}`}</TableCell>
+                    <TableCell align="center">
+                      {!turno.fechaHoraIngreso ? (
+                        <Button
+                          color="primary"
+                          onClick={() => confirmarRegistro(turno)}
+                        >
+                          Registrar
+                        </Button>
+                      ) : (
+                        <Typography>
+                          {hourFormatter(turno.fechaHoraIngreso)}
+                        </Typography>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+          <ConfirmarEntrada
+            abrirModal={abrirModal}
+            setAbrirModal={setAbrirModal}
+            turnoARegistrar={turnoARegistrar}
+            idActividad={idActividad}
+          />
+        </TableContainer>
+      </Grid>
     </>
   );
 }
@@ -209,6 +206,6 @@ DatosActividad.propTypes = {
   actividad: PropTypes.object,
 };
 
-ListadoAutorizaciones.propTypes = {
+ListadoTurnos.propTypes = {
   idActividad: PropTypes.number,
 };

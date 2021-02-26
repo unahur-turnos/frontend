@@ -129,7 +129,7 @@ export default function ListadoActividades() {
                   </TableCell>
                   <TableCell>
                     <Cupo
-                      anotados={actividad.autorizaciones}
+                      anotados={actividad.turnos}
                       cantidadMax={actividad.Espacio.aforo}
                     />
                   </TableCell>
@@ -181,6 +181,6 @@ function Cupo({ anotados, cantidadMax }) {
 }
 
 Cupo.propTypes = {
-  anotados: PropTypes.int,
-  cantidadMax: PropTypes.int,
+  anotados: PropTypes.number,
+  cantidadMax: PropTypes.number,
 };

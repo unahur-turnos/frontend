@@ -9,9 +9,9 @@ import AltaModificacionEspacio from './components/espacios/AltaModificacionEspac
 import { Box, Container, makeStyles } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
 import RecuperarContrasenia from './components/login/RecuperarContrasenia';
-import FinalDDJJ from './components/inscripcionAutorizacion/FinalDDJJ';
 import Header from './components/ui/Header';
-import InscripcionActividad from './components/inscripcionAutorizacion/InscripcionActividad';
+import InscripcionActividad from './components/inscripcionTurnos/InscripcionActividad';
+import FinalDDJJ from './components/inscripcionTurnos/FinalDDJJ';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
@@ -58,10 +58,6 @@ function Rutas() {
         <AltaModificacionEspacio titulo={'Modificar espacio'} />
       </PrivateRoute>
 
-      <PrivateRoute path="/turnos" rolesPermitidos={['asistente']}>
-        <MisActividades />
-      </PrivateRoute>
-
       <PrivateRoute
         path="/actividades/nueva"
         rolesPermitidos={['bedel', 'admin']}
@@ -88,17 +84,20 @@ function Rutas() {
       </PrivateRoute>
 
       <PrivateRoute
-        path="/autorizaciones/nueva"
+        path="/turnos/nuevo"
         rolesPermitidos={['asistente', 'admin']}
       >
         <InscripcionActividad />
       </PrivateRoute>
 
       <PrivateRoute
-        path="/autorizaciones/confirmacion"
+        path="/turnos/confirmacion"
         rolesPermitidos={['asistente', 'admin']}
       >
         <FinalDDJJ />
+      </PrivateRoute>
+      <PrivateRoute path="/turnos" rolesPermitidos={['asistente']}>
+        <MisActividades />
       </PrivateRoute>
 
       <Route path="/">
