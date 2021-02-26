@@ -76,7 +76,6 @@ export default function ControlAcceso() {
             esAsistente={false}
           />
         </Grid>
-
         <Grid item>
           {actividadSeleccionada && (
             <DatosActividad actividad={actividadSeleccionada} />
@@ -94,7 +93,13 @@ export default function ControlAcceso() {
 
 function DatosActividad({ actividad }) {
   const classes = useStyles();
-  const { Espacio, fechaHoraInicio, fechaHoraFin, responsable } = actividad;
+  const {
+    Espacio,
+    fechaHoraInicio,
+    fechaHoraFin,
+    responsable,
+    telefonoDeContactoResponsable,
+  } = actividad;
 
   return (
     <Card className={classes.card} variant="outlined">
@@ -104,6 +109,9 @@ function DatosActividad({ actividad }) {
           {fechaHoraActividad(fechaHoraInicio, fechaHoraFin)}
         </Typography>
         <Typography variant="body2">{`Responsable: ${responsable}`}</Typography>
+        <Typography variant="body2">
+          Teléfono: {telefonoDeContactoResponsable || '-'}
+        </Typography>
       </CardContent>
     </Card>
   );
