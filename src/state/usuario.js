@@ -13,7 +13,7 @@ const listaRutas = [
     nombre: 'Mis turnos',
     ruta: '/turnos',
     rolesPermitidos: ['asistente'],
-    icono: <LocalActivityIcon />,
+    icono: <ListAltIcon />,
   },
   {
     nombre: 'Actividades',
@@ -26,12 +26,6 @@ const listaRutas = [
     ruta: '/espacios',
     rolesPermitidos: ['admin'],
     icono: <ApartmentIcon />,
-  },
-  {
-    nombre: 'Solicitar turno',
-    ruta: '/turnos/nuevo',
-    rolesPermitidos: ['asistente'],
-    icono: <ListAltIcon />,
   },
   {
     nombre: 'Control de turnos',
