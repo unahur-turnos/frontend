@@ -26,6 +26,7 @@ import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { fechaHoraActividad } from '../../utils/dateUtils';
 import clsx from 'clsx';
+import { BuscadorPorNombre } from '../ui/BuscadorPorNombre';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -59,7 +60,10 @@ const useStyles = makeStyles(({ palette }) => ({
 export default function ListadoActividades() {
   const classes = useStyles();
 
-  const actividades = useRecoilValue(todasLasActividades({ inactivas: true }));
+  const actividadesRecoil = useRecoilValue(
+    todasLasActividades({ inactivas: true })
+  );
+  const [actividades, setActividades] = useState(actividadesRecoil);
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
@@ -75,8 +79,8 @@ export default function ListadoActividades() {
 
   return (
     <>
-      <Grid container alignItems="center">
-        <Grid item>
+      <Grid container alignItems="center" spacing={3}>
+        <Grid item xs={12} sm={6}>
           <Typography variant="h4" color="primary">
             Actividades
           </Typography>
@@ -91,6 +95,13 @@ export default function ListadoActividades() {
           >
             Nueva actividad
           </Button>
+        </Grid>
+        <Grid item xs={12} className={classes.floatRight}>
+          <BuscadorPorNombre
+            listaDeRecoil={actividadesRecoil}
+            setListaParaMostrar={setActividades}
+            label={'Buscá una actividad'}
+          />
         </Grid>
       </Grid>
       <Box mt={2}>

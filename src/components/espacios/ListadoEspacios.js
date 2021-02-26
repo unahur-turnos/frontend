@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { todosLosEspacios } from '../../state/espacios';
 import { useRecoilValue } from 'recoil';
+import { BuscadorPorNombre } from '../ui/BuscadorPorNombre';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -40,7 +41,8 @@ const useStyles = makeStyles(({ palette }) => ({
 export default function PantallaEspacios() {
   const classes = useStyles();
 
-  const espacios = useRecoilValue(todosLosEspacios);
+  const espaciosRecoil = useRecoilValue(todosLosEspacios);
+  const [espacios, setEspacios] = useState(espaciosRecoil);
 
   const [abrirModal, setAbrirModal] = useState(false);
   const [espacioAEliminar, setEspacioAEliminar] = useState();
@@ -52,7 +54,7 @@ export default function PantallaEspacios() {
 
   return (
     <>
-      <Grid container alignItems="center">
+      <Grid container alignItems="center" spacing={3}>
         <Grid item>
           <Typography variant="h4" color="primary">
             Espacios
@@ -68,6 +70,13 @@ export default function PantallaEspacios() {
           >
             Nuevo espacio
           </Button>
+        </Grid>
+        <Grid item xs={12} className={classes.floatRight}>
+          <BuscadorPorNombre
+            listaDeRecoil={espaciosRecoil}
+            setListaParaMostrar={setEspacios}
+            label={'Buscá un espacio'}
+          />
         </Grid>
       </Grid>
       <Box mt={2}>
