@@ -1,3 +1,4 @@
+import { AYUDAS, ERRORES } from '../textos/Textos';
 import {
   Box,
   Button,
@@ -10,27 +11,27 @@ import {
   RadioGroup,
   Typography,
 } from '@material-ui/core';
-import { useHistory, useParams } from 'react-router-dom';
-import { Autocomplete } from '@material-ui/lab';
 import {
   SelectValidator,
   TextValidator,
   ValidatorForm,
 } from 'react-material-ui-form-validator';
+import { dateFormatter, formatISO } from '../../utils/dateUtils';
+import { find, propEq } from 'ramda';
+import { useHistory, useParams } from 'react-router-dom';
+
+import { Autocomplete } from '@material-ui/lab';
+import { BotonGuardar } from '../ui/BotonGuardar';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import { actividadPorId } from '../../state/actividades';
-import { dateFormatter } from '../../utils/dateUtils';
 import { todasLasCarreras } from '../../state/carreras';
-import { ERRORES, AYUDAS } from '../textos/Textos';
 import { todosLosEspacios } from '../../state/espacios';
 import { useApi } from '../../utils/fetchApi';
+import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
-import { find, propEq } from 'ramda';
-import { BotonGuardar } from '../ui/BotonGuardar';
 
 export default function AltaActividad(props) {
   const inputClasses = useInputStyles();
@@ -51,18 +52,20 @@ export default function AltaActividad(props) {
     fechaHoraFin,
     responsable,
     telefonoDeContactoResponsable,
+    activa,
     restriccionId,
   } = actividad;
 
   const carreraSeleccionada = find(propEq('id', restriccionId), carreras);
+
   ValidatorForm.addValidationRule(
     'fechaInicioValida',
-    (value) => DateTime.fromISO(value) > DateTime.local()
+    (value) => formatISO(value) > formatISO(DateTime.local())
   );
 
   ValidatorForm.addValidationRule(
     'fechaFinValida',
-    (value) => value > actividad.fechaHoraInicio
+    (value) => formatISO(value) > formatISO(fechaHoraInicio)
   );
 
   const handleChange = (e) => {
@@ -156,7 +159,6 @@ export default function AltaActividad(props) {
                 value={dateFormatter(fechaHoraFin) || ''}
                 label="Fecha y hora de cierre"
                 fullWidth
-                className={inputClasses.numberFieldWithoutArrows}
                 onChange={handleChange}
                 validators={['required', 'fechaFinValida']}
                 errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
@@ -229,9 +231,9 @@ export default function AltaActividad(props) {
             <FormControl>
               <RadioGroup
                 row
-                aria-label="estado"
-                name="estado"
-                defaultValue={'true'}
+                aria-label="activa"
+                name="activa"
+                value={activa.toString()}
                 onChange={handleChange}
                 style={{ marginLeft: 20 }}
               >
