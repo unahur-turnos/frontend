@@ -31,7 +31,6 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
             actividades={actividades}
             funcionOnChange={cambioDeActividad}
             esAsistente={true}
-            mostrarSiEstaDisponible={true}
           />
         </Grid>
 
