@@ -16,20 +16,20 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { ascend, compose, filter, isNil, propOr, sortWith } from 'ramda';
+import { fechaHoraActividad, hourFormatter } from '../../utils/dateUtils';
 
+import { BuscadorDePersonas } from '../ui/BuscadorDePersonas';
 import ConfirmarEntrada from './ConfirmarEntrada';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
-import { turnosPorActividad } from '../../state/turnos';
-import { hourFormatter, fechaHoraActividad } from '../../utils/dateUtils';
-import { compose, filter, isNil, sortWith, ascend, propOr } from 'ramda';
+import { path } from 'ramda';
 import { todasLasActividades } from '../../state/actividades';
+import { turnosPorActividad } from '../../state/turnos';
+import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { path } from 'ramda';
-import { useMemo } from 'react';
-import { BuscadorDePersonas } from '../ui/BuscadorDePersonas';
 
 const minDate = new Date(-1000000000).toISOString();
 
@@ -158,7 +158,7 @@ function ListadoTurnos({ idActividad }) {
       </Box>
       <Grid container spacing={4} align="center">
         <Grid item xs={12}>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={5}>
             <BuscadorDePersonas
               listaDeRecoil={turnosFiltrados}
               setListaParaMostrar={setListaDeTurnos}
