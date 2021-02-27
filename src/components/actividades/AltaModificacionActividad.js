@@ -290,6 +290,8 @@ export default function AltaActividad(props) {
               <Button component={Link} to="/actividades">
                 Cancelar
               </Button>
+              <p />
+              <p />
             </Grid>
           </Grid>
         </Grid>

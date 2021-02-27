@@ -193,6 +193,8 @@ function ListadoAutorizaciones({ idActividad }) {
               );
             })}
           </TableBody>
+          <p />
+          <p />
         </Table>
         <ConfirmarEntrada
           abrirModal={abrirModal}

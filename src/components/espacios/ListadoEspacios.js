@@ -110,6 +110,8 @@ export default function PantallaEspacios() {
             </TableBody>
           </Table>
         </TableContainer>
+        <p />
+        <p />
       </Box>
       <ConfirmarEliminacion
         abrirModal={abrirModal}

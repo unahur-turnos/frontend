@@ -179,6 +179,8 @@ export default function Espacio(props) {
           <Button component={Link} to="/espacios">
             Cancelar
           </Button>
+          <p />
+          <p />
         </Grid>
       </Grid>
     </>

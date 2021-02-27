@@ -108,6 +108,8 @@ export default function ListadoActividades() {
             </TableBody>
           </Table>
         </TableContainer>
+        <p />
+        <p />
       </Box>
       <ConfirmarEliminacion
         abrirModal={abrirModal}
