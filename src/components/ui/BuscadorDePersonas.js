@@ -1,28 +1,29 @@
 import { InputAdornment, TextField } from '@material-ui/core';
-import { filter, includes } from 'ramda';
+import { any, anyPass, filter, includes } from 'ramda';
 import { PropTypes } from 'prop-types';
 import { parserStringToLowerCase } from '../../utils/parserStringToLowerCase';
 import SearchIcon from '@material-ui/icons/Search';
 
-export function BuscadorPorNombre(props) {
-  const { listaDeRecoil, setListaParaMostrar, label } = props;
+export function BuscadorDePersonas(props) {
+  const { listaDeRecoil, setListaParaMostrar } = props;
 
   const filtrarLista = (e) => {
     const nuevaLista = filter(
       (it) =>
         includes(
           parserStringToLowerCase(e.target.value),
-          parserStringToLowerCase(it.nombre)
+          parserStringToLowerCase(it.Usuario.apellido)
         ),
       listaDeRecoil
     );
+
     setListaParaMostrar(nuevaLista);
   };
 
   return (
     <TextField
       fullWidth
-      label={label}
+      label="Busca una persona por nombre o DNI"
       variant="outlined"
       onChange={filtrarLista}
       InputProps={{
@@ -36,8 +37,7 @@ export function BuscadorPorNombre(props) {
   );
 }
 
-BuscadorPorNombre.propTypes = {
+BuscadorDePersonas.propTypes = {
   listaDeRecoil: PropTypes.arrayOf(PropTypes.object),
   setListaParaMostrar: PropTypes.func,
-  label: PropTypes.string,
 };

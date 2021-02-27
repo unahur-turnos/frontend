@@ -55,7 +55,7 @@ export default function PantallaEspacios() {
   return (
     <>
       <Grid container alignItems="center" spacing={3}>
-        <Grid item>
+        <Grid item xs={12} sm={6}>
           <Typography variant="h4" color="primary">
             Espacios
           </Typography>
@@ -71,7 +71,7 @@ export default function PantallaEspacios() {
             Nuevo espacio
           </Button>
         </Grid>
-        <Grid item xs={12} className={classes.floatRight}>
+        <Grid item xs={12} sm={6} md={5}>
           <BuscadorPorNombre
             listaDeRecoil={espaciosRecoil}
             setListaParaMostrar={setEspacios}

@@ -29,6 +29,7 @@ import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { path } from 'ramda';
 import { useMemo } from 'react';
+import { BuscadorDePersonas } from '../ui/BuscadorDePersonas';
 
 const minDate = new Date(-1000000000).toISOString();
 
@@ -121,12 +122,9 @@ function ListadoTurnos({ idActividad }) {
   const classes = useStyles();
 
   const todosLosTurnos = useRecoilValue(turnosPorActividad(idActividad));
-
   const [turnoARegistrar, setTurnoARegistrar] = useState();
-
   const [abrirModal, setAbrirModal] = useState(false);
   const [ocultarRegistrados, setOcultarRegistrados] = useState(false);
-
   // El useMemo evita que esto se recalcule a cada rato, solo lo hace si cambian sus dependencias.
   const turnosFiltrados = useMemo(
     () =>
@@ -139,6 +137,7 @@ function ListadoTurnos({ idActividad }) {
       )(todosLosTurnos),
     [todosLosTurnos, ocultarRegistrados]
   );
+  const [listaDeTurnos, setListaDeTurnos] = useState(turnosFiltrados);
 
   const confirmarRegistro = (turno) => {
     setTurnoARegistrar(turno);
@@ -157,6 +156,17 @@ function ListadoTurnos({ idActividad }) {
           />
         </FormGroup>
       </Box>
+      <Grid container spacing={4} align="center">
+        <Grid item xs={12}>
+          <Grid item xs={12} sm={6} md={4}>
+            <BuscadorDePersonas
+              listaDeRecoil={turnosFiltrados}
+              setListaParaMostrar={setListaDeTurnos}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+
       <Grid item xs={12} sm={9} md={7}>
         <TableContainer>
           <Table className={classes.table}>
@@ -174,7 +184,7 @@ function ListadoTurnos({ idActividad }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {turnosFiltrados.map((turno) => {
+              {listaDeTurnos.map((turno) => {
                 return (
                   <TableRow key={turno.id}>
                     <TableCell align="center">{`${turno.Usuario.apellido} ${turno.Usuario.nombre}`}</TableCell>

@@ -96,7 +96,7 @@ export default function ListadoActividades() {
             Nueva actividad
           </Button>
         </Grid>
-        <Grid item xs={12} className={classes.floatRight}>
+        <Grid item xs={12} sm={6} md={5}>
           <BuscadorPorNombre
             listaDeRecoil={actividadesRecoil}
             setListaParaMostrar={setActividades}
