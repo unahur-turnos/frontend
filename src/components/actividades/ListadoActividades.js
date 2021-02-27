@@ -139,19 +139,23 @@ export default function ListadoActividades() {
                     />
                   </TableCell>
                   <TableCell>
-                    <IconButton
-                      className={classes.icon}
-                      aria-label="edit"
-                      component={Link}
-                      to={`/actividades/${actividad.id}`}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                    <Tooltip title="Editar">
+                      <span>
+                        <IconButton
+                          className={classes.icon}
+                          aria-label="edit"
+                          component={Link}
+                          to={`/actividades/${actividad.id}`}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </span>
+                    </Tooltip>
                     <Tooltip
                       title={
                         masDeUnTurno(actividad.turnos)
                           ? 'No se puede borrar esta actividad porque ya tiene turnos asignados'
-                          : ''
+                          : 'Eliminar'
                       }
                     >
                       <span>
