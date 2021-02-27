@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
   Chip,
 } from '@material-ui/core';
@@ -66,6 +67,10 @@ export default function ListadoActividades() {
   const eliminarActividad = (actividad) => {
     setActividadAEliminar(actividad);
     setAbrirModal(true);
+  };
+
+  const masDeUnTurno = (turnos) => {
+    return turnos >= 1;
   };
 
   return (
@@ -142,11 +147,25 @@ export default function ListadoActividades() {
                     >
                       <EditIcon />
                     </IconButton>
-                    <IconButton className={classes.icon} aria-label="delete">
-                      <DeleteIcon
-                        onClick={() => eliminarActividad(actividad)}
-                      />
-                    </IconButton>
+                    <Tooltip
+                      title={
+                        masDeUnTurno(actividad.turnos)
+                          ? 'No se puede borrar esta actividad porque ya tiene turnos asignados'
+                          : ''
+                      }
+                    >
+                      <span>
+                        <IconButton
+                          disabled={masDeUnTurno(actividad.turnos)}
+                          className={classes.icon}
+                          aria-label="delete"
+                        >
+                          <DeleteIcon
+                            onClick={() => eliminarActividad(actividad)}
+                          />
+                        </IconButton>
+                      </span>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
