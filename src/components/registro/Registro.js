@@ -309,6 +309,8 @@ export default function Registro() {
               <Button component={Link} to="/">
                 Cancelar
               </Button>
+              <p />
+              <p />
             </Grid>
           </Grid>
         </Grid>

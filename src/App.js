@@ -16,6 +16,7 @@ import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Registro from './components/registro/Registro';
+import Footer from './components/ui/Footer';
 import { useRecoilValue } from 'recoil';
 import {
   hayUsuarioLogueadoState,
@@ -101,6 +102,7 @@ function Rutas() {
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(4),
+    minHeight: '74vh',
   },
 }));
 
@@ -118,6 +120,7 @@ export default function App() {
           </Suspense>
         </Container>
       </Router>
+      <Footer />
     </Box>
   );
 }

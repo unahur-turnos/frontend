@@ -8,9 +8,7 @@ export default function Footer() {
         <p>
           Esta aplicación ha sido realizada por estudiantes de la Licenciatura
           en Informática de la UNaHur. Se permite su uso, modificación y
-          distribución bajo los términos de la licencia GPLv3. Si encontraste
-          algún error o querés ver el código fuente, podés acceder a la
-          organización de GitHub del proyecto.
+          distribución bajo los términos de la licencia GPLv3.
         </p>
       </div>
     </>
@@ -19,13 +17,11 @@ export default function Footer() {
 
 const useStyles = makeStyles(() => ({
   footer: {
-    bottom: 0,
     backgroundColor: '#CCD1D1',
     padding: '1rem',
-    position: 'fixed',
     left: 0,
     width: '100%',
-    clear: 'both',
+    textAlign: 'center',
   },
 }));
 
