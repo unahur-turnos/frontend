@@ -27,8 +27,9 @@ import { useMemo, useState } from 'react';
 import { fechaHoraActividad } from '../../utils/dateUtils';
 import clsx from 'clsx';
 import { Buscador } from '../ui/Buscador';
-import { anyPass, filter } from 'ramda';
+import { anyPass, filter, isEmpty } from 'ramda';
 import { validateSearch } from '../../utils/validateSearch';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -119,88 +120,94 @@ export default function ListadoActividades() {
         </Grid>
       </Grid>
       <Box mt={2}>
-        <TableContainer>
-          <Table size="medium">
-            <TableHead>
-              <TableRow>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Espacio</TableCell>
-                <TableCell>Responsable</TableCell>
-                <TableCell>Estado</TableCell>
-                <TableCell>Fecha y hora</TableCell>
-                <TableCell>Cupo</TableCell>
-                <TableCell>Acciones</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {actividadesFiltradas.map((actividad) => (
-                <TableRow key={actividad.id}>
-                  <TableCell>
-                    <Typography>{actividad.nombre}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{actividad.Espacio.nombre}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{actividad.responsable}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    {actividad.activa ? (
-                      <FiberManualRecordIcon className={classes.activa} />
-                    ) : (
-                      <FiberManualRecordIcon className={classes.inactiva} />
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {fechaHoraActividad(
-                      actividad.fechaHoraInicio,
-                      actividad.fechaHoraFin
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Cupo
-                      anotados={actividad.turnos}
-                      cantidadMax={actividad.Espacio.aforo}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip title="Editar">
-                      <span>
-                        <IconButton
-                          className={classes.icon}
-                          aria-label="edit"
-                          component={Link}
-                          to={`/actividades/${actividad.id}`}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                    <Tooltip
-                      title={
-                        masDeUnTurno(actividad.turnos)
-                          ? 'No se puede eliminar, ya tiene turnos asignados'
-                          : 'Eliminar'
-                      }
-                    >
-                      <span>
-                        <IconButton
-                          disabled={masDeUnTurno(actividad.turnos)}
-                          className={classes.icon}
-                          aria-label="delete"
-                        >
-                          <DeleteIcon
-                            onClick={() => eliminarActividad(actividad)}
-                          />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                  </TableCell>
+        {isEmpty(actividadesFiltradas) ? (
+          <Alert severity="warning">
+            No se encontraron actividades que cumplan con la búsqueda
+          </Alert>
+        ) : (
+          <TableContainer>
+            <Table size="medium">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Nombre</TableCell>
+                  <TableCell>Espacio</TableCell>
+                  <TableCell>Responsable</TableCell>
+                  <TableCell>Estado</TableCell>
+                  <TableCell>Fecha y hora</TableCell>
+                  <TableCell>Cupo</TableCell>
+                  <TableCell>Acciones</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {actividadesFiltradas.map((actividad) => (
+                  <TableRow key={actividad.id}>
+                    <TableCell>
+                      <Typography>{actividad.nombre}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{actividad.Espacio.nombre}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography>{actividad.responsable}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      {actividad.activa ? (
+                        <FiberManualRecordIcon className={classes.activa} />
+                      ) : (
+                        <FiberManualRecordIcon className={classes.inactiva} />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {fechaHoraActividad(
+                        actividad.fechaHoraInicio,
+                        actividad.fechaHoraFin
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Cupo
+                        anotados={actividad.turnos}
+                        cantidadMax={actividad.Espacio.aforo}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Tooltip title="Editar">
+                        <span>
+                          <IconButton
+                            className={classes.icon}
+                            aria-label="edit"
+                            component={Link}
+                            to={`/actividades/${actividad.id}`}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                      <Tooltip
+                        title={
+                          masDeUnTurno(actividad.turnos)
+                            ? 'No se puede eliminar, ya tiene turnos asignados'
+                            : 'Eliminar'
+                        }
+                      >
+                        <span>
+                          <IconButton
+                            disabled={masDeUnTurno(actividad.turnos)}
+                            className={classes.icon}
+                            aria-label="delete"
+                          >
+                            <DeleteIcon
+                              onClick={() => eliminarActividad(actividad)}
+                            />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Box>
       <ConfirmarEliminacion
         abrirModal={abrirModal}
