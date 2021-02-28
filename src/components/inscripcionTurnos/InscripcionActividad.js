@@ -33,9 +33,14 @@ export default function Actividad() {
   const [iconoCargando, setIconoCargando] = useState(false);
 
   const [numeroPaso, setNumeroPaso] = useState(0);
-  const notificarActualizacion = useNotificarActualizacion(
+  const notificarActualizacionTurno = useNotificarActualizacion(
     'usuarios/yo/turnos'
   );
+
+  const notificarActualizacionActividades = useNotificarActualizacion(
+    'usuarios/yo/actividades'
+  );
+
   const [informacionSeleccionada, setInformacionSeleccionada] = useState(
     ESTADOINICIAL
   );
@@ -92,7 +97,8 @@ export default function Actividad() {
       medioDeTransporte: informacionSeleccionada.medioDeTransporte,
       usuarioId: usuario.id,
     });
-    notificarActualizacion();
+    notificarActualizacionTurno();
+    notificarActualizacionActividades();
     history.push('/turnos/confirmacion');
   };
 

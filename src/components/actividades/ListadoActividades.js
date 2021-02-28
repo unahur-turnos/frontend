@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
   Chip,
 } from '@material-ui/core';
@@ -22,9 +23,12 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { fechaHoraActividad } from '../../utils/dateUtils';
 import clsx from 'clsx';
+import { Buscador } from '../ui/Buscador';
+import { anyPass, filter } from 'ramda';
+import { validateSearch } from '../../utils/validateSearch';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -59,7 +63,7 @@ export default function ListadoActividades() {
   const classes = useStyles();
 
   const actividades = useRecoilValue(todasLasActividades({ inactivas: true }));
-
+  const [textoParaBuscar, setTextoParaBuscar] = useState('');
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
 
@@ -68,10 +72,30 @@ export default function ListadoActividades() {
     setAbrirModal(true);
   };
 
+  const masDeUnTurno = (turnos) => {
+    return turnos >= 1;
+  };
+
+  const validarNombreActividad = (it) => {
+    return validateSearch(textoParaBuscar, it.nombre);
+  };
+  const validarNombreEspacio = (it) => {
+    return validateSearch(textoParaBuscar, it.Espacio.nombre);
+  };
+
+  const validar = anyPass([validarNombreActividad, validarNombreEspacio]);
+
+  const actividadesFiltradas = useMemo(() => filter(validar, actividades), [
+    actividades,
+    validar,
+  ]);
+
+  const cambioDeTextoParaBuscar = (e) => setTextoParaBuscar(e.target.value);
+
   return (
     <>
-      <Grid container alignItems="center">
-        <Grid item>
+      <Grid container alignItems="center" spacing={3}>
+        <Grid item xs={12} sm={6}>
           <Typography variant="h4" color="primary">
             Actividades
           </Typography>
@@ -86,6 +110,12 @@ export default function ListadoActividades() {
           >
             Nueva actividad
           </Button>
+        </Grid>
+        <Grid item xs={12} sm={8} md={5}>
+          <Buscador
+            label="Buscar actividad por nombre o el espacio"
+            onChange={cambioDeTextoParaBuscar}
+          />
         </Grid>
       </Grid>
       <Box mt={2}>
@@ -103,7 +133,7 @@ export default function ListadoActividades() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {actividades.map((actividad) => (
+              {actividadesFiltradas.map((actividad) => (
                 <TableRow key={actividad.id}>
                   <TableCell>
                     <Typography>{actividad.nombre}</Typography>
@@ -134,19 +164,37 @@ export default function ListadoActividades() {
                     />
                   </TableCell>
                   <TableCell>
-                    <IconButton
-                      className={classes.icon}
-                      aria-label="edit"
-                      component={Link}
-                      to={`/actividades/${actividad.id}`}
+                    <Tooltip title="Editar">
+                      <span>
+                        <IconButton
+                          className={classes.icon}
+                          aria-label="edit"
+                          component={Link}
+                          to={`/actividades/${actividad.id}`}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </span>
+                    </Tooltip>
+                    <Tooltip
+                      title={
+                        masDeUnTurno(actividad.turnos)
+                          ? 'No se puede eliminar, ya tiene turnos asignados'
+                          : 'Eliminar'
+                      }
                     >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton className={classes.icon} aria-label="delete">
-                      <DeleteIcon
-                        onClick={() => eliminarActividad(actividad)}
-                      />
-                    </IconButton>
+                      <span>
+                        <IconButton
+                          disabled={masDeUnTurno(actividad.turnos)}
+                          className={classes.icon}
+                          aria-label="delete"
+                        >
+                          <DeleteIcon
+                            onClick={() => eliminarActividad(actividad)}
+                          />
+                        </IconButton>
+                      </span>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}

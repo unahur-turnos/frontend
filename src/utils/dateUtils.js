@@ -22,3 +22,7 @@ export const fechaHoraActividad = (fechaHoraInicio, fechaHoraFin) => {
 
   return `${inicio} ${fin}`;
 };
+
+export const formatISO = (fecha) => {
+  return DateTime.fromISO(fecha).toISO();
+};

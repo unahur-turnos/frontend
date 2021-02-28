@@ -16,19 +16,29 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-
+import {
+  anyPass,
+  ascend,
+  compose,
+  filter,
+  isNil,
+  propOr,
+  sortWith,
+  startsWith,
+  path,
+} from 'ramda';
+import { fechaHoraActividad, hourFormatter } from '../../utils/dateUtils';
 import ConfirmarEntrada from './ConfirmarEntrada';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
-import { turnosPorActividad } from '../../state/turnos';
-import { hourFormatter, fechaHoraActividad } from '../../utils/dateUtils';
-import { compose, filter, isNil, sortWith, ascend, propOr } from 'ramda';
 import { todasLasActividades } from '../../state/actividades';
+import { turnosPorActividad } from '../../state/turnos';
+import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { path } from 'ramda';
-import { useMemo } from 'react';
+import { Buscador } from '../ui/Buscador';
+import { validateSearch } from '../../utils/validateSearch';
 
 const minDate = new Date(-1000000000).toISOString();
 
@@ -76,7 +86,6 @@ export default function ControlAcceso() {
             esAsistente={false}
           />
         </Grid>
-
         <Grid item>
           {actividadSeleccionada && (
             <DatosActividad actividad={actividadSeleccionada} />
@@ -94,7 +103,13 @@ export default function ControlAcceso() {
 
 function DatosActividad({ actividad }) {
   const classes = useStyles();
-  const { Espacio, fechaHoraInicio, fechaHoraFin, responsable } = actividad;
+  const {
+    Espacio,
+    fechaHoraInicio,
+    fechaHoraFin,
+    responsable,
+    telefonoDeContactoResponsable,
+  } = actividad;
 
   return (
     <Card className={classes.card} variant="outlined">
@@ -104,6 +119,9 @@ function DatosActividad({ actividad }) {
           {fechaHoraActividad(fechaHoraInicio, fechaHoraFin)}
         </Typography>
         <Typography variant="body2">{`Responsable: ${responsable}`}</Typography>
+        <Typography variant="body2">
+          Teléfono: {telefonoDeContactoResponsable || '-'}
+        </Typography>
       </CardContent>
     </Card>
   );
@@ -113,13 +131,24 @@ function ListadoTurnos({ idActividad }) {
   const classes = useStyles();
 
   const todosLosTurnos = useRecoilValue(turnosPorActividad(idActividad));
-
   const [turnoARegistrar, setTurnoARegistrar] = useState();
-
   const [abrirModal, setAbrirModal] = useState(false);
   const [ocultarRegistrados, setOcultarRegistrados] = useState(false);
+  const [textoParaBuscar, setTextoParaBuscar] = useState('');
 
-  // El useMemo evita que esto se recalcule a cada rato, solo lo hace si cambian sus dependencias.
+  const validarNombre = (it) => {
+    return validateSearch(textoParaBuscar, it.Usuario.nombre);
+  };
+  const validarApellido = (it) => {
+    return validateSearch(textoParaBuscar, it.Usuario.apellido);
+  };
+
+  const validarDNI = (it) => {
+    return startsWith(textoParaBuscar.toString(), it.Usuario.dni.toString());
+  };
+
+  const validar = anyPass([validarNombre, validarApellido, validarDNI]);
+
   const turnosFiltrados = useMemo(
     () =>
       compose(
@@ -127,9 +156,11 @@ function ListadoTurnos({ idActividad }) {
           ascend(propOr(minDate, 'fechaHoraIngreso')),
           ascend(path(['Usuario', 'apellido'])),
         ]),
-        filter((it) => !ocultarRegistrados || isNil(it.fechaHoraIngreso))
+        filter((it) => !ocultarRegistrados || isNil(it.fechaHoraIngreso)),
+        filter(validar)
       )(todosLosTurnos),
-    [todosLosTurnos, ocultarRegistrados]
+
+    [todosLosTurnos, ocultarRegistrados, validar]
   );
 
   const confirmarRegistro = (turno) => {
@@ -138,7 +169,7 @@ function ListadoTurnos({ idActividad }) {
   };
 
   const cambioCheck = () => setOcultarRegistrados(!ocultarRegistrados);
-
+  const cambioDeTextoParaBuscar = (e) => setTextoParaBuscar(e.target.value);
   return (
     <>
       <Box display="flex" justifyContent="center">
@@ -149,6 +180,17 @@ function ListadoTurnos({ idActividad }) {
           />
         </FormGroup>
       </Box>
+      <Grid container spacing={4} align="center">
+        <Grid item xs={12}>
+          <Grid item xs={12} sm={6} md={5}>
+            <Buscador
+              label="Buscar por nombre, apellido o DNI"
+              onChange={cambioDeTextoParaBuscar}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+
       <Grid item xs={12} sm={9} md={7}>
         <TableContainer>
           <Table className={classes.table}>
