@@ -68,7 +68,7 @@ export default function ListadoActividades() {
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
   const [paginaActual, setPaginaActual] = useState(1);
-  const tamanioPagina = 5;
+  const tamanioPagina = 30;
   const eliminarActividad = (actividad) => {
     setActividadAEliminar(actividad);
     setAbrirModal(true);
