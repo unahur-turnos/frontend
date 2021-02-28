@@ -88,7 +88,7 @@ export default function ListadoActividades() {
   const validar = anyPass([validarNombreActividad, validarNombreEspacio]);
 
   const actividadesFiltradas = useMemo(
-    () => compose(filter(validar))(actividades),
+    () => filter(validar, actividades),
     [actividades, validar]
   );
 
