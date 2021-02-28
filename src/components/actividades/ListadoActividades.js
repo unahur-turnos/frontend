@@ -27,8 +27,9 @@ import { useMemo, useState } from 'react';
 import { fechaHoraActividad } from '../../utils/dateUtils';
 import clsx from 'clsx';
 import { Buscador } from '../ui/Buscador';
-import { anyPass, filter } from 'ramda';
+import { anyPass, compose, drop, filter, take } from 'ramda';
 import { validateSearch } from '../../utils/validateSearch';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -66,7 +67,8 @@ export default function ListadoActividades() {
   const [textoParaBuscar, setTextoParaBuscar] = useState('');
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
-
+  const [paginaActual, setPaginaActual] = useState(1);
+  const tamanioPagina = 5;
   const eliminarActividad = (actividad) => {
     setActividadAEliminar(actividad);
     setAbrirModal(true);
@@ -85,12 +87,27 @@ export default function ListadoActividades() {
 
   const validar = anyPass([validarNombreActividad, validarNombreEspacio]);
 
-  const actividadesFiltradas = useMemo(() => filter(validar, actividades), [
-    actividades,
-    validar,
-  ]);
+  const actividadesFiltradas = useMemo(
+    () => compose(filter(validar))(actividades),
+    [actividades, validar]
+  );
 
-  const cambioDeTextoParaBuscar = (e) => setTextoParaBuscar(e.target.value);
+  const actividadesConPaginacion = useMemo(
+    () =>
+      compose(
+        take(tamanioPagina),
+        drop(tamanioPagina * (paginaActual - 1))
+      )(actividadesFiltradas),
+    [tamanioPagina, paginaActual, actividadesFiltradas]
+  );
+  const cambioDeTextoParaBuscar = (e) => {
+    setPaginaActual(1);
+    setTextoParaBuscar(e.target.value);
+  };
+
+  const cambiarPagina = (event, value) => {
+    setPaginaActual(value);
+  };
 
   return (
     <>
@@ -133,7 +150,7 @@ export default function ListadoActividades() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {actividadesFiltradas.map((actividad) => (
+              {actividadesConPaginacion.map((actividad) => (
                 <TableRow key={actividad.id}>
                   <TableCell>
                     <Typography>{actividad.nombre}</Typography>
@@ -201,6 +218,15 @@ export default function ListadoActividades() {
             </TableBody>
           </Table>
         </TableContainer>
+      </Box>
+      <Box display="flex" justifyContent="center" style={{ margin: 40 }}>
+        <Pagination
+          size="large"
+          count={Math.ceil(actividadesFiltradas.length / tamanioPagina)}
+          color="primary"
+          onChange={cambiarPagina}
+          page={paginaActual}
+        />
       </Box>
       <ConfirmarEliminacion
         abrirModal={abrirModal}
