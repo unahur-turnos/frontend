@@ -1,5 +1,5 @@
 import removeDiacritics from 'diacritics';
 
-export const parserStringToLowerCase = (string) => {
+export const toLowerWithoutDiacritics = (string) => {
   return removeDiacritics.remove(string.toLowerCase());
 };

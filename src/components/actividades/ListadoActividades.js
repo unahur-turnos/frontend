@@ -23,10 +23,12 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { todasLasActividades } from '../../state/actividades';
 import { useRecoilValue } from 'recoil';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { fechaHoraActividad } from '../../utils/dateUtils';
 import clsx from 'clsx';
-import { BuscadorPorNombre } from '../ui/BuscadorPorNombre';
+import { Buscador } from '../ui/Buscador';
+import { anyPass, filter } from 'ramda';
+import { validateSearch } from '../../utils/validateSearch';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -60,11 +62,8 @@ const useStyles = makeStyles(({ palette }) => ({
 export default function ListadoActividades() {
   const classes = useStyles();
 
-  const actividadesRecoil = useRecoilValue(
-    todasLasActividades({ inactivas: true })
-  );
-  const [actividades, setActividades] = useState(actividadesRecoil);
-
+  const actividades = useRecoilValue(todasLasActividades({ inactivas: true }));
+  const [textoParaBuscar, setTextoParaBuscar] = useState('');
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
 
@@ -76,6 +75,22 @@ export default function ListadoActividades() {
   const masDeUnTurno = (turnos) => {
     return turnos >= 1;
   };
+
+  const validarNombreActividad = (it) => {
+    return validateSearch(textoParaBuscar, it.nombre);
+  };
+  const validarNombreEspacio = (it) => {
+    return validateSearch(textoParaBuscar, it.Espacio.nombre);
+  };
+
+  const validar = anyPass([validarNombreActividad, validarNombreEspacio]);
+
+  const actividadesFiltradas = useMemo(() => filter(validar, actividades), [
+    actividades,
+    validar,
+  ]);
+
+  const cambioDeTextoParaBuscar = (e) => setTextoParaBuscar(e.target.value);
 
   return (
     <>
@@ -96,11 +111,10 @@ export default function ListadoActividades() {
             Nueva actividad
           </Button>
         </Grid>
-        <Grid item xs={12} sm={6} md={5}>
-          <BuscadorPorNombre
-            listaDeRecoil={actividadesRecoil}
-            setListaParaMostrar={setActividades}
-            label={'Buscá una actividad'}
+        <Grid item xs={12} sm={8} md={5}>
+          <Buscador
+            label="Buscar actividad por nombre o el espacio"
+            onChange={cambioDeTextoParaBuscar}
           />
         </Grid>
       </Grid>
@@ -119,7 +133,7 @@ export default function ListadoActividades() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {actividades.map((actividad) => (
+              {actividadesFiltradas.map((actividad) => (
                 <TableRow key={actividad.id}>
                   <TableCell>
                     <Typography>{actividad.nombre}</Typography>
@@ -165,7 +179,7 @@ export default function ListadoActividades() {
                     <Tooltip
                       title={
                         masDeUnTurno(actividad.turnos)
-                          ? 'No se puede borrar esta actividad porque ya tiene turnos asignados'
+                          ? 'No se puede eliminar, ya tiene turnos asignados'
                           : 'Eliminar'
                       }
                     >

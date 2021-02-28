@@ -16,20 +16,29 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { ascend, compose, filter, isNil, propOr, sortWith } from 'ramda';
+import {
+  anyPass,
+  ascend,
+  compose,
+  filter,
+  isNil,
+  propOr,
+  sortWith,
+  startsWith,
+  path,
+} from 'ramda';
 import { fechaHoraActividad, hourFormatter } from '../../utils/dateUtils';
-
-import { BuscadorDePersonas } from '../ui/BuscadorDePersonas';
 import ConfirmarEntrada from './ConfirmarEntrada';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
-import { path } from 'ramda';
 import { todasLasActividades } from '../../state/actividades';
 import { turnosPorActividad } from '../../state/turnos';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import { Buscador } from '../ui/Buscador';
+import { validateSearch } from '../../utils/validateSearch';
 
 const minDate = new Date(-1000000000).toISOString();
 
@@ -125,7 +134,21 @@ function ListadoTurnos({ idActividad }) {
   const [turnoARegistrar, setTurnoARegistrar] = useState();
   const [abrirModal, setAbrirModal] = useState(false);
   const [ocultarRegistrados, setOcultarRegistrados] = useState(false);
-  // El useMemo evita que esto se recalcule a cada rato, solo lo hace si cambian sus dependencias.
+  const [textoParaBuscar, setTextoParaBuscar] = useState('');
+
+  const validarNombre = (it) => {
+    return validateSearch(textoParaBuscar, it.Usuario.nombre);
+  };
+  const validarApellido = (it) => {
+    return validateSearch(textoParaBuscar, it.Usuario.apellido);
+  };
+
+  const validarDNI = (it) => {
+    return startsWith(textoParaBuscar.toString(), it.Usuario.dni.toString());
+  };
+
+  const validar = anyPass([validarNombre, validarApellido, validarDNI]);
+
   const turnosFiltrados = useMemo(
     () =>
       compose(
@@ -133,11 +156,12 @@ function ListadoTurnos({ idActividad }) {
           ascend(propOr(minDate, 'fechaHoraIngreso')),
           ascend(path(['Usuario', 'apellido'])),
         ]),
-        filter((it) => !ocultarRegistrados || isNil(it.fechaHoraIngreso))
+        filter((it) => !ocultarRegistrados || isNil(it.fechaHoraIngreso)),
+        filter(validar)
       )(todosLosTurnos),
-    [todosLosTurnos, ocultarRegistrados]
+
+    [todosLosTurnos, ocultarRegistrados, validar]
   );
-  const [listaDeTurnos, setListaDeTurnos] = useState(turnosFiltrados);
 
   const confirmarRegistro = (turno) => {
     setTurnoARegistrar(turno);
@@ -145,7 +169,7 @@ function ListadoTurnos({ idActividad }) {
   };
 
   const cambioCheck = () => setOcultarRegistrados(!ocultarRegistrados);
-
+  const cambioDeTextoParaBuscar = (e) => setTextoParaBuscar(e.target.value);
   return (
     <>
       <Box display="flex" justifyContent="center">
@@ -159,9 +183,9 @@ function ListadoTurnos({ idActividad }) {
       <Grid container spacing={4} align="center">
         <Grid item xs={12}>
           <Grid item xs={12} sm={6} md={5}>
-            <BuscadorDePersonas
-              listaDeRecoil={turnosFiltrados}
-              setListaParaMostrar={setListaDeTurnos}
+            <Buscador
+              label="Buscar por nombre, apellido o DNI"
+              onChange={cambioDeTextoParaBuscar}
             />
           </Grid>
         </Grid>
@@ -184,7 +208,7 @@ function ListadoTurnos({ idActividad }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {listaDeTurnos.map((turno) => {
+              {turnosFiltrados.map((turno) => {
                 return (
                   <TableRow key={turno.id}>
                     <TableCell align="center">{`${turno.Usuario.apellido} ${turno.Usuario.nombre}`}</TableCell>
