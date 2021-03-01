@@ -102,6 +102,9 @@ export default function Actividad() {
     history.push('/turnos/confirmacion');
   };
 
+  const irAMisTurnos = () => {
+    history.push('/turnos');
+  };
   return (
     <>
       <Box mt={3} display="flex" justifyContent="center">
@@ -131,9 +134,11 @@ export default function Actividad() {
 
         <Grid container spacing={10}>
           <Grid item xs={12} align="center" spacing={4}>
-            <Button onClick={pasoAnterior} disabled={numeroPaso === 0}>
-              Volver
-            </Button>
+            {numeroPaso === 0 ? (
+              <Button onClick={irAMisTurnos}>Cancelar</Button>
+            ) : (
+              <Button onClick={pasoAnterior}>Volver</Button>
+            )}
             {numeroPaso === 2 ? (
               <BotonGuardar loading={iconoCargando} />
             ) : (
