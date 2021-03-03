@@ -32,7 +32,7 @@ export default function Actividad() {
   const { create } = useApi('turnos');
   const usuario = useRecoilValue(usuarioState);
   const [iconoCargando, setIconoCargando] = useState(false);
-  const [errorAlPedirTurno, setErrorAlPedirTurno] = useState('');
+  const [errorAlPedirTurno, setErrorAlPedirTurno] = useState();
 
   const [numeroPaso, setNumeroPaso] = useState(0);
   const notificarActualizacionTurno = useNotificarActualizacion(
