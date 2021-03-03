@@ -32,10 +32,7 @@ export default function Actividad() {
   const { create } = useApi('turnos');
   const usuario = useRecoilValue(usuarioState);
   const [iconoCargando, setIconoCargando] = useState(false);
-  const [errorAlPedirTurno, setErrorAlPedirTurno] = useState({
-    hayError: false,
-    mensaje: '',
-  });
+  const [errorAlPedirTurno, setErrorAlPedirTurno] = useState('');
 
   const [numeroPaso, setNumeroPaso] = useState(0);
   const notificarActualizacionTurno = useNotificarActualizacion(
@@ -104,15 +101,15 @@ export default function Actividad() {
         usuarioId: usuario.id,
       });
       notificarActualizacionTurno();
-      notificarActualizacionActividades();
       history.push('/turnos/confirmacion');
     } catch (error) {
       if (path(['response', 'status'], error) === 422) {
-        setErrorAlPedirTurno({
-          hayError: true,
-          mensaje: error.response.data.error,
-        });
+        setErrorAlPedirTurno(error.response.data.error);
+      } else {
+        throw error;
       }
+    } finally {
+      notificarActualizacionActividades();
     }
   };
 
@@ -153,11 +150,11 @@ export default function Actividad() {
               {numeroPaso === 0 ? (
                 <Button onClick={irAMisTurnos}>Cancelar</Button>
               ) : (
-                !errorAlPedirTurno.hayError && (
+                !errorAlPedirTurno && (
                   <Button onClick={pasoAnterior}>Volver</Button>
                 )
               )}
-              {numeroPaso === 2 && !errorAlPedirTurno.hayError && (
+              {numeroPaso === 2 && !errorAlPedirTurno && (
                 <BotonGuardar loading={iconoCargando} />
               )}
               {numeroPaso !== 2 && (
@@ -170,10 +167,10 @@ export default function Actividad() {
                   Siguiente
                 </Button>
               )}
-              {errorAlPedirTurno.hayError && (
+              {errorAlPedirTurno && (
                 <div>
                   <Alert severity="error" align="left">
-                    {errorAlPedirTurno.mensaje}
+                    {errorAlPedirTurno}
                   </Alert>
                   <Button
                     variant="contained"
