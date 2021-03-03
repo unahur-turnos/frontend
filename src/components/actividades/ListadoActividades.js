@@ -84,13 +84,20 @@ export default function ListadoActividades() {
   const validarNombreEspacio = (it) => {
     return validateSearch(textoParaBuscar, it.Espacio.nombre);
   };
+  const validarNombreResponsable = (it) => {
+    return validateSearch(textoParaBuscar, it.responsable);
+  };
 
-  const validar = anyPass([validarNombreActividad, validarNombreEspacio]);
+  const validar = anyPass([
+    validarNombreActividad,
+    validarNombreEspacio,
+    validarNombreResponsable,
+  ]);
 
-  const actividadesFiltradas = useMemo(
-    () => filter(validar, actividades),
-    [actividades, validar]
-  );
+  const actividadesFiltradas = useMemo(() => filter(validar, actividades), [
+    actividades,
+    validar,
+  ]);
 
   const actividadesConPaginacion = useMemo(
     () =>
