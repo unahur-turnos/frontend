@@ -137,7 +137,7 @@ export default function ListadoActividades() {
         </Grid>
         <Grid item xs={12} sm={8} md={5}>
           <Buscador
-            label="Buscar actividad por nombre o el espacio"
+            label="Buscá una actividad por nombre, espacio o responsable"
             onChange={cambioDeTextoParaBuscar}
           />
         </Grid>
