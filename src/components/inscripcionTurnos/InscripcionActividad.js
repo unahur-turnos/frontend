@@ -7,7 +7,7 @@ import {
   Stepper,
   Typography,
 } from '@material-ui/core';
-
+import { path } from 'ramda';
 import Paso1DDJJ from './Paso1DDJJ';
 import Paso2DDJJ from './Paso2DDJJ';
 import Paso3DDJJ from './Paso3DDJJ';
@@ -19,6 +19,7 @@ import { usuarioState } from '../../state/usuario';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import { BotonGuardar } from '../ui/BotonGuardar';
+import { Alert } from '@material-ui/lab';
 
 const pasos = [
   'Seleccioná la actividad',
@@ -31,6 +32,7 @@ export default function Actividad() {
   const { create } = useApi('turnos');
   const usuario = useRecoilValue(usuarioState);
   const [iconoCargando, setIconoCargando] = useState(false);
+  const [errorAlPedirTurno, setErrorAlPedirTurno] = useState();
 
   const [numeroPaso, setNumeroPaso] = useState(0);
   const notificarActualizacionTurno = useNotificarActualizacion(
@@ -92,19 +94,29 @@ export default function Actividad() {
 
   const guardarInscripcion = async () => {
     setIconoCargando(true);
-    await create({
-      actividadId: informacionSeleccionada.actividad.id,
-      medioDeTransporte: informacionSeleccionada.medioDeTransporte,
-      usuarioId: usuario.id,
-    });
-    notificarActualizacionTurno();
-    notificarActualizacionActividades();
-    history.push('/turnos/confirmacion');
+    try {
+      await create({
+        actividadId: informacionSeleccionada.actividad.id,
+        medioDeTransporte: informacionSeleccionada.medioDeTransporte,
+        usuarioId: usuario.id,
+      });
+      notificarActualizacionTurno();
+      history.push('/turnos/confirmacion');
+    } catch (error) {
+      if (path(['response', 'status'], error) === 422) {
+        setErrorAlPedirTurno(error.response.data.error);
+      } else {
+        throw error;
+      }
+    } finally {
+      notificarActualizacionActividades();
+    }
   };
 
   const irAMisTurnos = () => {
     history.push('/turnos');
   };
+
   return (
     <>
       <Box mt={3} display="flex" justifyContent="center">
@@ -132,25 +144,45 @@ export default function Actividad() {
         </Grid>
         {getComponenteDelPaso(numeroPaso)}
 
-        <Grid container spacing={10}>
-          <Grid item xs={12} align="center" spacing={4}>
-            {numeroPaso === 0 ? (
-              <Button onClick={irAMisTurnos}>Cancelar</Button>
-            ) : (
-              <Button onClick={pasoAnterior}>Volver</Button>
-            )}
-            {numeroPaso === 2 ? (
-              <BotonGuardar loading={iconoCargando} />
-            ) : (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={siguientePaso}
-                disabled={informacionSeleccionada.actividad ? false : true}
-              >
-                Siguiente
-              </Button>
-            )}
+        <Grid container spacing={10} align="center">
+          <Grid item xs={12}>
+            <Grid item xs={9} sm={7} md={4} style={{ marginTop: 20 }}>
+              {numeroPaso === 0 ? (
+                <Button onClick={irAMisTurnos}>Cancelar</Button>
+              ) : (
+                !errorAlPedirTurno && (
+                  <Button onClick={pasoAnterior}>Volver</Button>
+                )
+              )}
+              {numeroPaso === 2 && !errorAlPedirTurno && (
+                <BotonGuardar loading={iconoCargando} />
+              )}
+              {numeroPaso !== 2 && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={siguientePaso}
+                  disabled={informacionSeleccionada.actividad ? false : true}
+                >
+                  Siguiente
+                </Button>
+              )}
+              {errorAlPedirTurno && (
+                <div>
+                  <Alert severity="error" align="left">
+                    {errorAlPedirTurno}
+                  </Alert>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={irAMisTurnos}
+                    style={{ marginTop: 20 }}
+                  >
+                    Volver al inicio
+                  </Button>
+                </div>
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </ValidatorForm>
