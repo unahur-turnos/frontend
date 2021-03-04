@@ -27,9 +27,10 @@ import { useMemo, useState } from 'react';
 import { fechaHoraActividad } from '../../utils/dateUtils';
 import clsx from 'clsx';
 import { Buscador } from '../ui/Buscador';
-import { anyPass, filter, isEmpty } from 'ramda';
+import { anyPass, compose, drop, filter, take, isEmpty } from 'ramda';
 import { validateSearch } from '../../utils/validateSearch';
 import { Alert } from '@material-ui/lab';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -67,7 +68,8 @@ export default function ListadoActividades() {
   const [textoParaBuscar, setTextoParaBuscar] = useState('');
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
-
+  const [paginaActual, setPaginaActual] = useState(1);
+  const tamanioPagina = 30;
   const eliminarActividad = (actividad) => {
     setActividadAEliminar(actividad);
     setAbrirModal(true);
@@ -83,15 +85,37 @@ export default function ListadoActividades() {
   const validarNombreEspacio = (it) => {
     return validateSearch(textoParaBuscar, it.Espacio.nombre);
   };
+  const validarNombreResponsable = (it) => {
+    return validateSearch(textoParaBuscar, it.responsable);
+  };
 
-  const validar = anyPass([validarNombreActividad, validarNombreEspacio]);
+  const validar = anyPass([
+    validarNombreActividad,
+    validarNombreEspacio,
+    validarNombreResponsable,
+  ]);
 
   const actividadesFiltradas = useMemo(() => filter(validar, actividades), [
     actividades,
     validar,
   ]);
 
-  const cambioDeTextoParaBuscar = (e) => setTextoParaBuscar(e.target.value);
+  const actividadesConPaginacion = useMemo(
+    () =>
+      compose(
+        take(tamanioPagina),
+        drop(tamanioPagina * (paginaActual - 1))
+      )(actividadesFiltradas),
+    [tamanioPagina, paginaActual, actividadesFiltradas]
+  );
+  const cambioDeTextoParaBuscar = (e) => {
+    setPaginaActual(1);
+    setTextoParaBuscar(e.target.value);
+  };
+
+  const cambiarPagina = (event, value) => {
+    setPaginaActual(value);
+  };
 
   return (
     <>
@@ -114,7 +138,7 @@ export default function ListadoActividades() {
         </Grid>
         <Grid item xs={12} sm={8} md={5}>
           <Buscador
-            label="Buscar actividad por nombre o el espacio"
+            label="Buscá una actividad por nombre, espacio o responsable"
             onChange={cambioDeTextoParaBuscar}
           />
         </Grid>
@@ -208,6 +232,15 @@ export default function ListadoActividades() {
             </Table>
           </TableContainer>
         )}
+      </Box>
+      <Box display="flex" justifyContent="center" style={{ margin: 40 }}>
+        <Pagination
+          size="large"
+          count={Math.ceil(actividadesFiltradas.length / tamanioPagina)}
+          color="primary"
+          onChange={cambiarPagina}
+          page={paginaActual}
+        />
       </Box>
       <ConfirmarEliminacion
         abrirModal={abrirModal}
