@@ -1,15 +1,24 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 
 export default function Footer() {
   const classes = useStyles();
   return (
     <>
       <div className={classes.footer}>
-        <p>
+        <Divider />
+        <br />
+        <Typography className={classes.texto}>
           Esta aplicación ha sido realizada por estudiantes de la Licenciatura
-          en Informática de la UNaHur. Se permite su uso, modificación y
-          distribución bajo los términos de la licencia GPLv3.
-        </p>
+          en Informática de la UNaHur.
+        </Typography>
+
+        <Typography className={classes.texto}>
+          Si encontraste algún error o querés ver el código fuente, podés
+          acceder a la organización de{' '}
+          <a href="https://github.com/unahur-turnos">Github</a> del proyecto.
+        </Typography>
+        <br />
       </div>
     </>
   );
@@ -17,20 +26,12 @@ export default function Footer() {
 
 const useStyles = makeStyles(() => ({
   footer: {
-    backgroundColor: '#CCD1D1',
-    padding: '1rem',
+    color: 'black',
     left: 0,
     width: '100%',
     textAlign: 'center',
   },
+  texto: {
+    fontSize: 'small',
+  },
 }));
-
-//   .footer{
-//     margin-top: 1rem;
-//     padding: 1rem;
-//     background-color: rgb(235, 195, 64);
-//     position: fixed;
-//     bottom: 0;
-//     left: 0;
-//     width: 100%;
-//   }

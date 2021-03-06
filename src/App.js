@@ -102,7 +102,7 @@ function Rutas() {
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(4),
-    minHeight: '80vh',
+    minHeight: '72vh',
   },
 }));
 
