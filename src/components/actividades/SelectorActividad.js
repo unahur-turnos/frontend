@@ -1,10 +1,17 @@
-import { Grid, TextField, Typography, makeStyles } from '@material-ui/core';
+import {
+  Grid,
+  TextField,
+  Typography,
+  makeStyles,
+  Box,
+} from '@material-ui/core';
 
 import { AYUDAS } from '../textos/Textos';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Autocomplete } from '@material-ui/lab';
 import { PropTypes } from 'prop-types';
 import { fechaHoraActividad } from '../../utils/dateUtils';
+import { compose, flatten, partition } from 'ramda';
 
 const useStyles = makeStyles(() => ({
   autocomplete: {
@@ -22,13 +29,18 @@ export default function SelectorActividad({
 }) {
   const classes = useStyles();
 
-  const noHayCuposDisponibles = (aforo, autorizaciones) => {
-    return aforo - autorizaciones === 0;
+  const noHayCuposDisponibles = (aforo, turnos) => {
+    return aforo - turnos === 0;
   };
+
+  const sinCupoAbajo = compose(
+    flatten,
+    partition((it) => it.Espacio.aforo - it.turnos > 0)
+  );
 
   return (
     <Autocomplete
-      options={actividades}
+      options={esAsistente ? sinCupoAbajo(actividades) : actividades}
       getOptionLabel={(actividad) => actividad.nombre}
       className={classes.autocomplete}
       noOptionsText="No hay actividades que coincidan con la búsqueda"
@@ -37,7 +49,7 @@ export default function SelectorActividad({
       }}
       getOptionDisabled={(actividad) =>
         esAsistente &&
-        noHayCuposDisponibles(actividad.Espacio.aforo, actividad.autorizaciones)
+        noHayCuposDisponibles(actividad.Espacio.aforo, actividad.turnos)
       }
       renderInput={(params) => (
         <TextField
@@ -55,7 +67,7 @@ export default function SelectorActividad({
                   esAsistente &&
                   noHayCuposDisponibles(
                     actividad.Espacio.aforo,
-                    actividad.autorizaciones
+                    actividad.turnos
                   )
                     ? 'secondary'
                     : 'primary'
@@ -76,6 +88,15 @@ export default function SelectorActividad({
                   actividad.fechaHoraFin
                 )}
               </Typography>
+              {noHayCuposDisponibles(
+                actividad.Espacio.aforo,
+                actividad.turnos
+              ) &&
+                esAsistente && (
+                  <Typography variant="body1">
+                    <Box color="warning.main">NO HAY CUPOS DISPONIBLES</Box>
+                  </Typography>
+                )}
             </Grid>
           </Grid>
         );

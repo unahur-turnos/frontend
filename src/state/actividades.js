@@ -2,13 +2,12 @@ import { apiById, apiIndex } from './api';
 
 import { DateTime } from 'luxon';
 import { dateFormatter } from '../utils/dateUtils';
-import { buildPath } from '../utils/queryUtils';
 import { selectorFamily } from 'recoil';
 
 export const todasLasActividades = selectorFamily({
   key: 'todasLasActividades',
   get: (filtro) => async ({ get }) => {
-    const { data } = get(apiIndex(buildPath('actividades', filtro)));
+    const { data } = get(apiIndex({ path: 'actividades', filtro }));
     return data;
   },
 });
@@ -27,7 +26,7 @@ export const actividadPorId = selectorFamily({
             responsable: '',
             dniResponsable: null,
             tipoResponsable: '',
-            estado: false,
+            activa: true,
           },
         },
 });

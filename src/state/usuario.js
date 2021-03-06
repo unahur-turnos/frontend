@@ -7,9 +7,14 @@ import LocalActivityIcon from '@material-ui/icons/LocalActivity';
 import { apiIndex } from './api';
 import { has } from 'ramda';
 import { localStorageEffect } from './effect';
-import { buildPath } from '../utils/queryUtils';
 
 const listaRutas = [
+  {
+    nombre: 'Mis turnos',
+    ruta: '/turnos',
+    rolesPermitidos: ['asistente'],
+    icono: <ListAltIcon />,
+  },
   {
     nombre: 'Actividades',
     ruta: '/actividades',
@@ -23,13 +28,7 @@ const listaRutas = [
     icono: <ApartmentIcon />,
   },
   {
-    nombre: 'Autorización',
-    ruta: '/autorizaciones/nueva',
-    rolesPermitidos: ['asistente'],
-    icono: <ListAltIcon />,
-  },
-  {
-    nombre: 'Control de acceso',
+    nombre: 'Control de turnos',
     ruta: '/actividades/hoy',
     rolesPermitidos: ['bedel'],
     icono: <AssignmentTurnedInIcon />,
@@ -54,6 +53,14 @@ export const tieneRolState = selectorFamily({
   },
 });
 
+export const turnosUsuarioState = selector({
+  key: 'turnosUsuario',
+  get: async ({ get }) => {
+    const { data } = get(apiIndex({ path: 'usuarios/yo/turnos' }));
+    return data;
+  },
+});
+
 export const menuNavegacionState = selector({
   key: 'menuNavegacion',
   get: ({ get }) => {
@@ -71,7 +78,7 @@ export const rutaInicialUsuarioState = selector({
 export function rutaInicialUsuario(usuario) {
   switch (usuario.rol) {
     case 'asistente':
-      return '/autorizaciones/nueva';
+      return '/turnos';
     case 'bedel':
       return '/actividades/hoy';
     case 'admin':
@@ -84,9 +91,7 @@ export function rutaInicialUsuario(usuario) {
 export const actividadesUsuario = selectorFamily({
   key: 'actividadesUsuario',
   get: (filtro) => async ({ get }) => {
-    const { data } = get(
-      apiIndex(buildPath('usuarios/yo/actividades', filtro))
-    );
+    const { data } = get(apiIndex({ path: 'usuarios/yo/actividades', filtro }));
     return data;
   },
 });

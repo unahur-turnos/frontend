@@ -28,23 +28,21 @@ export default function PantallaMobile(props) {
     setEstadosPantalla((prevState) => ({ ...prevState, drawerOpen: false }));
 
   const getBotonesParaMenu = () => {
-    return menuNavegacion.map(({ nombre, ruta, icono }) => {
+    return menuNavegacion.map(({ nombre, ruta, icono }, id) => {
       return (
-        <>
-          <MenuItem
-            key={nombre}
-            component={Link}
-            to={ruta}
-            color="inherit"
-            style={{
-              textDecoration: 'none',
-            }}
-            onClick={() => handleDrawerClose()}
-          >
-            <IconButton>{icono}</IconButton>
-            {nombre}
-          </MenuItem>
-        </>
+        <MenuItem
+          key={id}
+          component={Link}
+          to={ruta}
+          color="inherit"
+          style={{
+            textDecoration: 'none',
+          }}
+          onClick={() => handleDrawerClose()}
+        >
+          <IconButton>{icono}</IconButton>
+          {nombre}
+        </MenuItem>
       );
     });
   };

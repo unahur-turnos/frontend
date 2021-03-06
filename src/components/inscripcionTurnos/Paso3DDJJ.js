@@ -1,23 +1,49 @@
-import { Grid, Typography } from '@material-ui/core';
-
+import { Grid, Typography, Box } from '@material-ui/core';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { Alert, AlertTitle } from '@material-ui/lab';
+
+const AlertMessage = () => {
+  return (
+    <Grid item xs={12} sm={6} align="left">
+      <Alert severity="warning" style={{ marginBottom: '4vh' }}>
+        <AlertTitle>¡Atención!</AlertTitle>
+        Recordá que para poder asistir vas a tener que completar la capacitación
+        en el siguiente{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://campus.unahur.edu.ar/course/view.php?id=2834"
+        >
+          enlace
+        </a>
+        .
+        <br />
+        Al ingresar a la Universidad validaremos que hayas completado la
+        capacitación.
+      </Alert>
+    </Grid>
+  );
+};
 
 export default function Paso3DDJJ({ informacionSeleccionada }) {
   const matches = useMediaQuery('(min-width:600px)');
+  const { actividad, completoCapacitacion } = informacionSeleccionada;
 
   return (
     <>
+      <Grid container component={Box} justifyContent="center">
+        {completoCapacitacion !== 'true' && <AlertMessage />}
+      </Grid>
+
       <Grid container alignItems="flex-end" spacing={4}>
         <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
           <Typography variant="h6">Nombre de la actividad:</Typography>
         </Grid>
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
-          <Typography variant="subtitle1">
-            {informacionSeleccionada.actividad.nombre}
-          </Typography>
+          <Typography variant="subtitle1">{actividad.nombre}</Typography>
         </Grid>
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'right' : 'center'}>
@@ -26,7 +52,7 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <Typography variant="subtitle1">
-            {DateTime.fromISO(informacionSeleccionada.actividad.fechaHoraInicio)
+            {DateTime.fromISO(actividad.fechaHoraInicio)
               .setLocale('es')
               .toFormat('dd/MM HH:mm')}
           </Typography>
@@ -38,7 +64,7 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <Typography variant="subtitle1">
-            {DateTime.fromISO(informacionSeleccionada.actividad.fechaHoraFin)
+            {DateTime.fromISO(actividad.fechaHoraFin)
               .setLocale('es')
               .toFormat('dd/MM HH:mm')}
           </Typography>
@@ -50,7 +76,7 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <Typography variant="subtitle1">
-            {informacionSeleccionada.actividad.Espacio.nombre}
+            {actividad.Espacio.nombre}
           </Typography>
         </Grid>
 
@@ -60,7 +86,7 @@ export default function Paso3DDJJ({ informacionSeleccionada }) {
 
         <Grid item xs={matches ? 6 : 12} align={matches ? 'left' : 'center'}>
           <Typography variant="subtitle1">
-            {informacionSeleccionada.actividad.Espacio.Edificio.nombre}
+            {actividad.Espacio.Edificio.nombre}
           </Typography>
         </Grid>
       </Grid>
