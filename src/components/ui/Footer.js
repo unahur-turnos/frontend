@@ -26,12 +26,12 @@ export default function Footer() {
 
 const useStyles = makeStyles(() => ({
   footer: {
-    color: 'black',
     left: 0,
     width: '100%',
     textAlign: 'center',
   },
   texto: {
     fontSize: 'small',
+    color: '#2C3E50',
   },
 }));
