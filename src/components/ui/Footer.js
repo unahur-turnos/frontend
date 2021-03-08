@@ -16,7 +16,7 @@ export default function Footer() {
         <Typography variant="body2" className={classes.texto}>
           Si encontraste algún error o querés ver el código fuente, podés
           acceder a la organización de{' '}
-          <a href="https://github.com/unahur-turnos">Github</a> del proyecto.
+          <a href="https://github.com/unahur-turnos">GitHub</a> del proyecto.
         </Typography>
         <br />
       </div>
