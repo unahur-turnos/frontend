@@ -28,6 +28,12 @@ const listaRutas = [
     icono: <ApartmentIcon />,
   },
   {
+    nombre: 'Estadísticas',
+    ruta: '/estadisticas',
+    rolesPermitidos: ['admin'],
+    icono: <ApartmentIcon />, // TODO: buscar un ícono acorde
+  },
+  {
     nombre: 'Control de turnos',
     ruta: '/actividades/hoy',
     rolesPermitidos: ['bedel'],
