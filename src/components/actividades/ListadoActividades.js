@@ -144,7 +144,7 @@ export default function ListadoActividades() {
         </Grid>
       </Grid>
       <Box mt={2}>
-        {isEmpty(actividadesFiltradas) ? (
+        {isEmpty(actividadesConPaginacion) ? (
           <Alert severity="warning">
             No se encontraron actividades que cumplan con la búsqueda
           </Alert>
@@ -163,7 +163,7 @@ export default function ListadoActividades() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {actividadesFiltradas.map((actividad) => (
+                {actividadesConPaginacion.map((actividad) => (
                   <TableRow key={actividad.id}>
                     <TableCell>
                       <Typography>{actividad.nombre}</Typography>
