@@ -1,25 +1,17 @@
 import { Grid } from '@material-ui/core';
+import { useRecoilValue } from 'recoil';
+import { estadisticasState } from '../../state/estadisticas';
 import { GraficoOcupacion } from './GraficoOcupacion';
 
-const datosAforo = [
-  { fecha: 'mar 9/3', total: 80 },
-  { fecha: 'mié 10/3', total: 80 },
-  { fecha: 'jue 11/3', total: 80 },
-  { fecha: 'vie 12/3', total: 90 },
-];
-
-const datosTurnos = [
-  { fecha: 'mar 9/3', total: 15 },
-  { fecha: 'mié 10/3', total: 8 },
-  { fecha: 'jue 11/3', total: 50 },
-  { fecha: 'vie 12/3', total: 90 },
-];
-
 export default function Estadisticas() {
+  const {
+    ocupacion: { aforo, turnos },
+  } = useRecoilValue(estadisticasState);
+
   return (
     <Grid container alignItems="center" spacing={3}>
       <Grid item xs={6}>
-        <GraficoOcupacion datosAforo={datosAforo} datosTurnos={datosTurnos} />
+        <GraficoOcupacion datosAforo={aforo} datosTurnos={turnos} />
       </Grid>
     </Grid>
   );
