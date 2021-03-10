@@ -15,19 +15,19 @@ import { BotonGuardar } from '../ui/BotonGuardar';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
+import { PropTypes } from 'prop-types';
 
 export default function RecuperarContrasenia() {
   const [iconoCargando, setIconoCargando] = useState(false);
-  const [dni, setDNI] = useState();
   const history = useHistory();
-  const inputClasses = useInputStyles();
+  const [dni, setDNI] = useState();
+  const [pasoNumero, setPasoNumero] = useState(1);
 
-  const mandarMail = () => {
+  const handleChangeStep = () => {
     setIconoCargando(true);
-  };
+    setPasoNumero(2);
 
-  const handleChange = (e) => {
-    setDNI(e.target.value);
+    setIconoCargando(false);
   };
 
   const volverAlLogin = () => {
@@ -41,49 +41,27 @@ export default function RecuperarContrasenia() {
           Recuperar contraseña
         </Typography>
       </Box>
-      <ValidatorForm onSubmit={mandarMail}>
+      <ValidatorForm onSubmit={handleChangeStep}>
         <Grid container spacing={4} align="center">
           <Grid item xs={12}>
             <Grid item xs={9} sm={7} md={4} style={{ marginTop: 20 }}>
-              <Alert severity="info" align="left">
-                <AlertTitle>¿Olvidaste tu contraseña?</AlertTitle>
-                <br />
-                <Typography variant="body2">
-                  Para recibir tu código de acceso por correo electrónico,
-                  ingresá tu DNI
-                </Typography>
-              </Alert>
-              <Grid item xs={12} style={{ marginTop: 20 }}>
-                <TextValidator
-                  id="dni"
-                  label="Ingresá tu documento"
-                  onChange={handleChange}
-                  name="dni"
-                  type="number"
-                  className={inputClasses.numberFieldWithoutArrows}
-                  fullWidth
-                  value={dni}
-                  validators={[
-                    'required',
-                    'minNumber:1000000',
-                    'maxNumber:99999999',
-                  ]}
-                  errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="start">
-                        <AssignmentIndIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
+              {pasoNumero === 1 && <MandarMail dni={dni} setDNI={setDNI} />}
+              {pasoNumero === 2 && (
+                <Alert severity="warning" align="left">
+                  <Typography variant="body2">
+                    Hemos enviado un enlace a su correo electrónico para que
+                    pueda reestablecer su contraseña.
+                  </Typography>
+                </Alert>
+              )}
               <Grid container style={{ marginTop: 20 }}>
                 <Grid item xs={6} align="left">
                   <Button onClick={volverAlLogin}>Volver al login</Button>
                 </Grid>
                 <Grid item xs={6} align="right">
-                  <BotonGuardar loading={iconoCargando} texto="Mandar mail" />
+                  {pasoNumero === 1 && (
+                    <BotonGuardar loading={iconoCargando} texto="Mandar mail" />
+                  )}
                 </Grid>
               </Grid>
             </Grid>
@@ -93,3 +71,50 @@ export default function RecuperarContrasenia() {
     </>
   );
 }
+
+function MandarMail({ dni, setDNI }) {
+  const inputClasses = useInputStyles();
+
+  const handleChange = (e) => {
+    setDNI(e.target.value);
+  };
+
+  return (
+    <>
+      <Alert severity="info" align="left">
+        <AlertTitle>¿Olvidaste tu contraseña?</AlertTitle>
+        <br />
+        <Typography variant="body2">
+          Para recibir tu código de acceso por correo electrónico, ingresá tu
+          DNI
+        </Typography>
+      </Alert>
+      <Grid item xs={12} style={{ marginTop: 20 }}>
+        <TextValidator
+          id="dni"
+          label="Ingresá tu documento"
+          onChange={handleChange}
+          name="dni"
+          type="number"
+          className={inputClasses.numberFieldWithoutArrows}
+          fullWidth
+          value={dni}
+          validators={['required', 'minNumber:1000000', 'maxNumber:99999999']}
+          errorMessages={[ERRORES.requerido, ERRORES.dni, ERRORES.dni]}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="start">
+                <AssignmentIndIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Grid>
+    </>
+  );
+}
+
+MandarMail.propTypes = {
+  dni: PropTypes.number,
+  setDNI: PropTypes.func,
+};
