@@ -17,7 +17,7 @@ const datosTurnos = [
   { fecha: 'mar 9/3', total: 15 },
   { fecha: 'mié 10/3', total: 8 },
   { fecha: 'jue 11/3', total: 50 },
-  { fecha: 'vie 12/3', total: 90 },
+  { fecha: 'vie 12/3', total: 88 },
 ];
 
 const Template = (args) => (

@@ -1,4 +1,10 @@
-import { VictoryAxis, VictoryBar, VictoryChart, VictoryStack } from 'victory';
+import {
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryStack,
+  VictoryTooltip,
+} from 'victory';
 import { PropTypes } from 'prop-types';
 import {
   Card,
@@ -10,6 +16,10 @@ import {
 
 export function GraficoOcupacion({ datosAforo, datosTurnos }) {
   const { palette } = useTheme();
+
+  // Pequeño truquito para que la barra de turnos parezca "contenida" dentro de la de aforo.
+  const diferenciaConAforo = (datum) =>
+    datum.total - datosTurnos[datosAforo.indexOf(datum)]?.total;
 
   return (
     <Card>
@@ -24,8 +34,20 @@ export function GraficoOcupacion({ datosAforo, datosTurnos }) {
             <VictoryStack
               colorScale={[palette.primary.dark, palette.primary.main]}
             >
-              <VictoryBar data={datosAforo} x="fecha" y="total" />
-              <VictoryBar data={datosTurnos} x="fecha" y="total" />
+              <VictoryBar
+                data={datosTurnos}
+                x="fecha"
+                y="total"
+                labels={({ datum }) => `Turnos: ${datum.total}`}
+                labelComponent={<VictoryTooltip />}
+              />
+              <VictoryBar
+                data={datosAforo}
+                x="fecha"
+                y={diferenciaConAforo}
+                labels={({ datum }) => `Aforo: ${datum.total}`}
+                labelComponent={<VictoryTooltip />}
+              />
             </VictoryStack>
           </VictoryChart>
         </Grid>
