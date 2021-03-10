@@ -1,3 +1,4 @@
+import { Grid } from '@material-ui/core';
 import { GraficoOcupacion } from './GraficoOcupacion';
 
 export default {
@@ -20,11 +21,13 @@ const datosTurnos = [
 ];
 
 const Template = (args) => (
-  <GraficoOcupacion
-    datosAforo={datosAforo}
-    datosTurnos={datosTurnos}
-    {...args}
-  />
+  <Grid item xs={6}>
+    <GraficoOcupacion
+      datosAforo={datosAforo}
+      datosTurnos={datosTurnos}
+      {...args}
+    />
+  </Grid>
 );
 
 export const Defecto = Template.bind({});
