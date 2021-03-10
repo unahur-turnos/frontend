@@ -48,9 +48,18 @@ export default function TarjetaTurno(props) {
           <>
             <Divider />
             <CardActions>
-              <CancelButton size="small" onClick={() => turnoAEliminar(turno)}>
-                Cancelar turno
-              </CancelButton>
+              {turno.fechaHoraIngreso ? (
+                <Button disabled size="small">
+                  Actividad en curso
+                </Button>
+              ) : (
+                <CancelButton
+                  size="small"
+                  onClick={() => turnoAEliminar(turno)}
+                >
+                  Cancelar turno
+                </CancelButton>
+              )}
             </CardActions>
           </>
         )}

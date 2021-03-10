@@ -16,6 +16,7 @@ import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
+import Footer from './components/ui/Footer';
 import Registro from './components/registro/Registro';
 import { useRecoilValue } from 'recoil';
 import {
@@ -110,6 +111,7 @@ function Rutas() {
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(4),
+    minHeight: '72vh',
   },
 }));
 
@@ -126,6 +128,7 @@ export default function App() {
             </ErrorBoundary>
           </Suspense>
         </Container>
+        <Footer />
       </Router>
     </Box>
   );
