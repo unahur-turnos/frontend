@@ -13,6 +13,7 @@ import Header from './components/ui/Header';
 import InscripcionActividad from './components/inscripcionTurnos/InscripcionActividad';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
+import Estadisticas from './components/estadisticas/Estadisticas';
 import Login from './components/login/Login';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
 import Footer from './components/ui/Footer';
@@ -77,6 +78,10 @@ function Rutas() {
 
       <PrivateRoute path="/actividades" rolesPermitidos={['bedel', 'admin']}>
         <ListadoActividades />
+      </PrivateRoute>
+
+      <PrivateRoute path="/estadisticas" rolesPermitidos={['admin']}>
+        <Estadisticas />
       </PrivateRoute>
 
       <PrivateRoute
