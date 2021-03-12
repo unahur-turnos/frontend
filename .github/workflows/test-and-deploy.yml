@@ -49,8 +49,8 @@ jobs:
           known_hosts: ${{ secrets.TURNOS_SSH_KNOWN_HOSTS }}
       - name: Push changes to production server
         run: |
-          git remote add production ${{ secrets.PRODUCTION_REPOSITORY_URL }}
-          git push -f production HEAD:master
+          git remote set-url --push origin ${{ secrets.PRODUCTION_REPOSITORY_URL }}
+          git push
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
