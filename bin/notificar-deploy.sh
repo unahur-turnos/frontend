@@ -21,7 +21,7 @@ WEBHOOK_DATA='{
             "description": "Ahora, a poner manos a la obra y verificar que no se haya roto nada.\n:smiling_imp::detective:",
             "timestamp": "'"$TIMESTAMP"'",
             "fields": [
-                { "name": "Aplicación", "value": "[:computer: Probar ahora](http://visitas.unahur.edu.ar)", "inline": true },
+                { "name": "Aplicación", "value": "[:computer: Probar ahora](http://turnos.unahur.edu.ar)", "inline": true },
                 { "name": "Cambios", "value": "'"[:pencil: Ver en GitHub]($URL)"'", "inline": true }
             ]
     } ]
