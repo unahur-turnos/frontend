@@ -50,3 +50,8 @@ jobs:
         run: |
           git remote add production ${{ secrets.PRODUCTION_REPOSITORY_URL }}
           git push -f production master
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+      - name: Notify release on Discord
+        run: ./bin/notificar-deploy.sh ${{ steps.get_version.outputs.VERSION }} ${{ secrets.DISCORD_WEBHOOK_URL }}
