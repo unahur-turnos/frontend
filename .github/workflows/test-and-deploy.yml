@@ -49,7 +49,7 @@ jobs:
       - name: Push changes to production server
         run: |
           git remote add production ${{ secrets.PRODUCTION_REPOSITORY_URL }}
-          git push -f production master
+          git push -f production HEAD:master
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
