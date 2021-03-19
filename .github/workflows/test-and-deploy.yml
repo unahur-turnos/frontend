@@ -52,6 +52,14 @@ jobs:
           git fetch --unshallow origin
           git remote set-url --push origin ${{ secrets.PRODUCTION_REPOSITORY_URL }}
           git push -f origin HEAD:master
+      - name: Generate release notes
+        env:
+          GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx --package github-release-notes gren release --tags=all --override
+      - name: Generate release notes again (hack) # No sé bien por qué, pero gren la primera vez hace cualquier cosa... si lo corrés 2 se arregla
+        env:
+          GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx --package github-release-notes gren release --tags=all --override
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
