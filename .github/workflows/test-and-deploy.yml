@@ -56,4 +56,4 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
       - name: Notify release on Discord
-        run: ./bin/notificar-deploy.sh ${{ steps.get_version.outputs.VERSION }} ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: ./bin/notificar-deploy.sh ${{ steps.get_version.outputs.VERSION }} ${{ secrets.DISCORD_WEBHOOK_URL }} unahur-turnos/frontend
