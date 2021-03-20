@@ -28,6 +28,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import Cargando from './components/ui/Cargando';
 import ErrorInesperado from './components/ui/ErrorInesperado';
 import MisActividades from './components/actividades/MisActividades';
+import { NuevaContraseña } from './components/login/NuevaContraseña';
 
 function Rutas() {
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
@@ -37,6 +38,9 @@ function Rutas() {
     <Switch>
       <Route path="/login">
         <Login />
+      </Route>
+      <Route path="/recuperar/:token">
+        <NuevaContraseña />
       </Route>
 
       <Route path="/recuperar">

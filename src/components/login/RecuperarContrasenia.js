@@ -1,8 +1,6 @@
 import {
-  Card,
   Typography,
   Grid,
-  CardContent,
   Box,
   InputAdornment,
   Button,
@@ -16,18 +14,25 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 import { PropTypes } from 'prop-types';
+import { useApi } from '../../utils/fetchApi';
 
 export default function RecuperarContrasenia() {
   const [iconoCargando, setIconoCargando] = useState(false);
+  const { create } = useApi('usuarios/recuperar');
   const history = useHistory();
   const [dni, setDNI] = useState();
   const [pasoNumero, setPasoNumero] = useState(1);
 
-  const handleChangeStep = () => {
-    setIconoCargando(true);
-    setPasoNumero(2);
-
-    setIconoCargando(false);
+  const handleChangeStep = async () => {
+    try {
+      setIconoCargando(true);
+      await create({ dni: dni });
+      setPasoNumero(2);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIconoCargando(false);
+    }
   };
 
   const volverAlLogin = () => {
@@ -54,17 +59,17 @@ export default function RecuperarContrasenia() {
                   </Typography>
                 </Alert>
               )}
-              <Grid container style={{ marginTop: 20 }}>
-                <Grid item xs={6} align="left">
-                  <Button onClick={volverAlLogin}>Volver al login</Button>
-                </Grid>
-                <Grid item xs={6} align="right">
-                  {pasoNumero === 1 && (
-                    <BotonGuardar loading={iconoCargando} texto="Mandar mail" />
-                  )}
-                </Grid>
-              </Grid>
             </Grid>
+          </Grid>
+        </Grid>
+        <Grid container style={{ marginTop: 20 }}>
+          <Grid item xs={6} align="right">
+            <Button onClick={volverAlLogin}>Volver al login</Button>
+          </Grid>
+          <Grid item xs={6}>
+            {pasoNumero === 1 && (
+              <BotonGuardar loading={iconoCargando} texto="Recuperar" />
+            )}
           </Grid>
         </Grid>
       </ValidatorForm>
