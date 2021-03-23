@@ -18,18 +18,20 @@ import { useApi } from '../../utils/fetchApi';
 
 export default function RecuperarContrasenia() {
   const [iconoCargando, setIconoCargando] = useState(false);
-  const { create } = useApi('usuarios/recuperar');
+  const [noSeEncontroDNI, setNoSeEncontroDNI] = useState(false);
+  const { create } = useApi('usuarios/recuperar', null);
   const history = useHistory();
   const [dni, setDNI] = useState();
   const [pasoNumero, setPasoNumero] = useState(1);
 
   const handleChangeStep = async () => {
     try {
+      setNoSeEncontroDNI(false);
       setIconoCargando(true);
       await create({ dni: dni });
       setPasoNumero(2);
     } catch (error) {
-      console.error(error);
+      setNoSeEncontroDNI(true);
     } finally {
       setIconoCargando(false);
     }
@@ -46,7 +48,7 @@ export default function RecuperarContrasenia() {
           Recuperar contraseña
         </Typography>
       </Box>
-      <ValidatorForm onSubmit={handleChangeStep}>
+      <ValidatorForm onSubmit={handleChangeStep} instantValidate={false}>
         <Grid container spacing={4} align="center">
           <Grid item xs={12}>
             <Grid item xs={9} sm={7} md={4} style={{ marginTop: 20 }}>
@@ -59,11 +61,22 @@ export default function RecuperarContrasenia() {
                   </Typography>
                 </Alert>
               )}
+              {noSeEncontroDNI && (
+                <Grid style={{ marginTop: 20 }}>
+                  <Typography color="error">
+                    No se encontró un DNI registrado.
+                  </Typography>
+                </Grid>
+              )}
             </Grid>
           </Grid>
         </Grid>
         <Grid container style={{ marginTop: 20 }}>
-          <Grid item xs={6} align="right">
+          <Grid
+            item
+            xs={pasoNumero === 1 ? 6 : 12}
+            align={pasoNumero === 1 ? 'right' : 'center'}
+          >
             <Button onClick={volverAlLogin}>Volver al login</Button>
           </Grid>
           <Grid item xs={6}>

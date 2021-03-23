@@ -39,7 +39,8 @@ function Rutas() {
       <Route path="/login">
         <Login />
       </Route>
-      <Route path="/recuperar/:token">
+
+      <Route path="/usuario/:dni/recuperar/:token">
         <NuevaContraseña />
       </Route>
 
@@ -101,6 +102,7 @@ function Rutas() {
       >
         <FinalDDJJ />
       </PrivateRoute>
+
       <PrivateRoute path="/turnos" rolesPermitidos={['asistente']}>
         <MisActividades />
       </PrivateRoute>

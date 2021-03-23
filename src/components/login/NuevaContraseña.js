@@ -15,20 +15,25 @@ import LockIcon from '@material-ui/icons/Lock';
 import { ERRORES } from '../textos/Textos';
 import { useApi } from '../../utils/fetchApi';
 import { BotonGuardar } from '../ui/BotonGuardar';
+import { rutaInicialUsuario, usuarioState } from '../../state/usuario';
+import { useSetRecoilState } from 'recoil';
 
 export function NuevaContraseña() {
-  const [nuevaContrasenia, setNuevaContrasenia] = useState({
-    contrasenia: '',
-    confirmarContrasenia: '',
-  });
-  const [iconoCargando, setIconoCargando] = useState(false);
+  const { dni, token } = useParams();
   const history = useHistory();
-  const { token } = useParams();
-  const { create } = useApi('usuarios/recuperar');
+  const { updateWithoutId } = useApi('usuarios/credenciales', token);
+  const setUsuario = useSetRecoilState(usuarioState);
+
+  const [valoresUsuario, setValoresUsuario] = useState({
+    dni: dni,
+    contrasenia: '',
+  });
+  const [confirmarContrasenia, setConfirmarContrasenia] = useState('');
+  const [iconoCargando, setIconoCargando] = useState(false);
 
   ValidatorForm.addValidationRule(
     'isPasswordMatch',
-    (value) => value === nuevaContrasenia.contrasenia
+    (value) => value === valoresUsuario.contrasenia
   );
 
   ValidatorForm.addValidationRule('contraseñaValida', (value) =>
@@ -38,7 +43,9 @@ export function NuevaContraseña() {
   const cambiarContraseña = async () => {
     try {
       setIconoCargando(true);
-      await create(nuevaContrasenia);
+      const usuario = await updateWithoutId(valoresUsuario);
+      setUsuario(usuario);
+      history.push(rutaInicialUsuario(usuario));
     } catch (error) {
       console.log(error);
     } finally {
@@ -47,7 +54,8 @@ export function NuevaContraseña() {
   };
 
   const handleChange = (e) => {
-    setNuevaContrasenia({
+    setValoresUsuario({
+      ...valoresUsuario,
       [e.target.name]: e.target.value,
     });
   };
@@ -75,7 +83,7 @@ export function NuevaContraseña() {
                 fullWidth
                 helperText="Mínimo 8 caracteres, con minúsculas, mayúsculas y números"
                 onChange={handleChange}
-                value={nuevaContrasenia.contrasenia}
+                value={valoresUsuario.contrasenia}
                 validators={['required', 'contraseñaValida']}
                 errorMessages={[ERRORES.requerido, ERRORES.contrasenia]}
                 InputProps={{
@@ -94,11 +102,13 @@ export function NuevaContraseña() {
               <TextValidator
                 id="confirmarContraseña"
                 label="Repetí tu contraseña"
-                name="confirmarContraseña"
+                name="confirmarContrasenia"
                 type="password"
                 fullWidth
-                onChange={handleChange}
-                value={nuevaContrasenia.confirmarContrasenia}
+                onChange={(e) => {
+                  setConfirmarContrasenia(e.target.value);
+                }}
+                value={confirmarContrasenia}
                 validators={['required', 'isPasswordMatch']}
                 errorMessages={[
                   ERRORES.requerido,
