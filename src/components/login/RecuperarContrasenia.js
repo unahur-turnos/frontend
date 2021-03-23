@@ -19,7 +19,7 @@ import { useApi } from '../../utils/fetchApi';
 export default function RecuperarContrasenia() {
   const [iconoCargando, setIconoCargando] = useState(false);
   const [noSeEncontroDNI, setNoSeEncontroDNI] = useState(false);
-  const { create } = useApi('usuarios/recuperar', null);
+  const { create } = useApi('usuarios/recuperar');
   const history = useHistory();
   const [dni, setDNI] = useState();
   const [pasoNumero, setPasoNumero] = useState(1);

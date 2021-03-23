@@ -18,7 +18,7 @@ import { useSetRecoilState } from 'recoil';
 export function NuevaContraseña() {
   const { dni, token } = useParams();
   const history = useHistory();
-  const { updateWithoutId } = useApi('usuarios/credenciales', token);
+  const { create } = useApi('usuarios/credenciales', token);
   const setUsuario = useSetRecoilState(usuarioState);
 
   const [valoresUsuario, setValoresUsuario] = useState({
@@ -42,7 +42,7 @@ export function NuevaContraseña() {
     try {
       setIconoCargando(true);
       setHayError(false);
-      const usuario = await updateWithoutId(valoresUsuario);
+      const usuario = await create(valoresUsuario);
       setUsuario(usuario);
       history.push(rutaInicialUsuario(usuario));
     } catch (error) {

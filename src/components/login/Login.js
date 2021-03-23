@@ -3,7 +3,6 @@ import {
   Button,
   Grid,
   InputAdornment,
-  makeStyles,
   Typography,
 } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
@@ -20,14 +19,7 @@ import { ERRORES } from '../textos/Textos';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 import { BotonGuardar } from '../ui/BotonGuardar';
 
-const useStyles = makeStyles(() => ({
-  footer: {
-    marginTop: '12px',
-  },
-}));
-
 export default function Login() {
-  const classes = useStyles();
   const inputClasses = useInputStyles();
   const history = useHistory();
   const { create } = useApi('usuarios/login');
