@@ -165,7 +165,7 @@ export default function Login() {
           </Button>
         </Grid>
       </Grid>
-      <Grid item xs={12} align="center">
+      <Grid item xs={12} align="center" style={{ marginTop: 20 }}>
         <Typography>
           <Link to="/recuperar">¿Olvidaste tu contraseña?</Link>
         </Typography>

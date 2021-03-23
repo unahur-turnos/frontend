@@ -2,9 +2,6 @@ import {
   Box,
   Grid,
   Typography,
-  Backdrop,
-  CircularProgress,
-  makeStyles,
   InputAdornment,
   Button,
 } from '@material-ui/core';
@@ -30,6 +27,7 @@ export function NuevaContraseña() {
   });
   const [confirmarContrasenia, setConfirmarContrasenia] = useState('');
   const [iconoCargando, setIconoCargando] = useState(false);
+  const [hayError, setHayError] = useState(false);
 
   ValidatorForm.addValidationRule(
     'isPasswordMatch',
@@ -43,11 +41,12 @@ export function NuevaContraseña() {
   const cambiarContraseña = async () => {
     try {
       setIconoCargando(true);
+      setHayError(false);
       const usuario = await updateWithoutId(valoresUsuario);
       setUsuario(usuario);
       history.push(rutaInicialUsuario(usuario));
     } catch (error) {
-      console.log(error);
+      setHayError(true);
     } finally {
       setIconoCargando(false);
     }
@@ -125,6 +124,11 @@ export function NuevaContraseña() {
             </Grid>
           </Grid>
         </Grid>
+        {hayError && (
+          <Grid align="center" style={{ marginTop: 20 }}>
+            <Typography color="error">{ERRORES.expiracionToken}</Typography>
+          </Grid>
+        )}
         <Grid container spacing={1} style={{ marginTop: 20 }}>
           <Grid item xs={6} align="right">
             <Button onClick={volverAlLogin}>Cancelar</Button>
@@ -137,19 +141,3 @@ export function NuevaContraseña() {
     </>
   );
 }
-
-function LoadingPage() {
-  const classes = useStyles();
-  return (
-    <Backdrop className={classes.backdrop} open>
-      <CircularProgress color="inherit" />
-    </Backdrop>
-  );
-}
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
-}));
