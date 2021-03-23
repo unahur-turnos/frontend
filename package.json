@@ -1,6 +1,6 @@
 {
   "name": "react-recoil-app-seed",
-  "version": "1.0.13",
+  "version": "1.0.20",
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@material-ui/core": "^4.11.2",
