@@ -13,14 +13,11 @@ import SelectorActividad from '../actividades/SelectorActividad';
 import { actividadesUsuario } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
 import { DateTime } from 'luxon';
-import { formatISO } from '../../utils/dateUtils';
 import { filter } from 'ramda';
 
 export default function Paso1DDJJ({ handleChange, agregarActividad }) {
-  const fechaActual = DateTime.local().toISODate();
-  const actividades = useRecoilValue(
-    actividadesUsuario({ desde: fechaActual })
-  );
+  const fechaActual = DateTime.local().toISOTime();
+  const actividades = useRecoilValue(actividadesUsuario());
   const cambioDeActividad = (nombre, actividad) => {
     agregarActividad(nombre, actividad);
   };
@@ -36,6 +33,8 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
     <>
       <Grid container spacing={4}>
         <Grid item xs={12} align="center">
+          {console.log(actividades)}
+          {console.log(actividades.length)}
           <SelectorActividad
             actividades={actividadesFiltradas()}
             funcionOnChange={cambioDeActividad}
