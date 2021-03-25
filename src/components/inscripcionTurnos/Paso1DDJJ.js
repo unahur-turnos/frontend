@@ -7,12 +7,26 @@ import {
   Select,
 } from '@material-ui/core';
 
+import { Box } from '@material-ui/core';
 import { AYUDAS } from '../textos/Textos';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from '../actividades/SelectorActividad';
 import { actividadesUsuario } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
 import { DateTime } from 'luxon';
+import { Alert, AlertTitle } from '@material-ui/lab';
+
+const AlertMessage = () => {
+  return (
+    <Grid item xs={12} sm={6} align="left">
+      <Alert severity="info" style={{ marginBottom: '4vh' }}>
+        <AlertTitle>¡Atención!</AlertTitle>
+        Podés sacar un máximos de 2 turnos por día. Lo verificaremos en los
+        siguientes pasos.
+      </Alert>
+    </Grid>
+  );
+};
 
 export default function Paso1DDJJ({ handleChange, agregarActividad }) {
   const fechaActual = DateTime.local().toISODate();
@@ -25,6 +39,10 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
 
   return (
     <>
+      <Grid container component={Box} justifyContent="center">
+        <AlertMessage />
+      </Grid>
+
       <Grid container spacing={4}>
         <Grid item xs={12} align="center">
           <SelectorActividad
