@@ -23,9 +23,6 @@ const AlertMessage = () => {
         <AlertTitle>¡Atención!</AlertTitle>
         Podés sacar un máximos de 2 turnos por día. Lo verificaremos en los
         siguientes pasos.
-        <br />
-        Al ingresar a la Universidad validaremos que hayas completado la
-        capacitación.
       </Alert>
     </Grid>
   );
