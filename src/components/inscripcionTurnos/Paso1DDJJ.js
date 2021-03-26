@@ -14,6 +14,7 @@ import SelectorActividad from '../actividades/SelectorActividad';
 import { actividadesUsuario } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
 import { DateTime } from 'luxon';
+import { filter } from 'ramda';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 const AlertMessage = () => {
@@ -29,14 +30,18 @@ const AlertMessage = () => {
 };
 
 export default function Paso1DDJJ({ handleChange, agregarActividad }) {
-  const fechaActual = DateTime.local().toISODate();
-  const actividades = useRecoilValue(
-    actividadesUsuario({ desde: fechaActual })
-  );
+  const actividades = useRecoilValue(actividadesUsuario());
   const cambioDeActividad = (nombre, actividad) => {
     agregarActividad(nombre, actividad);
   };
 
+  const actividadesFiltradas = () => {
+    return filter(
+      (actividad) =>
+        DateTime.fromISO(actividad.fechaHoraInicio) > DateTime.local(),
+      actividades
+    );
+  };
   return (
     <>
       <Grid container component={Box} justifyContent="center">
@@ -46,7 +51,7 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
       <Grid container spacing={4}>
         <Grid item xs={12} align="center">
           <SelectorActividad
-            actividades={actividades}
+            actividades={actividadesFiltradas()}
             funcionOnChange={cambioDeActividad}
             esAsistente={true}
           />
