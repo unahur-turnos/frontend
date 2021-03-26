@@ -3,29 +3,31 @@ import { has } from 'ramda';
 import { useRecoilValue } from 'recoil';
 import { usuarioState } from '../state/usuario';
 
-const makeApi = (usuario) =>
+const makeApi = (usuario, token) =>
   axios.create({
     baseURL: process.env.REACT_APP_API_URL,
-    ...makeOptions(usuario),
+    ...makeOptions(usuario, token),
   });
 
-const makeOptions = (usuario) =>
-  has('token', usuario)
+const makeOptions = (usuario, token) => {
+  const authToken = token || usuario?.token;
+  return authToken
     ? {
         headers: {
-          Authorization: `Bearer ${usuario.token}`,
+          Authorization: `Bearer ${authToken}`,
         },
       }
     : {};
+};
 
 export const getData = async (path, usuario) => {
   const { data } = await makeApi(usuario).get(path);
   return data;
 };
 
-export function useApi(path) {
+export function useApi(path, token = null) {
   const usuario = useRecoilValue(usuarioState);
-  const api = makeApi(usuario);
+  const api = makeApi(usuario, token);
 
   return {
     create: async (entity) => {

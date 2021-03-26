@@ -3,9 +3,10 @@ import {
   Button,
   Grid,
   InputAdornment,
+  makeStyles,
   Typography,
 } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,6 +22,7 @@ import { BotonGuardar } from '../ui/BotonGuardar';
 
 export default function Login() {
   const inputClasses = useInputStyles();
+  const classes = useStyles();
   const history = useHistory();
   const { create } = useApi('usuarios/login');
 
@@ -78,7 +80,7 @@ export default function Login() {
 
       <Grid container spacing={4} align="center">
         <Grid item xs={12}>
-          <Grid item xs={9} sm={7} md={4} style={{ marginTop: 20 }}>
+          <Grid item xs={9} sm={7} md={4} className={classes.margin}>
             <TextValidator
               id="dni"
               label="Ingresá tu documento"
@@ -147,7 +149,7 @@ export default function Login() {
         )}
       </Grid>
 
-      <Grid container item xs={12} spacing={1} style={{ marginTop: 20 }}>
+      <Grid container item xs={12} spacing={1} className={classes.margin}>
         <Grid item xs={6} align="right">
           <BotonGuardar texto="Iniciar sesión" loading={cargando} />
         </Grid>
@@ -157,6 +159,17 @@ export default function Login() {
           </Button>
         </Grid>
       </Grid>
+      <Grid item xs={12} align="center" className={classes.margin}>
+        <Typography>
+          <Link to="/recuperar">¿Olvidaste tu contraseña?</Link>
+        </Typography>
+      </Grid>
     </ValidatorForm>
   );
 }
+
+const useStyles = makeStyles(() => ({
+  margin: {
+    marginTop: 20,
+  },
+}));

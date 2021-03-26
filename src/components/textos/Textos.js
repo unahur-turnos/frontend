@@ -12,6 +12,8 @@ export const ERRORES = {
   fechaInicio: 'Debe ser posterior a la fecha y hora actual',
   fechaFin: 'No puede ser anterior al inicio de la actividad',
   responsable: 'Ingresá información del responsable',
+  expiracionToken:
+    'El link con el que ingresaste ya no es válido, por favor volvé a iniciar el proceso de recuperar contraseña',
 };
 
 export const AYUDAS = {
