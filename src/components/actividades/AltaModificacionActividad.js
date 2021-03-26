@@ -2,10 +2,12 @@ import { AYUDAS, ERRORES } from '../textos/Textos';
 import {
   Box,
   Button,
+  Fab,
   FormControl,
   FormControlLabel,
   FormLabel,
   Grid,
+  IconButton,
   MenuItem,
   Radio,
   RadioGroup,
@@ -16,7 +18,7 @@ import {
   TextValidator,
   ValidatorForm,
 } from 'react-material-ui-form-validator';
-import { dateFormatter, formatISO } from '../../utils/dateUtils';
+import { formatISO, hourFormatter } from '../../utils/dateUtils';
 import { find, propEq } from 'ramda';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -32,6 +34,8 @@ import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
 import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default function AltaActividad(props) {
   const inputClasses = useInputStyles();
@@ -56,16 +60,28 @@ export default function AltaActividad(props) {
     restriccionId,
   } = actividad;
 
+  const [horarios, setHorarios] = useState([
+    {
+      id: 0,
+      horaInicio: hourFormatter(fechaHoraInicio),
+      horaFin: hourFormatter(fechaHoraFin),
+    },
+  ]);
   const carreraSeleccionada = find(propEq('id', restriccionId), carreras);
 
   ValidatorForm.addValidationRule(
+    'fechaActividadValida',
+    (value) => formatISO(value) >= DateTime.local().toISODate()
+  );
+
+  ValidatorForm.addValidationRule(
     'fechaInicioValida',
-    (value) => formatISO(value) > formatISO(DateTime.local())
+    (value) => hourFormatter(value) > hourFormatter(DateTime.local())
   );
 
   ValidatorForm.addValidationRule(
     'fechaFinValida',
-    (value) => formatISO(value) > formatISO(fechaHoraInicio)
+    (value) => hourFormatter(value) > hourFormatter(fechaHoraInicio)
   );
 
   const handleChange = (e) => {
@@ -91,6 +107,38 @@ export default function AltaActividad(props) {
     history.push('/actividades');
   };
 
+  const handleChangeHour = (id, event) => {
+    const newInputFields = horarios.map((horario) => {
+      if (id === horario.id) {
+        horario[event.target.name] = event.target.value;
+      }
+      return horario;
+    });
+
+    setHorarios(newInputFields);
+  };
+
+  const handleAddHour = () => {
+    const horarioAnterior = horarios[horarios.length - 1];
+    setHorarios([
+      ...horarios,
+      {
+        id: horarios.length,
+        horaInicio: horarioAnterior.horaInicio,
+        horaFin: horarioAnterior.horaFin,
+      },
+    ]);
+  };
+
+  const handleRemoveFields = (id) => {
+    const values = [...horarios];
+    values.splice(
+      values.findIndex((value) => value.id === id),
+      1
+    );
+    setHorarios(values);
+  };
+
   return (
     <>
       <ValidatorForm onSubmit={saveData} instantValidate={false}>
@@ -102,7 +150,7 @@ export default function AltaActividad(props) {
 
         <Grid container spacing={4} align="center">
           <Grid item xs={12}>
-            <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
+            <Grid item xs={12} sm={6} md={4} style={{ marginTop: 20 }}>
               <TextValidator
                 label="Ingresá el nombre"
                 fullWidth
@@ -116,7 +164,7 @@ export default function AltaActividad(props) {
           </Grid>
 
           <Grid item xs={12}>
-            <Grid item xs={12} sm={7} md={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <SelectValidator
                 fullWidth
                 label="Elegí un espacio"
@@ -137,37 +185,7 @@ export default function AltaActividad(props) {
           </Grid>
 
           <Grid item xs={12}>
-            <Grid item xs={12} sm={7} md={4}>
-              <TextValidator
-                type="datetime-local"
-                name="fechaHoraInicio"
-                label="Fecha y hora de inicio"
-                value={dateFormatter(fechaHoraInicio) || ''}
-                fullWidth
-                onChange={handleChange}
-                validators={['required', 'fechaInicioValida']}
-                errorMessages={[ERRORES.requerido, ERRORES.fechaInicio]}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Grid item xs={12} sm={7} md={4}>
-              <TextValidator
-                type="datetime-local"
-                name="fechaHoraFin"
-                value={dateFormatter(fechaHoraFin) || ''}
-                label="Fecha y hora de cierre"
-                fullWidth
-                onChange={handleChange}
-                validators={['required', 'fechaFinValida']}
-                errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Grid item xs={12} sm={7} md={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextValidator
                 label="Persona responsable"
                 fullWidth
@@ -181,7 +199,7 @@ export default function AltaActividad(props) {
           </Grid>
 
           <Grid item xs={12}>
-            <Grid item xs={12} sm={7} md={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextValidator
                 label="Teléfono de contacto responsable"
                 fullWidth
@@ -190,6 +208,23 @@ export default function AltaActividad(props) {
                 name="telefonoDeContactoResponsable"
                 value={telefonoDeContactoResponsable || ''}
                 onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={6} md={4}>
+              <TextValidator
+                fullWidth
+                type="date"
+                name="fechaHoraInicio"
+                label="Dia de la actividad"
+                value={
+                  DateTime.fromISO(fechaHoraInicio).toFormat('yyyy-MM-dd') || ''
+                }
+                onChange={handleChange}
+                validators={['required', 'fechaActividadValida']}
+                errorMessages={[ERRORES.requerido, ERRORES.diaActividad]}
               />
             </Grid>
           </Grid>
@@ -218,6 +253,59 @@ export default function AltaActividad(props) {
               />
             </Grid>
           </Grid> */}
+          {console.log(horarios)}
+          {horarios.map((horario) => {
+            return (
+              <Grid
+                item
+                xs={12}
+                component={Box}
+                display="flex"
+                flexDirection="row"
+                justifyContent="center"
+                key={horario.id}
+              >
+                <Grid item xs={5} sm={2} md={1}>
+                  <TextValidator
+                    fullWidth
+                    type="time"
+                    name="horaInicio"
+                    value={hourFormatter(horario.horaInicio) || ''}
+                    label="Hora inicio"
+                    onChange={(event) => handleChangeHour(horario.id, event)}
+                    validators={['required', 'fechaFinValida']}
+                    errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
+                  />
+                </Grid>
+                <Grid item xs={5} sm={2} md={1}>
+                  <TextValidator
+                    fullWidth
+                    type="time"
+                    name="horaFin"
+                    value={hourFormatter(horario.horaFin) || ''}
+                    label="Hora cierre"
+                    onChange={(event) => handleChangeHour(horario.id, event)}
+                    validators={['required', 'fechaFinValida']}
+                    errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
+                    style={{ marginLeft: 30 }}
+                  />
+                </Grid>
+                <Grid item xs={1} sm={2}>
+                  {horario.id === 0 ? (
+                    <Fab color="primary" size="small" onClick={handleAddHour}>
+                      <AddIcon />
+                    </Fab>
+                  ) : (
+                    <IconButton aria-label="delete">
+                      <DeleteIcon
+                        onClick={() => handleRemoveFields(horario.id)}
+                      />
+                    </IconButton>
+                  )}
+                </Grid>
+              </Grid>
+            );
+          })}
 
           <Grid
             container
