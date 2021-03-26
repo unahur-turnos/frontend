@@ -10,11 +10,14 @@ const makeApi = (usuario, token) =>
   });
 
 const makeOptions = (usuario, token) => {
-  return {
-    headers: {
-      Authorization: `Bearer ${has('token', usuario) ? usuario.token : token}`,
-    },
-  };
+  const authToken = token || usuario?.token;
+  return authToken
+    ? {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    : {};
 };
 
 export const getData = async (path, usuario) => {

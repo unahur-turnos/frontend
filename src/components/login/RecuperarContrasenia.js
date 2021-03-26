@@ -54,17 +54,17 @@ export default function RecuperarContrasenia() {
             <Grid item xs={9} sm={7} md={4} style={{ marginTop: 20 }}>
               {pasoNumero === 1 && <MandarMail dni={dni} setDNI={setDNI} />}
               {pasoNumero === 2 && (
-                <Alert severity="warning" align="left">
+                <Alert severity="info" align="left">
                   <Typography variant="body2">
-                    Hemos enviado un enlace a su correo electrónico para que
-                    pueda reestablecer su contraseña.
+                    Te enviamos un correo electrónico con un enlace para que
+                    puedas reestablecer su contraseña.
                   </Typography>
                 </Alert>
               )}
               {noSeEncontroDNI && (
                 <Grid style={{ marginTop: 20 }}>
                   <Typography color="error">
-                    No se encontró un DNI registrado.
+                    No se encontró una cuenta con el DNI ingresado.
                   </Typography>
                 </Grid>
               )}
@@ -77,7 +77,7 @@ export default function RecuperarContrasenia() {
             xs={pasoNumero === 1 ? 6 : 12}
             align={pasoNumero === 1 ? 'right' : 'center'}
           >
-            <Button onClick={volverAlLogin}>Volver al login</Button>
+            <Button onClick={volverAlLogin}>Volver al inicio</Button>
           </Grid>
           <Grid item xs={6}>
             {pasoNumero === 1 && (
@@ -103,8 +103,7 @@ function MandarMail({ dni, setDNI }) {
         <AlertTitle>¿Olvidaste tu contraseña?</AlertTitle>
         <br />
         <Typography variant="body2">
-          Para recibir tu código de acceso por correo electrónico, ingresá tu
-          DNI
+          Para comenzar el proceso de recuperación, ingresá tu DNI
         </Typography>
       </Alert>
       <Grid item xs={12} style={{ marginTop: 20 }}>

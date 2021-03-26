@@ -13,7 +13,7 @@ export const ERRORES = {
   fechaFin: 'No puede ser anterior al inicio de la actividad',
   responsable: 'Ingresá información del responsable',
   expiracionToken:
-    'Este link ya no es válido, por favor vuelva a pedir un cambio de contraseña',
+    'El link con el que ingresaste ya no es válido, por favor volvé a iniciar el proceso de recuperar contraseña',
 };
 
 export const AYUDAS = {
