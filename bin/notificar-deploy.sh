@@ -6,9 +6,10 @@ fi
 
 VERSION=$1
 WEBHOOK_URL=$2
+PROJECT_SLUG=$3
 AVATAR_URL="https://freedesignfile.com/upload/2017/08/rocket-icon-vector.png"
-URL="https://github.com/unahur-turnos/frontend/releases/tag/$VERSION"
-TITLE="¡Versión $VERSION publicada!"
+URL="https://github.com/$PROJECT_SLUG/releases/tag/$VERSION"
+TITLE="[$PROJECT_SLUG] ¡Versión $VERSION publicada!"
 
 TIMESTAMP=$(date -u +%FT%TZ)
 WEBHOOK_DATA='{
