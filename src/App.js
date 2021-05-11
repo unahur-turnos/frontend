@@ -76,7 +76,10 @@ function Rutas() {
         path="/actividades/:id/duplicar"
         rolesPermitidos={['admin']}
       >
-        <AltaModificacionActividad titulo={'Duplicar actividad'} />
+        <AltaModificacionActividad
+          titulo={'Duplicar actividad'}
+          esParaDuplicar={true}
+        />
       </PrivateRoute>
 
       <PrivateRoute path="/actividades/:id" rolesPermitidos={['admin']}>
