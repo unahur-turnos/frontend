@@ -16,6 +16,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { CSVLink } from 'react-csv';
 import {
   anyPass,
   ascend,
@@ -39,6 +40,7 @@ import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { Buscador } from '../ui/Buscador';
 import { validateSearch } from '../../utils/validateSearch';
+import { dateFormatter, toString } from '../../utils/dateUtils';
 
 const minDate = new Date(-1000000000).toISOString();
 
@@ -94,7 +96,11 @@ export default function ControlAcceso() {
       </Grid>
       <Grid item xs={12} align="center">
         {actividadSeleccionada && (
-          <ListadoTurnos idActividad={actividadSeleccionada.id} />
+          <ListadoTurnos
+            idActividad={actividadSeleccionada.id}
+            nombreActividad={actividadSeleccionada.nombre}
+            fechaActividad={actividadSeleccionada.fechaHoraInicio}
+          />
         )}
       </Grid>
     </Grid>
@@ -127,7 +133,7 @@ function DatosActividad({ actividad }) {
   );
 }
 
-function ListadoTurnos({ idActividad }) {
+function ListadoTurnos({ idActividad, nombreActividad, fechaActividad }) {
   const classes = useStyles();
 
   const todosLosTurnos = useRecoilValue(turnosPorActividad(idActividad));
@@ -135,6 +141,18 @@ function ListadoTurnos({ idActividad }) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [ocultarRegistrados, setOcultarRegistrados] = useState(false);
   const [textoParaBuscar, setTextoParaBuscar] = useState('');
+
+  const prueba = () => {
+    return todosLosTurnos.map(({ Usuario }) => {
+      return {
+        Nombre: Usuario.nombre,
+        Apellido: Usuario.apellido,
+        Dni: Usuario.dni,
+        Actividad: nombreActividad,
+        'Fecha y hora': toString(fechaActividad),
+      };
+    });
+  };
 
   const validarNombre = (it) => {
     return validateSearch(textoParaBuscar, it.Usuario.nombre);
@@ -179,6 +197,10 @@ function ListadoTurnos({ idActividad }) {
             control={<Switch onChange={cambioCheck} color="primary" />}
           />
         </FormGroup>
+
+        <CSVLink data={prueba()}>
+          <Button>Descargar</Button>
+        </CSVLink>
       </Box>
       <Grid container spacing={4} align="center">
         <Grid item xs={12}>
@@ -250,4 +272,6 @@ DatosActividad.propTypes = {
 
 ListadoTurnos.propTypes = {
   idActividad: PropTypes.number,
+  nombreActividad: PropTypes.string,
+  fechaActividad: PropTypes.string,
 };
