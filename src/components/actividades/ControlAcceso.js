@@ -142,7 +142,7 @@ function ListadoTurnos({ idActividad, nombreActividad, fechaActividad }) {
   const [ocultarRegistrados, setOcultarRegistrados] = useState(false);
   const [textoParaBuscar, setTextoParaBuscar] = useState('');
 
-  const prueba = () => {
+  const datosParaCsv = () => {
     return todosLosTurnos.map(({ Usuario }) => {
       return {
         Nombre: Usuario.nombre,
@@ -198,8 +198,10 @@ function ListadoTurnos({ idActividad, nombreActividad, fechaActividad }) {
           />
         </FormGroup>
 
-        <CSVLink data={prueba()}>
-          <Button>Descargar</Button>
+        <CSVLink data={datosParaCsv()}>
+          <Button variant="contained" color="primary">
+            Descargar
+          </Button>
         </CSVLink>
       </Box>
       <Grid container spacing={4} align="center">
