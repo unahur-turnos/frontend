@@ -33,10 +33,9 @@ import { useNotificarActualizacion } from '../../state/actualizaciones';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
-export default function AltaActividad(props) {
+export default function AltaActividad({ titulo, esParaDuplicar = false }) {
   const inputClasses = useInputStyles();
   const { id } = useParams();
-  const { titulo } = props;
   const actividadDB = useRecoilValue(actividadPorId(id));
   const notificarActualizacion = useNotificarActualizacion('actividades');
   const history = useHistory();
@@ -77,10 +76,19 @@ export default function AltaActividad(props) {
 
   const saveData = async () => {
     setIconoCargando(true);
-    if (id !== undefined) {
+    if (id !== undefined && !esParaDuplicar) {
       await update(actividad);
     } else {
-      await create(actividad);
+      const actividadDuplicada = {
+        espacioId: actividad.espacioId,
+        nombre: actividad.nombre,
+        fechaHoraInicio: actividad.fechaHoraInicio,
+        fechaHoraFin: actividad.fechaHoraFin,
+        responsable: actividad.responsable,
+        telefonoDeContactoResponsable: actividad.telefonoDeContactoResponsable,
+        estado: actividad.estado,
+      };
+      await create(esParaDuplicar ? actividadDuplicada : actividad);
     }
 
     notificarActualizacion();
@@ -104,6 +112,7 @@ export default function AltaActividad(props) {
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
               <TextValidator
+                disabled={esParaDuplicar}
                 label="Ingresá el nombre"
                 fullWidth
                 name="nombre"
@@ -119,6 +128,7 @@ export default function AltaActividad(props) {
             <Grid item xs={12} sm={7} md={4}>
               <SelectValidator
                 fullWidth
+                disabled={esParaDuplicar}
                 label="Elegí un espacio"
                 name="espacioId"
                 value={espacioId || ''}
@@ -266,4 +276,5 @@ export default function AltaActividad(props) {
 
 AltaActividad.propTypes = {
   titulo: PropTypes.string,
+  esParaDuplicar: PropTypes.bool,
 };
