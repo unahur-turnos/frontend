@@ -18,6 +18,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ConfirmarEliminacion from '../ui/ConfirmarEliminacion';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -206,6 +207,18 @@ export default function ListadoActividades() {
                           </IconButton>
                         </span>
                       </Tooltip>
+                      <Tooltip title="Duplicar">
+                        <span>
+                          <IconButton
+                            className={classes.icon}
+                            aria-label="duplicate"
+                            component={Link}
+                            to={`/actividades/${actividad.id}/duplicar`}
+                          >
+                            <FileCopyIcon />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
                       <Tooltip
                         title={
                           masDeUnTurno(actividad.turnos)
@@ -218,10 +231,9 @@ export default function ListadoActividades() {
                             disabled={masDeUnTurno(actividad.turnos)}
                             className={classes.icon}
                             aria-label="delete"
+                            onClick={() => eliminarActividad(actividad)}
                           >
-                            <DeleteIcon
-                              onClick={() => eliminarActividad(actividad)}
-                            />
+                            <DeleteIcon />
                           </IconButton>
                         </span>
                       </Tooltip>
