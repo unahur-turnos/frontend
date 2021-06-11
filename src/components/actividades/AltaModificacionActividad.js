@@ -146,7 +146,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
     setHorarios([
       ...horarios,
       {
-        id: horarios.length,
+        id: horarioAnterior.id + 1,
         horaInicio: horarioAnterior.horaInicio,
         horaFin: horarioAnterior.horaFin,
       },
@@ -294,7 +294,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
               name="horaInicio"
               value={horario.horaInicio}
               label="Hora inicio"
-              onChange={(e) => handleChangeHour(index, e.target)}
+              onChange={(e) => handleChangeHour(horario.id, e.target)}
               inputProps={{ step: 300 }}
               validators={['required', 'fechaInicioValida']}
               errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
@@ -307,7 +307,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
               name="horaFin"
               value={horario.horaFin}
               label="Hora cierre"
-              onChange={(e) => handleChangeHour(index, e.target)}
+              onChange={(e) => handleChangeHour(horario.id, e.target)}
               inputProps={{ step: 300 }}
               validators={['required', 'fechaInicioValida']}
               errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
