@@ -8,9 +8,10 @@ import AltaModificacionActividad from './components/actividades/AltaModificacion
 import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import { Box, Container, makeStyles } from '@material-ui/core';
 import ControlAcceso from './components/actividades/ControlAcceso';
-import FinalDDJJ from './components/inscripcionTurnos/FinalDDJJ';
+import RecuperarContrasenia from './components/login/RecuperarContrasenia';
 import Header from './components/ui/Header';
 import InscripcionActividad from './components/inscripcionTurnos/InscripcionActividad';
+import FinalDDJJ from './components/inscripcionTurnos/FinalDDJJ';
 import ListadoActividades from './components/actividades/ListadoActividades';
 import ListadoEspacios from './components/espacios/ListadoEspacios';
 import Login from './components/login/Login';
@@ -27,6 +28,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import Cargando from './components/ui/Cargando';
 import ErrorInesperado from './components/ui/ErrorInesperado';
 import MisActividades from './components/actividades/MisActividades';
+import { NuevaContraseña } from './components/login/NuevaContraseña';
 
 function Rutas() {
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
@@ -36,6 +38,14 @@ function Rutas() {
     <Switch>
       <Route path="/login">
         <Login />
+      </Route>
+
+      <Route path="/usuario/:dni/recuperar/:token">
+        <NuevaContraseña />
+      </Route>
+
+      <Route path="/recuperar">
+        <RecuperarContrasenia />
       </Route>
 
       <Route path="/registro">
@@ -87,6 +97,7 @@ function Rutas() {
       <PrivateRoute path="/turnos/confirmacion" rolesPermitidos={['asistente']}>
         <FinalDDJJ />
       </PrivateRoute>
+
       <PrivateRoute path="/turnos" rolesPermitidos={['asistente']}>
         <MisActividades />
       </PrivateRoute>
