@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { has } from 'ramda';
 import { useRecoilValue } from 'recoil';
 import { usuarioState } from '../state/usuario';
 
