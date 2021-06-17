@@ -19,13 +19,14 @@ import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
 
 export default function PerfilUsuario({ titulo }) {
+  const { update } = useApi('usuarios');
   const usuarioDB = useRecoilValue(usuarioState);
   const [datosUsuario, setDatosUsuario] = useState(usuarioDB);
   const setUsuario = useSetRecoilState(usuarioState);
 
-  const { update } = useApi('usuarios');
-
   const [loading, setLoading] = useState(false);
+  const [contraseniaIncorrecta, setContraseniaIncorrecta] = useState(false);
+
   const history = useHistory();
   const inputClasses = useInputStyles();
 
@@ -42,14 +43,19 @@ export default function PerfilUsuario({ titulo }) {
 
   const saveData = async () => {
     setLoading(true);
-    await update(datosUsuario);
-    setUsuario(omit(['contrasenia'], datosUsuario));
-    volver();
+    try {
+      await update(datosUsuario);
+      setUsuario(omit(['contrasenia'], datosUsuario));
+      volver();
+    } catch (e) {
+      setLoading(false);
+      setContraseniaIncorrecta(true);
+    }
   };
 
   return (
     <>
-      <ValidatorForm onSubmit={saveData}>
+      <ValidatorForm onSubmit={saveData} instantValidate={false}>
         <Grid item align="center" xs={12}>
           <Typography variant="h4" color="primary">
             {titulo}
@@ -188,6 +194,14 @@ export default function PerfilUsuario({ titulo }) {
             </Grid>
           </Grid>
         </Grid>
+
+        {contraseniaIncorrecta && (
+          <Grid item xs={12} align="center" style={{ marginTop: 10 }}>
+            <Typography color="error">
+              La contraseña ingresada es incorrecta.
+            </Typography>
+          </Grid>
+        )}
 
         <Grid container spacing={1} style={{ marginTop: 20 }}>
           <Grid item xs={6} align="right">
