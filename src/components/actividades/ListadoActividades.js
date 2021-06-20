@@ -32,6 +32,7 @@ import { anyPass, compose, drop, filter, take, isEmpty } from 'ramda';
 import { validateSearch } from '../../utils/validateSearch';
 import { Alert } from '@material-ui/lab';
 import Pagination from '@material-ui/lab/Pagination';
+import LinkIcon from '@material-ui/icons/Link';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -71,6 +72,7 @@ export default function ListadoActividades() {
   const [actividadAEliminar, setActividadAEliminar] = useState();
   const [paginaActual, setPaginaActual] = useState(1);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [actividadCopiada, setActividadCopiada] = useState('');
   const tamanioPagina = 30;
   const eliminarActividad = (actividad) => {
     setActividadAEliminar(actividad);
@@ -91,9 +93,11 @@ export default function ListadoActividades() {
     return validateSearch(textoParaBuscar, it.responsable);
   };
 
-  const abrirModalCopy = (actividad) => {
-    const URI = `http://localhost:3000/turnos/nuevo?actividad=${actividad.id}`;
+  const copiarLink = (actividad) => {
+    const URI = `https://turnos.unahur.edu.ar/turnos/nuevo?actividad=${actividad.id}`;
+    //const URI = `${process.env.REACT_APP_API_URL}/turnos/nuevo?actividad=${actividad.id}`;
     navigator.clipboard.writeText(URI);
+    setActividadCopiada(actividad.nombre);
     setMostrarAlerta(true);
   };
 
@@ -129,7 +133,7 @@ export default function ListadoActividades() {
     <>
       {mostrarAlerta ? (
         <Alert severity="success">
-          El link a esta actividad fue copiado al portapeles
+          El link a {actividadCopiada} fue copiado al portapeles
         </Alert>
       ) : null}
       <br />
@@ -249,10 +253,15 @@ export default function ListadoActividades() {
                               onClick={() => eliminarActividad(actividad)}
                             />
                           </IconButton>
-                          <IconButton>
-                            <DeleteIcon
-                              onClick={() => abrirModalCopy(actividad)}
-                            />
+                        </span>
+                      </Tooltip>
+                      <Tooltip title="Link">
+                        <span>
+                          <IconButton
+                            className={classes.icon}
+                            aria-label="copy link"
+                          >
+                            <LinkIcon onClick={() => copiarLink(actividad)} />
                           </IconButton>
                         </span>
                       </Tooltip>
