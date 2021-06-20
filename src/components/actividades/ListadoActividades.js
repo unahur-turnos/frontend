@@ -127,6 +127,12 @@ export default function ListadoActividades() {
 
   return (
     <>
+      {mostrarAlerta ? (
+        <Alert severity="success">
+          El link a esta actividad fue copiado al portapeles
+        </Alert>
+      ) : null}
+      <br />
       <Grid container alignItems="center" spacing={3}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h4" color="primary">
