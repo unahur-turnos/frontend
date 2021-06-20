@@ -70,6 +70,7 @@ export default function ListadoActividades() {
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
   const [paginaActual, setPaginaActual] = useState(1);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const tamanioPagina = 30;
   const eliminarActividad = (actividad) => {
     setActividadAEliminar(actividad);
@@ -88,6 +89,12 @@ export default function ListadoActividades() {
   };
   const validarNombreResponsable = (it) => {
     return validateSearch(textoParaBuscar, it.responsable);
+  };
+
+  const abrirModalCopy = (actividad) => {
+    const URI = `http://localhost:3000/turnos/nuevo?actividad=${actividad.id}`;
+    navigator.clipboard.writeText(URI);
+    setMostrarAlerta(true);
   };
 
   const validar = anyPass([
@@ -234,6 +241,11 @@ export default function ListadoActividades() {
                           >
                             <DeleteIcon
                               onClick={() => eliminarActividad(actividad)}
+                            />
+                          </IconButton>
+                          <IconButton>
+                            <DeleteIcon
+                              onClick={() => abrirModalCopy(actividad)}
                             />
                           </IconButton>
                         </span>
