@@ -11,7 +11,6 @@ import LockIcon from '@material-ui/icons/Lock';
 import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import { PropTypes } from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { omit } from 'ramda';
 import { useApi } from '../../utils/fetchApi';
 import { useHistory } from 'react-router';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
@@ -44,8 +43,8 @@ export default function PerfilUsuario({ titulo }) {
   const saveData = async () => {
     setLoading(true);
     try {
-      await update(datosUsuario);
-      setUsuario(omit(['contrasenia'], datosUsuario));
+      const usuario = await update(datosUsuario);
+      setUsuario(usuario);
       volver();
     } catch (e) {
       setLoading(false);
