@@ -33,6 +33,7 @@ import { validateSearch } from '../../utils/validateSearch';
 import { Alert } from '@material-ui/lab';
 import Pagination from '@material-ui/lab/Pagination';
 import LinkIcon from '@material-ui/icons/Link';
+import { generateUrl } from '../../utils/windowsLocation';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -94,8 +95,7 @@ export default function ListadoActividades() {
   };
 
   const copiarLink = (actividad) => {
-    const URI = `https://turnos.unahur.edu.ar/turnos/nuevo?actividad=${actividad.id}`;
-    //const URI = `${process.env.REACT_APP_API_URL}/turnos/nuevo?actividad=${actividad.id}`;
+    const URI = generateUrl(`/turnos/nuevo?actividad=${actividad.id}`);
     navigator.clipboard.writeText(URI);
     setActividadCopiada(actividad.nombre);
     setMostrarAlerta(true);
