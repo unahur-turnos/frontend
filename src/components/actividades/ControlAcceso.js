@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
+  IconButton,
   Switch,
   Table,
   TableBody,
@@ -13,6 +14,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -40,7 +42,8 @@ import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 import { Buscador } from '../ui/Buscador';
 import { validateSearch } from '../../utils/validateSearch';
-import { dateFormatter, toString } from '../../utils/dateUtils';
+import { toString } from '../../utils/dateUtils';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 const minDate = new Date(-1000000000).toISOString();
 
@@ -198,12 +201,21 @@ function ListadoTurnos({ idActividad, nombreActividad, fechaActividad }) {
           />
         </FormGroup>
 
-        <CSVLink data={datosParaCsv()}>
-          <Button variant="contained" color="primary">
-            Descargar
-          </Button>
+        <CSVLink data={datosParaCsv()} filename={`${nombreActividad}` + '.csv'}>
+          <Tooltip title="Descargar en formato CSV">
+            <span>
+              <IconButton
+                className={classes.icon}
+                aria-label="edit"
+                color="primary"
+              >
+                <GetAppIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
         </CSVLink>
       </Box>
+      <br />
       <Grid container spacing={4} align="center">
         <Grid item xs={12}>
           <Grid item xs={12} sm={6} md={5}>
