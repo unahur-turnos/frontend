@@ -108,7 +108,7 @@ function Rutas() {
         path="/misDatos"
         rolesPermitidos={['admin', 'bedel', 'asistente']}
       >
-        <PerfilUsuario titulo={'Mis datos'} />
+        <PerfilUsuario titulo={'Mi perfil'} />
       </PrivateRoute>
 
       <Route path="/">

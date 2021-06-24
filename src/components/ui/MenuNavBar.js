@@ -76,7 +76,7 @@ export default function MenuNavBar() {
           <ListItemIcon>
             <AccountCircleIcon fontSize="small" color="primary" />
           </ListItemIcon>
-          <ListItemText primary="Mis datos" />
+          <ListItemText primary="Mi perfil" />
         </MenuItem>
         <MenuItem onClick={cerrarSesion}>
           <ListItemIcon>

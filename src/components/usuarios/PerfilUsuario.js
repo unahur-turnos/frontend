@@ -10,7 +10,9 @@ import EmailIcon from '@material-ui/icons/Email';
 import LockIcon from '@material-ui/icons/Lock';
 import PhoneEnabledIcon from '@material-ui/icons/PhoneEnabled';
 import { PropTypes } from 'prop-types';
+import SchoolIcon from '@material-ui/icons/School';
 import TextField from '@material-ui/core/TextField';
+import { inscripcionCarrerasPorUsuario } from '../../state/inscripcionCarreras';
 import { useApi } from '../../utils/fetchApi';
 import { useHistory } from 'react-router';
 import { useInputStyles } from '../../utils/numberFieldWithoutArrows';
@@ -22,6 +24,8 @@ export default function PerfilUsuario({ titulo }) {
   const usuarioDB = useRecoilValue(usuarioState);
   const [datosUsuario, setDatosUsuario] = useState(usuarioDB);
   const setUsuario = useSetRecoilState(usuarioState);
+
+  const carreras = useRecoilValue(inscripcionCarrerasPorUsuario(usuarioDB.id));
 
   const [loading, setLoading] = useState(false);
   const [contraseniaIncorrecta, setContraseniaIncorrecta] = useState(false);
@@ -65,14 +69,10 @@ export default function PerfilUsuario({ titulo }) {
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
               <TextValidator
-                id="nombreUsuario"
-                label="Nombre/s"
-                name="nombre"
-                value={datosUsuario.nombre}
+                disabled
                 fullWidth
-                onChange={handleChange}
-                validators={['required']}
-                errorMessages={[ERRORES.requerido]}
+                label="Nombre/s"
+                value={datosUsuario.nombre}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -87,14 +87,10 @@ export default function PerfilUsuario({ titulo }) {
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4}>
               <TextValidator
-                id="apellidoUsuario"
-                label="Apellido/s"
-                name="apellido"
-                onChange={handleChange}
+                disabled
                 fullWidth
+                label="Apellido/s"
                 value={datosUsuario.apellido}
-                validators={['required']}
-                errorMessages={[ERRORES.requerido]}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -169,6 +165,27 @@ export default function PerfilUsuario({ titulo }) {
               />
             </Grid>
           </Grid>
+
+          {carreras &&
+            carreras.map((carrera) => (
+              <Grid item xs={12} key={carrera.nombreCarrera}>
+                <Grid item xs={12} sm={7} md={4}>
+                  <TextValidator
+                    disabled
+                    fullWidth
+                    label="Carrera"
+                    value={carrera.nombreCarrera}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <SchoolIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            ))}
 
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4}>
