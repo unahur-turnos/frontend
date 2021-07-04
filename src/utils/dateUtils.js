@@ -34,3 +34,11 @@ export const formatISO = (fecha) => {
 export const formatDateToDay = (day, hour) => {
   return `${day}T${hour}`;
 };
+
+export const getDateOnly = (fecha) => {
+  return DateTime.fromISO(fecha).toISODate();
+};
+
+export const horarioComparable = (horario) => {
+  return DateTime.fromISO(horario);
+};

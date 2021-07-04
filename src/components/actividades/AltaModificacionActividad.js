@@ -2,7 +2,6 @@ import { AYUDAS, ERRORES } from '../textos/Textos';
 import {
   Box,
   Button,
-  Fab,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -11,7 +10,6 @@ import {
   MenuItem,
   Radio,
   RadioGroup,
-  Typography,
 } from '@material-ui/core';
 import {
   SelectValidator,
@@ -22,16 +20,16 @@ import {
   formatCurrentDay,
   formatDateToDay,
   formatISO,
+  getDateOnly,
+  horarioComparable,
   hourFormatter,
 } from '../../utils/dateUtils';
 import { find, pick, propEq } from 'ramda';
 import { useHistory, useParams } from 'react-router-dom';
-
-import { Autocomplete } from '@material-ui/lab';
 import { BotonGuardar } from '../ui/BotonGuardar';
 import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
-import { actividadPorId } from '../../state/actividades';
+import { actividadPorId, todasLasActividades } from '../../state/actividades';
 import { todasLasCarreras } from '../../state/carreras';
 import { todosLosEspacios } from '../../state/espacios';
 import { useApi } from '../../utils/fetchApi';
@@ -72,23 +70,90 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
       horaFin: hourFormatter(fechaHoraFin),
     },
   ]);
+  const actividades = useRecoilValue(
+    todasLasActividades({ desde: fechaHoraInicio })
+  );
   const [diaDeHoy, setDiaDeHoy] = useState(formatCurrentDay(fechaHoraInicio));
-  const carreraSeleccionada = find(propEq('id', restriccionId), carreras);
+  // const carreraSeleccionada = find(propEq('id', restriccionId), carreras);
+
+  const getHorarioByAttrInList = (atributo, valor, lista) =>
+    find(propEq(atributo, valor), lista);
+  const getActividadesDe = (fecha) =>
+    actividades.filter(
+      (actividad) =>
+        getDateOnly(actividad.fechaHoraInicio) === getDateOnly(fecha) &&
+        actividad.espacioId === espacioId
+    );
 
   ValidatorForm.addValidationRule(
     'fechaActividadValida',
     (value) => formatISO(value) >= DateTime.local().toISODate()
   );
 
-  ValidatorForm.addValidationRule(
-    'fechaInicioValida',
-    (value) => hourFormatter(value) > hourFormatter(DateTime.local())
-  );
+  ValidatorForm.addValidationRule('horarioDisponible', (value) => {
+    const { horaInicio, horaFin } = getHorarioByAttrInList(
+      'horaInicio',
+      value,
+      horarios
+    );
+    const actividadesDeHoy = getActividadesDe(formatISO(diaDeHoy));
+    const horariosDeHoy = actividadesDeHoy.map((actividad) => ({
+      inicio: actividad.fechaHoraInicio,
+      fin: actividad.fechaHoraFin,
+    }));
 
-  ValidatorForm.addValidationRule(
-    'fechaFinValida',
-    (value) => hourFormatter(value) > hourFormatter(fechaHoraInicio)
-  );
+    const horaInicioFormateada = DateTime.fromISO(
+      `${formatDateToDay(diaDeHoy, horaInicio)}:00.000Z`
+    );
+    const horaFinFormateada = DateTime.fromISO(
+      `${formatDateToDay(diaDeHoy, horaFin)}:00.000Z`
+    );
+
+    const horarioOcupado = horariosDeHoy.some((horario) => {
+      const { inicio, fin } = horario;
+      const inicioEstaEntre =
+        horaInicioFormateada >= horarioComparable(inicio) &&
+        horaInicioFormateada < horarioComparable(fin);
+      const finEstaEntre =
+        horaFinFormateada > horarioComparable(inicio) &&
+        horaFinFormateada <= horarioComparable(fin);
+
+      return inicioEstaEntre || finEstaEntre;
+    });
+
+    return !horarioOcupado;
+  });
+
+  ValidatorForm.addValidationRule('fechaInicioValida', (value) => {
+    const {
+      id: idActual,
+      horaInicio: horaInicioActual,
+    } = getHorarioByAttrInList('horaInicio', value, horarios);
+
+    if (idActual === 0) {
+      return (
+        formatDateToDay(diaDeHoy, horaInicioActual) > DateTime.local().toISO()
+      );
+    }
+
+    const { horaInicio: horaInicioAnterior } = getHorarioByAttrInList(
+      'id',
+      idActual - 1,
+      horarios
+    );
+
+    return hourFormatter(horaInicioActual) >= hourFormatter(horaInicioAnterior);
+  });
+
+  ValidatorForm.addValidationRule('fechaFinValida', (value) => {
+    const { horaInicio, horaFin } = getHorarioByAttrInList(
+      'horaFin',
+      value,
+      horarios
+    );
+
+    return hourFormatter(horaFin) > hourFormatter(horaInicio);
+  });
 
   const handleChange = (e) => {
     setActividad({
@@ -296,8 +361,16 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
               label="Hora inicio"
               onChange={(e) => handleChangeHour(horario.id, e.target)}
               inputProps={{ step: 300 }}
-              validators={['required', 'fechaInicioValida']}
-              errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
+              validators={[
+                'required',
+                'fechaInicioValida',
+                'horarioDisponible',
+              ]}
+              errorMessages={[
+                ERRORES.requerido,
+                ERRORES.fechaFin,
+                ERRORES.horarioOcupado,
+              ]}
             />
           </Grid>
           <Grid item xs={5} sm={2} md={1}>
@@ -309,8 +382,12 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
               label="Hora cierre"
               onChange={(e) => handleChangeHour(horario.id, e.target)}
               inputProps={{ step: 300 }}
-              validators={['required', 'fechaInicioValida']}
-              errorMessages={[ERRORES.requerido, ERRORES.fechaFin]}
+              validators={['required', 'fechaFinValida', 'horarioDisponible']}
+              errorMessages={[
+                ERRORES.requerido,
+                ERRORES.fechaFin,
+                ERRORES.horarioOcupado,
+              ]}
               style={{ marginLeft: 30 }}
             />
           </Grid>

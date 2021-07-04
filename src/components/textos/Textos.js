@@ -12,6 +12,7 @@ export const ERRORES = {
   diaActividad: 'No puede ser anterior a hoy',
   fechaInicio: 'Debe ser posterior a la fecha y hora actual',
   fechaFin: 'No puede ser anterior al inicio de la actividad',
+  horarioOcupado: 'Este horario no está disponible',
   responsable: 'Ingresá información del responsable',
   expiracionToken:
     'El link con el que ingresaste ya no es válido, por favor volvé a iniciar el proceso de recuperar contraseña',
