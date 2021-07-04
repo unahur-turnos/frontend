@@ -33,8 +33,8 @@ export default function MenuNavBar() {
     setAnchorEl(null);
   };
 
-  const misDatos = () => {
-    history.push('/misDatos');
+  const miPerfil = () => {
+    history.push('/miPerfil');
     handleClose();
   };
 
@@ -72,7 +72,7 @@ export default function MenuNavBar() {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={misDatos}>
+        <MenuItem onClick={miPerfil}>
           <ListItemIcon>
             <AccountCircleIcon fontSize="small" color="primary" />
           </ListItemIcon>
