@@ -382,7 +382,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
               label="Hora cierre"
               onChange={(e) => handleChangeHour(horario.id, e.target)}
               inputProps={{ step: 300 }}
-              validators={['required', 'fechaFinValida', 'horarioDisponible']}
+              validators={['required', 'fechaFinValida']}
               errorMessages={[
                 ERRORES.requerido,
                 ERRORES.fechaFin,
