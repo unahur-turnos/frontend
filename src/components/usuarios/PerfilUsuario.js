@@ -27,6 +27,7 @@ export default function PerfilUsuario({ titulo }) {
 
   const carreras = useRecoilValue(inscripcionCarrerasPorUsuario(usuarioDB.id));
 
+  const [edicionActivada, setEdicionActivada] = useState(false);
   const [loading, setLoading] = useState(false);
   const [contraseniaIncorrecta, setContraseniaIncorrecta] = useState(false);
 
@@ -42,6 +43,14 @@ export default function PerfilUsuario({ titulo }) {
 
   const volver = () => {
     history.push('/');
+  };
+
+  const activarEdicion = () => {
+    setEdicionActivada(true);
+  };
+
+  const desactivarEdicion = () => {
+    setEdicionActivada(false);
   };
 
   const saveData = async () => {
@@ -69,7 +78,7 @@ export default function PerfilUsuario({ titulo }) {
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4} style={{ marginTop: 20 }}>
               <TextValidator
-                disabled
+                disabled={edicionActivada}
                 fullWidth
                 label="Nombre/s"
                 value={datosUsuario.nombre}
@@ -79,6 +88,7 @@ export default function PerfilUsuario({ titulo }) {
                       <AccountCircleIcon />
                     </InputAdornment>
                   ),
+                  readOnly: true,
                 }}
               />
             </Grid>
@@ -87,7 +97,7 @@ export default function PerfilUsuario({ titulo }) {
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4}>
               <TextValidator
-                disabled
+                disabled={edicionActivada}
                 fullWidth
                 label="Apellido/s"
                 value={datosUsuario.apellido}
@@ -97,6 +107,7 @@ export default function PerfilUsuario({ titulo }) {
                       <AccountCircleIcon />
                     </InputAdornment>
                   ),
+                  readOnly: true,
                 }}
               />
             </Grid>
@@ -105,7 +116,7 @@ export default function PerfilUsuario({ titulo }) {
           <Grid item xs={12}>
             <Grid item xs={12} sm={7} md={4}>
               <TextField
-                disabled
+                disabled={edicionActivada}
                 fullWidth
                 label="DNI"
                 value={datosUsuario.dni}
@@ -115,6 +126,7 @@ export default function PerfilUsuario({ titulo }) {
                       <AssignmentIndIcon />
                     </InputAdornment>
                   ),
+                  readOnly: true,
                 }}
               />
             </Grid>
@@ -137,6 +149,7 @@ export default function PerfilUsuario({ titulo }) {
                       <EmailIcon />
                     </InputAdornment>
                   ),
+                  readOnly: !edicionActivada,
                 }}
               />
             </Grid>
@@ -161,6 +174,7 @@ export default function PerfilUsuario({ titulo }) {
                       <PhoneEnabledIcon />
                     </InputAdornment>
                   ),
+                  readOnly: !edicionActivada,
                 }}
               />
             </Grid>
@@ -171,7 +185,7 @@ export default function PerfilUsuario({ titulo }) {
               <Grid item xs={12} key={carrera.nombreCarrera}>
                 <Grid item xs={12} sm={7} md={4}>
                   <TextValidator
-                    disabled
+                    disabled={edicionActivada}
                     fullWidth
                     label="Carrera"
                     value={carrera.nombreCarrera}
@@ -181,34 +195,37 @@ export default function PerfilUsuario({ titulo }) {
                           <SchoolIcon />
                         </InputAdornment>
                       ),
+                      readOnly: true,
                     }}
                   />
                 </Grid>
               </Grid>
             ))}
 
-          <Grid item xs={12}>
-            <Grid item xs={12} sm={7} md={4}>
-              <TextValidator
-                id="contraseniaUsuario"
-                label="Ingresá tu contraseña"
-                name="contrasenia"
-                type="password"
-                fullWidth
-                onChange={handleChange}
-                value={datosUsuario.contrasenia}
-                validators={['required']}
-                errorMessages={[ERRORES.requerido]}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <LockIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+          {edicionActivada && (
+            <Grid item xs={12}>
+              <Grid item xs={12} sm={7} md={4}>
+                <TextValidator
+                  id="contraseniaUsuario"
+                  label="Ingresá tu contraseña"
+                  name="contrasenia"
+                  type="password"
+                  fullWidth
+                  onChange={handleChange}
+                  value={datosUsuario.contrasenia}
+                  validators={['required']}
+                  errorMessages={[ERRORES.requerido]}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <LockIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
             </Grid>
-          </Grid>
+          )}
         </Grid>
 
         {contraseniaIncorrecta && (
@@ -220,12 +237,32 @@ export default function PerfilUsuario({ titulo }) {
         )}
 
         <Grid container spacing={1} style={{ marginTop: 20 }}>
-          <Grid item xs={6} align="right">
-            <Button onClick={volver}>Cancelar</Button>
-          </Grid>
-          <Grid item xs={6}>
-            <BotonGuardar loading={loading} />
-          </Grid>
+          {!edicionActivada && (
+            <>
+              <Grid item xs={6} align="right">
+                <Button onClick={volver}>Volver</Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Button
+                  onClick={activarEdicion}
+                  variant="contained"
+                  color="primary"
+                >
+                  Editar
+                </Button>
+              </Grid>
+            </>
+          )}
+          {edicionActivada && (
+            <>
+              <Grid item xs={6} align="right">
+                <Button onClick={desactivarEdicion}>Cancelar edición</Button>
+              </Grid>
+              <Grid item xs={6}>
+                <BotonGuardar loading={loading} />
+              </Grid>
+            </>
+          )}
         </Grid>
       </ValidatorForm>
     </>
