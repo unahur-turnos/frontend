@@ -147,10 +147,13 @@ function ListadoTurnos({ idActividad, nombreActividad, fechaActividad }) {
 
   const datosParaCsv = () => {
     return todosLosTurnos.map(({ Usuario }) => {
+      console.log(todosLosTurnos);
       return {
         Nombre: Usuario.nombre,
         Apellido: Usuario.apellido,
         Dni: Usuario.dni,
+        Email: Usuario.email,
+        Telefono: Usuario.telefono,
         Actividad: nombreActividad,
         'Fecha y hora': toString(fechaActividad),
       };
@@ -202,7 +205,7 @@ function ListadoTurnos({ idActividad, nombreActividad, fechaActividad }) {
         </FormGroup>
 
         <CSVLink data={datosParaCsv()} filename={`${nombreActividad}` + '.csv'}>
-          <Tooltip title="Descargar en formato CSV">
+          <Tooltip title="Descargar planilla en formato CSV">
             <span>
               <IconButton
                 className={classes.icon}
