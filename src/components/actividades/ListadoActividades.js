@@ -131,11 +131,11 @@ export default function ListadoActividades() {
 
   return (
     <>
-      {mostrarAlerta ? (
-        <Alert severity="success">
+      {mostrarAlerta && (
+        <Alert onClose={() => setMostrarAlerta(false)} severity="success">
           El link a {actividadCopiada} fue copiado al portapeles
         </Alert>
-      ) : null}
+      )}
       <br />
       <Grid container alignItems="center" spacing={3}>
         <Grid item xs={12} sm={6}>

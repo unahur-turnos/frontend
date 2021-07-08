@@ -32,27 +32,23 @@ const AlertMessage = () => {
 
 export default function Paso1DDJJ({ handleChange, agregarActividad }) {
   const search = useLocation().search;
-  const ActividadID = new URLSearchParams(search).get('actividad');
+  const actividadID = new URLSearchParams(search).get('actividad');
 
   const actividades = useRecoilValue(actividadesUsuario());
   const cambioDeActividad = (nombre, actividad) => {
     agregarActividad(nombre, actividad);
   };
 
+  const condicionFiltro = (actividad) => {
+    const actividadesFuturas =
+      DateTime.fromISO(actividad.fechaHoraInicio) > DateTime.local();
+    return actividadID
+      ? actividadesFuturas && actividad.id == actividadID
+      : actividadesFuturas;
+  };
+
   const actividadesFiltradas = () => {
-    if (!ActividadID) {
-      return filter(
-        (actividad) =>
-          DateTime.fromISO(actividad.fechaHoraInicio) > DateTime.local(),
-        actividades
-      );
-    }
-    return filter(
-      (actividad) =>
-        DateTime.fromISO(actividad.fechaHoraInicio) > DateTime.local() &&
-        actividad.id == ActividadID,
-      actividades
-    );
+    return filter(condicionFiltro, actividades);
   };
 
   return (
@@ -101,5 +97,5 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
 Paso1DDJJ.propTypes = {
   handleChange: PropTypes.func,
   agregarActividad: PropTypes.func,
-  ActividadID: PropTypes.number,
+  actividadID: PropTypes.number,
 };
