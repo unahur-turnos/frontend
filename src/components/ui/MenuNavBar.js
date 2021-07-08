@@ -2,20 +2,28 @@ import {
   Avatar,
   Box,
   IconButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
 import { DefaultValue, useRecoilState } from 'recoil';
+
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { take } from 'ramda';
+import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
-import { take } from 'ramda';
 
-export default function BotonCerrarSesion() {
-  const [usuario, setUsuario] = useRecoilState(usuarioState);
-  const [anchorEl, setAnchorEl] = useState(null);
+export default function MenuNavBar() {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const [usuario, setUsuario] = useRecoilState(usuarioState);
+  const history = useHistory();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -23,6 +31,11 @@ export default function BotonCerrarSesion() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const miPerfil = () => {
+    history.push('/miPerfil');
+    handleClose();
   };
 
   const cerrarSesion = () => {
@@ -59,7 +72,18 @@ export default function BotonCerrarSesion() {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={cerrarSesion}>Cerrar sesión</MenuItem>
+        <MenuItem onClick={miPerfil}>
+          <ListItemIcon>
+            <AccountCircleIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          <ListItemText primary="Mi perfil" />
+        </MenuItem>
+        <MenuItem onClick={cerrarSesion}>
+          <ListItemIcon>
+            <ExitToAppIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          <ListItemText primary="Cerrar sesión" />
+        </MenuItem>
       </Menu>
     </Box>
   );

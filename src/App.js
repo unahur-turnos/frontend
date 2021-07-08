@@ -1,34 +1,36 @@
+import { Box, Container, makeStyles } from '@material-ui/core';
 import {
+  Redirect,
   Route,
   BrowserRouter as Router,
   Switch,
-  Redirect,
 } from 'react-router-dom';
-import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
-import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
-import { Box, Container, makeStyles } from '@material-ui/core';
-import ControlAcceso from './components/actividades/ControlAcceso';
-import RecuperarContrasenia from './components/login/RecuperarContrasenia';
-import Header from './components/ui/Header';
-import InscripcionActividad from './components/inscripcionTurnos/InscripcionActividad';
-import FinalDDJJ from './components/inscripcionTurnos/FinalDDJJ';
-import ListadoActividades from './components/actividades/ListadoActividades';
-import ListadoEspacios from './components/espacios/ListadoEspacios';
-import Login from './components/login/Login';
-import PrivateRoute from './components/autenticacion/PrivateRoute';
-import Footer from './components/ui/Footer';
-import Registro from './components/registro/Registro';
-import { useRecoilValue } from 'recoil';
 import {
   hayUsuarioLogueadoState,
   rutaInicialUsuarioState,
 } from './state/usuario';
-import { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+
+import AltaModificacionActividad from './components/actividades/AltaModificacionActividad';
+import AltaModificacionEspacio from './components/espacios/AltaModificacionEspacio';
 import Cargando from './components/ui/Cargando';
+import ControlAcceso from './components/actividades/ControlAcceso';
+import { ErrorBoundary } from 'react-error-boundary';
 import ErrorInesperado from './components/ui/ErrorInesperado';
+import FinalDDJJ from './components/inscripcionTurnos/FinalDDJJ';
+import Footer from './components/ui/Footer';
+import Header from './components/ui/Header';
+import InscripcionActividad from './components/inscripcionTurnos/InscripcionActividad';
+import ListadoActividades from './components/actividades/ListadoActividades';
+import ListadoEspacios from './components/espacios/ListadoEspacios';
+import Login from './components/login/Login';
 import MisActividades from './components/actividades/MisActividades';
 import { NuevaContraseña } from './components/login/NuevaContraseña';
+import PerfilUsuario from './components/usuarios/PerfilUsuario';
+import PrivateRoute from './components/autenticacion/PrivateRoute';
+import RecuperarContrasenia from './components/login/RecuperarContrasenia';
+import Registro from './components/registro/Registro';
+import { Suspense } from 'react';
+import { useRecoilValue } from 'recoil';
 
 function Rutas() {
   const hayUsuarioLogueado = useRecoilValue(hayUsuarioLogueadoState);
@@ -107,6 +109,13 @@ function Rutas() {
 
       <PrivateRoute path="/turnos" rolesPermitidos={['asistente']}>
         <MisActividades />
+      </PrivateRoute>
+
+      <PrivateRoute
+        path="/miPerfil"
+        rolesPermitidos={['admin', 'bedel', 'asistente']}
+      >
+        <PerfilUsuario titulo={'Mi perfil'} />
       </PrivateRoute>
 
       <Route path="/">

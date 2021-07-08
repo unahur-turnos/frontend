@@ -1,20 +1,21 @@
 import {
   AppBar,
+  Box,
   Toolbar,
   Zoom,
   makeStyles,
   useScrollTrigger,
-  Box,
 } from '@material-ui/core';
-import BotonCerrarSesion from './BotonCerrarSesion';
+import { useEffect, useState } from 'react';
+
+import Fab from '@material-ui/core/Fab';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import MenuNavBar from './MenuNavBar';
+import PantallaDesktop from './PantallaDesktop';
+import PantallaMobile from './PantallaMobile';
 import PropTypes from 'prop-types';
 import { hayUsuarioLogueadoState } from '../../state/usuario';
 import { useRecoilValue } from 'recoil';
-import { useEffect, useState } from 'react';
-import PantallaDesktop from './PantallaDesktop';
-import PantallaMobile from './PantallaMobile';
-import Fab from '@material-ui/core/Fab';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 export default function Header(props) {
   const classes = useStyles();
@@ -55,7 +56,7 @@ export default function Header(props) {
             ) : (
               <PantallaDesktop />
             )}
-            {hayUsuarioLogueado && <BotonCerrarSesion />}
+            {hayUsuarioLogueado && <MenuNavBar />}
           </Toolbar>
         </AppBar>
       </Box>
