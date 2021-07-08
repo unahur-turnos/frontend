@@ -90,6 +90,13 @@ function Rutas() {
         <ListadoActividades />
       </PrivateRoute>
 
+      <PrivateRoute
+        path="/turnos/nuevo?actividad=id"
+        rolesPermitidos={['asistente']}
+      >
+        <InscripcionActividad />
+      </PrivateRoute>
+
       <PrivateRoute path="/turnos/nuevo" rolesPermitidos={['asistente']}>
         <InscripcionActividad />
       </PrivateRoute>

@@ -32,6 +32,8 @@ import { anyPass, compose, drop, filter, take, isEmpty } from 'ramda';
 import { validateSearch } from '../../utils/validateSearch';
 import { Alert } from '@material-ui/lab';
 import Pagination from '@material-ui/lab/Pagination';
+import LinkIcon from '@material-ui/icons/Link';
+import { generateUrl } from '../../utils/windowsLocation';
 
 const useStyles = makeStyles(({ palette }) => ({
   icon: {
@@ -70,6 +72,8 @@ export default function ListadoActividades() {
   const [abrirModal, setAbrirModal] = useState(false);
   const [actividadAEliminar, setActividadAEliminar] = useState();
   const [paginaActual, setPaginaActual] = useState(1);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [actividadCopiada, setActividadCopiada] = useState('');
   const tamanioPagina = 30;
   const eliminarActividad = (actividad) => {
     setActividadAEliminar(actividad);
@@ -88,6 +92,13 @@ export default function ListadoActividades() {
   };
   const validarNombreResponsable = (it) => {
     return validateSearch(textoParaBuscar, it.responsable);
+  };
+
+  const copiarLink = (actividad) => {
+    const URI = generateUrl(`/turnos/nuevo?actividad=${actividad.id}`);
+    navigator.clipboard.writeText(URI);
+    setActividadCopiada(actividad.nombre);
+    setMostrarAlerta(true);
   };
 
   const validar = anyPass([
@@ -120,6 +131,12 @@ export default function ListadoActividades() {
 
   return (
     <>
+      {mostrarAlerta && (
+        <Alert onClose={() => setMostrarAlerta(false)} severity="success">
+          El link a {actividadCopiada} fue copiado al portapeles
+        </Alert>
+      )}
+      <br />
       <Grid container alignItems="center" spacing={3}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h4" color="primary">
@@ -235,6 +252,16 @@ export default function ListadoActividades() {
                             <DeleteIcon
                               onClick={() => eliminarActividad(actividad)}
                             />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                      <Tooltip title="Link">
+                        <span>
+                          <IconButton
+                            className={classes.icon}
+                            aria-label="copy link"
+                          >
+                            <LinkIcon onClick={() => copiarLink(actividad)} />
                           </IconButton>
                         </span>
                       </Tooltip>

@@ -16,6 +16,7 @@ import { useRecoilValue } from 'recoil';
 import { DateTime } from 'luxon';
 import { filter } from 'ramda';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import { useLocation } from 'react-router-dom';
 
 const AlertMessage = () => {
   return (
@@ -30,18 +31,26 @@ const AlertMessage = () => {
 };
 
 export default function Paso1DDJJ({ handleChange, agregarActividad }) {
+  const search = useLocation().search;
+  const actividadID = new URLSearchParams(search).get('actividad');
+
   const actividades = useRecoilValue(actividadesUsuario());
   const cambioDeActividad = (nombre, actividad) => {
     agregarActividad(nombre, actividad);
   };
 
-  const actividadesFiltradas = () => {
-    return filter(
-      (actividad) =>
-        DateTime.fromISO(actividad.fechaHoraInicio) > DateTime.local(),
-      actividades
-    );
+  const condicionFiltro = (actividad) => {
+    const actividadesFuturas =
+      DateTime.fromISO(actividad.fechaHoraInicio) > DateTime.local();
+    return actividadID
+      ? actividadesFuturas && actividad.id == actividadID
+      : actividadesFuturas;
   };
+
+  const actividadesFiltradas = () => {
+    return filter(condicionFiltro, actividades);
+  };
+
   return (
     <>
       <Grid container component={Box} justifyContent="center">
@@ -88,4 +97,5 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
 Paso1DDJJ.propTypes = {
   handleChange: PropTypes.func,
   agregarActividad: PropTypes.func,
+  actividadID: PropTypes.number,
 };
