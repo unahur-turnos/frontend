@@ -18,32 +18,33 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { CSVLink } from 'react-csv';
 import {
   anyPass,
   ascend,
   compose,
   filter,
   isNil,
+  path,
   propOr,
   sortWith,
   startsWith,
-  path,
 } from 'ramda';
 import { fechaHoraActividad, hourFormatter } from '../../utils/dateUtils';
+
+import { Buscador } from '../ui/Buscador';
+import { CSVLink } from 'react-csv';
 import ConfirmarEntrada from './ConfirmarEntrada';
 import { DateTime } from 'luxon';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
+import { toString } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
 import { turnosPorActividad } from '../../state/turnos';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { Buscador } from '../ui/Buscador';
 import { validateSearch } from '../../utils/validateSearch';
-import { toString } from '../../utils/dateUtils';
-import GetAppIcon from '@material-ui/icons/GetApp';
 
 const minDate = new Date(-1000000000).toISOString();
 
@@ -147,7 +148,6 @@ function ListadoTurnos({ idActividad, nombreActividad, fechaActividad }) {
 
   const datosParaCsv = () => {
     return todosLosTurnos.map(({ Usuario }) => {
-      console.log(todosLosTurnos);
       return {
         Nombre: Usuario.nombre,
         Apellido: Usuario.apellido,
