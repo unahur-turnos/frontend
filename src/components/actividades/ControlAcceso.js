@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
+  IconButton,
   Switch,
   Table,
   TableBody,
@@ -13,6 +14,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -22,22 +24,26 @@ import {
   compose,
   filter,
   isNil,
+  path,
   propOr,
   sortWith,
   startsWith,
-  path,
 } from 'ramda';
 import { fechaHoraActividad, hourFormatter } from '../../utils/dateUtils';
+
+import { Buscador } from '../ui/Buscador';
+import { CSVLink } from 'react-csv';
 import ConfirmarEntrada from './ConfirmarEntrada';
 import { DateTime } from 'luxon';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from './SelectorActividad';
+import { toString } from '../../utils/dateUtils';
 import { todasLasActividades } from '../../state/actividades';
 import { turnosPorActividad } from '../../state/turnos';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { Buscador } from '../ui/Buscador';
 import { validateSearch } from '../../utils/validateSearch';
 
 const minDate = new Date(-1000000000).toISOString();
@@ -94,7 +100,11 @@ export default function ControlAcceso() {
       </Grid>
       <Grid item xs={12} align="center">
         {actividadSeleccionada && (
-          <ListadoTurnos idActividad={actividadSeleccionada.id} />
+          <ListadoTurnos
+            idActividad={actividadSeleccionada.id}
+            nombreActividad={actividadSeleccionada.nombre}
+            fechaActividad={actividadSeleccionada.fechaHoraInicio}
+          />
         )}
       </Grid>
     </Grid>
@@ -127,7 +137,7 @@ function DatosActividad({ actividad }) {
   );
 }
 
-function ListadoTurnos({ idActividad }) {
+function ListadoTurnos({ idActividad, nombreActividad, fechaActividad }) {
   const classes = useStyles();
 
   const todosLosTurnos = useRecoilValue(turnosPorActividad(idActividad));
@@ -135,6 +145,20 @@ function ListadoTurnos({ idActividad }) {
   const [abrirModal, setAbrirModal] = useState(false);
   const [ocultarRegistrados, setOcultarRegistrados] = useState(false);
   const [textoParaBuscar, setTextoParaBuscar] = useState('');
+
+  const datosParaCsv = () => {
+    return todosLosTurnos.map(({ Usuario }) => {
+      return {
+        Nombre: Usuario.nombre,
+        Apellido: Usuario.apellido,
+        Dni: Usuario.dni,
+        Email: Usuario.email,
+        Telefono: Usuario.telefono,
+        Actividad: nombreActividad,
+        'Fecha y hora': toString(fechaActividad),
+      };
+    });
+  };
 
   const validarNombre = (it) => {
     return validateSearch(textoParaBuscar, it.Usuario.nombre);
@@ -179,7 +203,22 @@ function ListadoTurnos({ idActividad }) {
             control={<Switch onChange={cambioCheck} color="primary" />}
           />
         </FormGroup>
+
+        <CSVLink data={datosParaCsv()} filename={`${nombreActividad}` + '.csv'}>
+          <Tooltip title="Descargar planilla en formato CSV">
+            <span>
+              <IconButton
+                className={classes.icon}
+                aria-label="edit"
+                color="primary"
+              >
+                <GetAppIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+        </CSVLink>
       </Box>
+      <br />
       <Grid container spacing={4} align="center">
         <Grid item xs={12}>
           <Grid item xs={12} sm={6} md={5}>
@@ -250,4 +289,6 @@ DatosActividad.propTypes = {
 
 ListadoTurnos.propTypes = {
   idActividad: PropTypes.number,
+  nombreActividad: PropTypes.string,
+  fechaActividad: PropTypes.string,
 };
