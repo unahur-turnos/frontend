@@ -78,6 +78,14 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
 
   const getHorarioByAttrInList = (atributo, valor, lista) =>
     find(propEq(atributo, valor), lista);
+
+  const getHorariosOrdenados = () =>
+    horarios.sort(
+      (a, b) =>
+        formatDateToDay(diaDeHoy, a.horaInicio) <
+        formatDateToDay(diaDeHoy, b.horaInicio)
+    );
+
   const getActividadesDe = (fecha) =>
     actividades.filter(
       (actividad) =>
@@ -94,29 +102,40 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
     const { horaInicio, horaFin } = getHorarioByAttrInList(
       'horaInicio',
       value,
-      horarios
+      getHorariosOrdenados()
     );
     const actividadesDeHoy = getActividadesDe(formatISO(diaDeHoy));
-    const horariosDeHoy = actividadesDeHoy.map((actividad) => ({
+    const actividadesDeHoyFormateadas = actividadesDeHoy.map((actividad) => {
+      return {
+        ...actividad,
+        fechaHoraFin: DateTime.fromISO(actividad.fechaHoraFin).setLocale('es'),
+        fechaHoraInicio: DateTime.fromISO(actividad.fechaHoraInicio).setLocale(
+          'es'
+        ),
+      };
+    });
+
+    const horariosDeHoy = actividadesDeHoyFormateadas.map((actividad) => ({
       inicio: actividad.fechaHoraInicio,
       fin: actividad.fechaHoraFin,
     }));
+    const horariosDeHoyOrdenados = horariosDeHoy.sort(
+      (a, b) => horarioComparable(a.inicio) >= horarioComparable(b.inicio)
+    );
 
     const horaInicioFormateada = DateTime.fromISO(
-      `${formatDateToDay(diaDeHoy, horaInicio)}:00.000Z`
-    );
+      formatDateToDay(diaDeHoy, horaInicio)
+    ).setLocale('es');
     const horaFinFormateada = DateTime.fromISO(
-      `${formatDateToDay(diaDeHoy, horaFin)}:00.000Z`
-    );
+      formatDateToDay(diaDeHoy, horaFin)
+    ).setLocale('es');
 
-    const horarioOcupado = horariosDeHoy.some((horario) => {
+    const horarioOcupado = horariosDeHoyOrdenados.some((horario) => {
       const { inicio, fin } = horario;
       const inicioEstaEntre =
-        horaInicioFormateada >= horarioComparable(inicio) &&
-        horaInicioFormateada < horarioComparable(fin);
+        inicio >= horaInicioFormateada && inicio <= horaFinFormateada;
       const finEstaEntre =
-        horaFinFormateada > horarioComparable(inicio) &&
-        horaFinFormateada <= horarioComparable(fin);
+        fin >= horaInicioFormateada && fin <= horaFinFormateada;
 
       return inicioEstaEntre || finEstaEntre;
     });
@@ -125,34 +144,63 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
   });
 
   ValidatorForm.addValidationRule('fechaInicioValida', (value) => {
+    const horarioActual = getHorarioByAttrInList(
+      'horaInicio',
+      value,
+      getHorariosOrdenados()
+    );
     const {
-      id: idActual,
       horaInicio: horaInicioActual,
-    } = getHorarioByAttrInList('horaInicio', value, horarios);
+      horaFin: horaFinActual,
+    } = horarioActual;
+    const indexOfHorarioActual = getHorariosOrdenados().indexOf(horarioActual);
 
-    if (idActual === 0) {
+    if (indexOfHorarioActual === 0) {
       return (
         formatDateToDay(diaDeHoy, horaInicioActual) > DateTime.local().toISO()
       );
     }
 
-    const { horaInicio: horaInicioAnterior } = getHorarioByAttrInList(
-      'id',
-      idActual - 1,
-      horarios
-    );
+    const horarioAnterior = getHorariosOrdenados()[indexOfHorarioActual - 1];
+    const { horaFin: horaFinAnterior } = horarioAnterior;
 
-    return hourFormatter(horaInicioActual) >= hourFormatter(horaInicioAnterior);
+    return (
+      horarioComparable(horaInicioActual) < horarioComparable(horaFinActual) &&
+      horarioComparable(horaInicioActual) >= horarioComparable(horaFinAnterior)
+    );
   });
 
   ValidatorForm.addValidationRule('fechaFinValida', (value) => {
-    const { horaInicio, horaFin } = getHorarioByAttrInList(
+    const horarioActual = getHorarioByAttrInList(
       'horaFin',
       value,
-      horarios
+      getHorariosOrdenados()
     );
+    const {
+      horaInicio: horaInicioActual,
+      horaFin: horaFinActual,
+    } = horarioActual;
+    const indexOfHorarioActual = getHorariosOrdenados().indexOf(horarioActual);
 
-    return hourFormatter(horaFin) > hourFormatter(horaInicio);
+    if (indexOfHorarioActual === 0) {
+      return (
+        horarioComparable(horaInicioActual) < horarioComparable(horaFinActual)
+      );
+    }
+
+    if (indexOfHorarioActual === getHorariosOrdenados().length - 1) {
+      return (
+        horarioComparable(horaFinActual) > horarioComparable(horaInicioActual)
+      );
+    }
+
+    const horarioSiguiente = getHorariosOrdenados()[indexOfHorarioActual + 1];
+    const { horaInicio: horaInicioSiguiente } = horarioSiguiente;
+
+    return (
+      horarioComparable(horaInicioActual) < horarioComparable(horaFinActual) &&
+      horarioComparable(horaFinActual) <= horarioComparable(horaInicioSiguiente)
+    );
   });
 
   const handleChange = (e) => {
@@ -368,7 +416,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
               ]}
               errorMessages={[
                 ERRORES.requerido,
-                ERRORES.fechaFin,
+                ERRORES.fechaInicio,
                 ERRORES.horarioOcupado,
               ]}
             />
