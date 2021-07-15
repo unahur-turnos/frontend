@@ -1,3 +1,4 @@
+import { Alert, AlertTitle } from '@material-ui/lab';
 import {
   FormControl,
   FormHelperText,
@@ -7,16 +8,15 @@ import {
   Select,
 } from '@material-ui/core';
 
-import { Box } from '@material-ui/core';
 import { AYUDAS } from '../textos/Textos';
+import { Box } from '@material-ui/core';
+import { DateTime } from 'luxon';
 import { PropTypes } from 'prop-types';
 import SelectorActividad from '../actividades/SelectorActividad';
 import { actividadesUsuario } from '../../state/usuario';
-import { useRecoilValue } from 'recoil';
-import { DateTime } from 'luxon';
 import { filter } from 'ramda';
-import { Alert, AlertTitle } from '@material-ui/lab';
 import { useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 const AlertMessage = () => {
   return (
@@ -41,7 +41,7 @@ export default function Paso1DDJJ({ handleChange, agregarActividad }) {
 
   const condicionFiltro = (actividad) => {
     const actividadesFuturas =
-      DateTime.fromISO(actividad.fechaHoraInicio) > DateTime.local();
+      DateTime.fromISO(actividad.fechaHoraFin) > DateTime.local();
     return actividadID
       ? actividadesFuturas && actividad.id == actividadID
       : actividadesFuturas;
