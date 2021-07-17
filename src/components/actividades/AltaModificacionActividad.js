@@ -149,25 +149,9 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
       value,
       getHorariosOrdenados()
     );
-    const {
-      horaInicio: horaInicioActual,
-      horaFin: horaFinActual,
-    } = horarioActual;
-    const indexOfHorarioActual = getHorariosOrdenados().indexOf(horarioActual);
+    const { horaInicio, horaFin } = horarioActual;
 
-    if (indexOfHorarioActual === 0) {
-      return (
-        formatDateToDay(diaDeHoy, horaInicioActual) > DateTime.local().toISO()
-      );
-    }
-
-    const horarioAnterior = getHorariosOrdenados()[indexOfHorarioActual - 1];
-    const { horaFin: horaFinAnterior } = horarioAnterior;
-
-    return (
-      horarioComparable(horaInicioActual) < horarioComparable(horaFinActual) &&
-      horarioComparable(horaInicioActual) >= horarioComparable(horaFinAnterior)
-    );
+    return horarioComparable(horaInicio) < horarioComparable(horaFin);
   });
 
   ValidatorForm.addValidationRule('fechaFinValida', (value) => {
@@ -176,31 +160,9 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
       value,
       getHorariosOrdenados()
     );
-    const {
-      horaInicio: horaInicioActual,
-      horaFin: horaFinActual,
-    } = horarioActual;
-    const indexOfHorarioActual = getHorariosOrdenados().indexOf(horarioActual);
+    const { horaInicio, horaFin } = horarioActual;
 
-    if (indexOfHorarioActual === 0) {
-      return (
-        horarioComparable(horaInicioActual) < horarioComparable(horaFinActual)
-      );
-    }
-
-    if (indexOfHorarioActual === getHorariosOrdenados().length - 1) {
-      return (
-        horarioComparable(horaFinActual) > horarioComparable(horaInicioActual)
-      );
-    }
-
-    const horarioSiguiente = getHorariosOrdenados()[indexOfHorarioActual + 1];
-    const { horaInicio: horaInicioSiguiente } = horarioSiguiente;
-
-    return (
-      horarioComparable(horaInicioActual) < horarioComparable(horaFinActual) &&
-      horarioComparable(horaFinActual) <= horarioComparable(horaInicioSiguiente)
-    );
+    return horarioComparable(horaFin) > horarioComparable(horaInicio);
   });
 
   const handleChange = (e) => {
