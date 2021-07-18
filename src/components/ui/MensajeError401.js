@@ -42,7 +42,7 @@ export default function MensajeError401() {
           >
             <Grid items xs={12} align="center" mt={matches ? 2 : 1}></Grid>
             <Grid align="center">
-              <img src={ProhibidoElPaso} alt="" height="120px" />
+              <img src={ProhibidoElPaso} alt="" height="80px" />
             </Grid>
             <br />
             <Grid item xs={12} mb={matches ? 2 : 1}>
