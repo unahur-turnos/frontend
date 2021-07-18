@@ -1,11 +1,11 @@
 import React from 'react';
 import Grid from '@material-ui/core/Box';
 import { Typography, Button, useMediaQuery } from '@material-ui/core';
-import WarningIcon from '@material-ui/icons/Warning';
 import { makeStyles } from '@material-ui/core/styles';
-import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import { Link } from 'react-router-dom';
-import logoUnahur from '../../assets/logoUnahur.png';
+import ProhibidoElPaso2 from '../../assets/prohibidoElPaso2.png';
+import { useRecoilValue } from 'recoil';
+import { rutaInicialUsuarioState } from '../../state/usuario';
 
 const defaultProps = {
   m: 2,
@@ -27,9 +27,10 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-export default function FinalDDJJ() {
+export default function MensajeError401() {
   const classes = useStyles();
   const matches = useMediaQuery('(min-width:600px)');
+  const rutaInicialUsuario = useRecoilValue(rutaInicialUsuarioState);
 
   return (
     <>
@@ -41,7 +42,7 @@ export default function FinalDDJJ() {
           >
             <Grid items xs={12} align="center" mt={matches ? 2 : 1}></Grid>
             <Grid align="center">
-              <img src={logoUnahur} alt="" />
+              <img src={ProhibidoElPaso2} alt="" height="120px" />
             </Grid>
             <br />
             <Grid item xs={12} mb={matches ? 2 : 1}>
@@ -50,7 +51,7 @@ export default function FinalDDJJ() {
                 variant="h6"
                 className={classes.colorTexto}
               >
-                Error 401: Acceso no autorizado
+                No tenes los permisos necesarios para ver este contenido
               </Typography>
             </Grid>
           </Grid>
@@ -58,7 +59,12 @@ export default function FinalDDJJ() {
         <br />
         <br />
         <Grid align="center">
-          <Button variant="contained" component={Link} to="/" color="primary">
+          <Button
+            variant="contained"
+            component={Link}
+            to={rutaInicialUsuario}
+            color="primary"
+          >
             Volver al Inicio
           </Button>
         </Grid>
