@@ -16,7 +16,6 @@ import { take } from 'ramda';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { usuarioState } from '../../state/usuario';
-import { Redirect, Route } from 'react-router-dom';
 
 export default function MenuNavBar() {
   const classes = useStyles();

@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Box';
 import { Typography, Button, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import ProhibidoElPaso2 from '../../assets/prohibidoElPaso2.png';
+import ProhibidoElPaso from '../../assets/prohibidoElPaso.png';
 import { useRecoilValue } from 'recoil';
 import { rutaInicialUsuarioState } from '../../state/usuario';
 
@@ -42,7 +42,7 @@ export default function MensajeError401() {
           >
             <Grid items xs={12} align="center" mt={matches ? 2 : 1}></Grid>
             <Grid align="center">
-              <img src={ProhibidoElPaso2} alt="" height="120px" />
+              <img src={ProhibidoElPaso} alt="" height="120px" />
             </Grid>
             <br />
             <Grid item xs={12} mb={matches ? 2 : 1}>
