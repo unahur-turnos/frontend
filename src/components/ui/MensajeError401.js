@@ -13,7 +13,7 @@ const defaultProps = {
   style: { padding: '3% 7% 3% 7%' },
 };
 
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles(() => ({
   colorTexto: {
     color: '#444A4A',
     fontSize: '25px',
@@ -23,7 +23,6 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   gridExitoso: {
     backgroundColor: '#D2E7E2',
-    //borderColor: palette.secondary.dark,
   },
 }));
 
@@ -56,9 +55,7 @@ export default function MensajeError401() {
             </Grid>
           </Grid>
         </Grid>
-        <br />
-        <br />
-        <Grid align="center">
+        <Grid align="center" mt={4}>
           <Button
             variant="contained"
             component={Link}
