@@ -29,6 +29,7 @@ import PerfilUsuario from './components/usuarios/PerfilUsuario';
 import PrivateRoute from './components/autenticacion/PrivateRoute';
 import RecuperarContrasenia from './components/login/RecuperarContrasenia';
 import Registro from './components/registro/Registro';
+import MensajeError401 from './components/ui/MensajeError401';
 import { Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
 
@@ -109,6 +110,13 @@ function Rutas() {
 
       <PrivateRoute path="/turnos" rolesPermitidos={['asistente']}>
         <MisActividades />
+      </PrivateRoute>
+
+      <PrivateRoute
+        path="/401"
+        rolesPermitidos={['admin', 'bedel', 'asistente']}
+      >
+        <MensajeError401 />
       </PrivateRoute>
 
       <PrivateRoute

@@ -41,6 +41,7 @@ export default function MenuNavBar() {
   const cerrarSesion = () => {
     setUsuario(new DefaultValue());
     handleClose();
+    history.push('/login');
   };
 
   return (
