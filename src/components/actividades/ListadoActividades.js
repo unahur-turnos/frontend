@@ -248,10 +248,9 @@ export default function ListadoActividades() {
                             disabled={masDeUnTurno(actividad.turnos)}
                             className={classes.icon}
                             aria-label="delete"
+                            onClick={() => eliminarActividad(actividad)}
                           >
-                            <DeleteIcon
-                              onClick={() => eliminarActividad(actividad)}
-                            />
+                            <DeleteIcon />
                           </IconButton>
                         </span>
                       </Tooltip>

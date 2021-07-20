@@ -14,6 +14,10 @@ export const hourFormatter = (fecha) => {
   return DateTime.fromISO(fecha).setLocale('es').toFormat('T');
 };
 
+export const formatCurrentDay = (fecha) => {
+  return DateTime.fromISO(fecha).toFormat('yyyy-MM-dd');
+};
+
 export const fechaHoraActividad = (fechaHoraInicio, fechaHoraFin) => {
   const inicio = DateTime.fromISO(fechaHoraInicio)
     .setLocale('es')
@@ -25,4 +29,16 @@ export const fechaHoraActividad = (fechaHoraInicio, fechaHoraFin) => {
 
 export const formatISO = (fecha) => {
   return DateTime.fromISO(fecha).toISO();
+};
+
+export const formatDateToDay = (day, hour) => {
+  return `${day}T${hour}`;
+};
+
+export const getDateOnly = (fecha) => {
+  return DateTime.fromISO(fecha).toISODate();
+};
+
+export const horarioComparable = (horario) => {
+  return DateTime.fromISO(horario);
 };
