@@ -146,7 +146,13 @@ export default function Actividad() {
 
         <Grid container spacing={10} align="center">
           <Grid item xs={12}>
-            <Grid item xs={9} sm={7} md={4} style={{ marginTop: 20 }}>
+            <Grid
+              item
+              xs={9}
+              sm={7}
+              md={4}
+              style={{ marginTop: 20, marginBottom: 20 }}
+            >
               {numeroPaso === 0 ? (
                 <Button onClick={irAMisTurnos}>Cancelar</Button>
               ) : (

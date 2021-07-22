@@ -256,7 +256,7 @@ export default function Registro() {
             </Grid>
           )}
         </Grid>
-        <Grid container spacing={1} style={{ marginTop: 20 }}>
+        <Grid container spacing={1} style={{ marginTop: 20, marginBottom: 20 }}>
           <Grid item xs={6} align="right">
             <Button onClick={volverAlLogin}>Cancelar</Button>
           </Grid>

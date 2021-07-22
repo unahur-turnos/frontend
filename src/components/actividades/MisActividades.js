@@ -102,7 +102,10 @@ export default function MisActividades() {
           })}
           {turnosFuturos().length === 0 && (
             <Grid item className={classes.root}>
-              <Alert severity="info">
+              <Alert
+                severity="info"
+                style={{ marginLeft: 10, marginBottom: 10 }}
+              >
                 Aún no tenés ningún turno. Podés pedir uno haciendo{' '}
                 <Link to="/turnos/nuevo">clic aquí.</Link>
               </Alert>

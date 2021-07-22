@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     maxWidth: '100%',
+    marginTop: 10,
   },
   tableCell: {
     width: '33%',
