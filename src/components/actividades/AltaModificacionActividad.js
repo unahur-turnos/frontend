@@ -498,7 +498,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
           {inputsHorarios()}
           {inputEstado()}
         </Grid>
-        <Grid container spacing={1} style={{ marginTop: 20 }}>
+        <Grid container spacing={1} style={{ marginTop: 20, marginBottom: 20 }}>
           <Grid item xs={6} align="right">
             <Button onClick={irListaActividades}>Cancelar</Button>
           </Grid>
