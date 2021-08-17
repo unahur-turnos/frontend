@@ -11,6 +11,7 @@ import {
   Radio,
   RadioGroup,
 } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import {
   SelectValidator,
   TextValidator,
@@ -74,7 +75,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
     todasLasActividades({ desde: fechaHoraInicio })
   );
   const [diaDeHoy, setDiaDeHoy] = useState(formatCurrentDay(fechaHoraInicio));
-  // const carreraSeleccionada = find(propEq('id', restriccionId), carreras);
+  const carreraSeleccionada = find(propEq('id', restriccionId), carreras);
 
   const getHorarioByAttrInList = (atributo, valor, lista) =>
     find(propEq(atributo, valor), lista);
@@ -189,6 +190,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
               'responsable',
               'telefonoDeContactoResponsable',
               'activa',
+              'restriccionId',
             ],
             item
           );
@@ -455,7 +457,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
     );
   };
 
-  /*const inputCarreras = () => {
+  const inputCarreras = () => {
     return (
       <Grid item xs={12}>
         <Grid item xs={12} sm={7} md={4}>
@@ -481,8 +483,8 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
           />
         </Grid>
       </Grid>
-    )
-  }*/
+    );
+  };
 
   return (
     <>
@@ -497,6 +499,7 @@ export default function AltaActividad({ titulo, esParaDuplicar = false }) {
           {inputDiaActividad()}
           {inputsHorarios()}
           {inputEstado()}
+          {inputCarreras()}
         </Grid>
         <Grid container spacing={1} style={{ marginTop: 20, marginBottom: 20 }}>
           <Grid item xs={6} align="right">
